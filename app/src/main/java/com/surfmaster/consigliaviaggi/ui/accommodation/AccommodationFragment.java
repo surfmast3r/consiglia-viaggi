@@ -1,4 +1,4 @@
-package com.surfmaster.consigliaviaggi.ui.home;
+package com.surfmaster.consigliaviaggi.ui.accommodation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.surfmaster.consigliaviaggi.R;
 
-public class HomeFragment extends Fragment {
+public class AccommodationFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private AccommodationViewModel accommodationViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+        accommodationViewModel =
+                ViewModelProviders.of(this).get(AccommodationViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_share, container, false);
+        final TextView textView = root.findViewById(R.id.text_share);
+        accommodationViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

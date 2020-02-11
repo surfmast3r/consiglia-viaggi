@@ -1,14 +1,14 @@
-package com.surfmaster.consigliaviaggi.ui.share;
+package com.surfmaster.consigliaviaggi.ui.accommodation;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ShareViewModel extends ViewModel {
+public class AccommodationViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public ShareViewModel() {
+    public AccommodationViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is share fragment");
     }
