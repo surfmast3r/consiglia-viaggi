@@ -11,10 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
 import com.surfmaster.consigliaviaggi.R;
 
 public class MainFragment extends Fragment {
@@ -35,12 +31,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        RecyclerView rv = (RecyclerView)root.findViewById(R.id.accommodation_recycler_view);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        rv.setLayoutManager(llm);
-
-        AccommodationRecyclerViewAdapter adapter=new AccommodationRecyclerViewAdapter(getContext(),mainViewModel.getList());
-        rv.setAdapter(adapter);
         return root;
     }
 }

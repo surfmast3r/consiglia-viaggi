@@ -22,6 +22,7 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
     private Context context;
 
     public AccommodationRecyclerViewAdapter(Context context,List<Accommodation> accommodations){
+
         this.accommodations = accommodations;
         this.context=context;
     }
@@ -55,11 +56,12 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
 
         accommodationViewHolder.accommodationName.setText(accommodations.get(position).getName());
         accommodationViewHolder.accommodationAddress.setText(accommodations.get(position).getAddress());
-        Picasso.get().load(accommodations.get(position).getImages().get(position)).into(accommodationViewHolder.accommodationImage);
+        Picasso.get().load(accommodations.get(position).getImages().get(0)).into(accommodationViewHolder.accommodationImage);
     }
 
     @Override
         public int getItemCount() {
+
             return accommodations.size();
         }
 

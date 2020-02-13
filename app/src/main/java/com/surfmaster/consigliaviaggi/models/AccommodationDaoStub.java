@@ -12,6 +12,16 @@ public class AccommodationDaoStub implements AccommodationDao {
 
     public AccommodationDaoStub(){
         accommodationList= new ArrayList<Accommodation>();
+
+    }
+
+    @Override
+    public ArrayList<Accommodation> getAccommodationList() {
+        createStubData();
+        return accommodationList;
+    }
+
+    private void createStubData(){
         accommodationList.add(new Accommodation.Builder()
                 .setName("Da Peppino")
                 .setCategory(Category.RESTAURANT)
@@ -25,9 +35,20 @@ public class AccommodationDaoStub implements AccommodationDao {
                 .setImages(new ArrayList<String>(Arrays.asList("https://www.oasidellapizza.it/wp-content/uploads/revslider/steweysfullslider/5.jpg")))
                 .setRating(3)
                 .create());
+        accommodationList.add(new Accommodation.Builder()
+                .setName("Da Pasquale")
+                .setCategory(Category.RESTAURANT)
+                .setSubcategory(Subcategory.PIZZERIA)
+                .setAccommodationLocation(new Location.Builder()
+                        .setCity("Napoli")
+                        .setAddress("Via Bernardo Cavallino 27")
+                        .setLatitude(40.858560)
+                        .setLongitude(14.230360)
+                        .build())
+                .setImages(new ArrayList<String>(Arrays.asList("https://www.oasidellapizza.it/wp-content/uploads/revslider/steweysfullslider/5.jpg")))
+                .setRating(3)
+                .create());
+
     }
-    @Override
-    public ArrayList<Accommodation> getAccommodationList() {
-        return accommodationList;
-    }
+
 }
