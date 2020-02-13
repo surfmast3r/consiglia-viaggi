@@ -1,18 +1,23 @@
 package com.surfmaster.consigliaviaggi;
 
+import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.surfmaster.consigliaviaggi.ui.accommodation_list.FiltersFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 
 public class ViewAccommodationsActivity extends AppCompatActivity {
+    private AppBarConfiguration mAppBarConfiguration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,14 +27,13 @@ public class ViewAccommodationsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-                Navigation.findNavController(ViewAccommodationsActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_slideshow);
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
             }
         });
     }
@@ -46,8 +50,10 @@ public class ViewAccommodationsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.action_filter:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
+                // Create and show the dialog.
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                DialogFragment newFragment = FiltersFragment.newInstance();
+                newFragment.show(ft, "dialog");
                 return true;
 
             default:

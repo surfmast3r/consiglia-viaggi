@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel;
 public class AccommodationListViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
+    private MutableLiveData<String> mFilterText;
     private MutableLiveData<List> mAccommodationList;
     private ViewAccommodationsController va_controller;
 
@@ -22,6 +23,8 @@ public class AccommodationListViewModel extends ViewModel {
         va_controller=new ViewAccommodationsController();
         mText = new MutableLiveData<>();
         mText.setValue("This is Accommodation List fragment");
+        mFilterText = new MutableLiveData<>();
+        mFilterText.setValue("This is Filters fragment");
         mAccommodationList=new MutableLiveData<>();
 
         // do async operation to fetch data
@@ -54,6 +57,9 @@ public class AccommodationListViewModel extends ViewModel {
 
     public LiveData<String> getText() {
         return mText;
+    }
+    public LiveData<String> getFilterText() {
+        return mFilterText;
     }
     public MutableLiveData<List> getList(){
         return mAccommodationList;
