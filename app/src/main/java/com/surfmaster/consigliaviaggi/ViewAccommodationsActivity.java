@@ -13,19 +13,25 @@ import com.surfmaster.consigliaviaggi.ui.accommodation_list.FiltersFragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 public class ViewAccommodationsActivity extends AppCompatActivity {
+
     private AppBarConfiguration mAppBarConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_accommodations);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController,appBarConfiguration);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,4 +75,5 @@ public class ViewAccommodationsActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
 }
