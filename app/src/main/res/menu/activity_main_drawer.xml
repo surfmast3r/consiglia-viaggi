@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_view_accommodations_activity"
+            android:id="@+id/nav_accommodation_list"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/menu_ac_list" />
         <item
