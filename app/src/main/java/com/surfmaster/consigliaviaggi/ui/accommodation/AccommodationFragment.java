@@ -26,7 +26,7 @@ import com.surfmaster.consigliaviaggi.R;
 public class AccommodationFragment extends Fragment {
 
     private AccommodationViewModel accommodationViewModel;
-
+    private Toolbar mainToolbar;
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -54,10 +54,11 @@ public class AccommodationFragment extends Fragment {
     }
 
     private void initToolbar(View root) {
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        mainToolbar=getActivity().findViewById(R.id.toolbar);
+        Toolbar toolbar = root.findViewById(R.id.collapsing_toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        NavController navController = Navigation.findNavController(((AppCompatActivity)getActivity()), R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(((AppCompatActivity)getActivity()), navController);
     }
 
@@ -66,6 +67,13 @@ public class AccommodationFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem = menu.findItem(R.id.action_settings);
         menuItem.setVisible(false);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
     }
 
 
