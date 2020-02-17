@@ -85,7 +85,10 @@ public class AccommodationListFragment extends Fragment {
         rv.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), rv ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Navigation.findNavController(activity, R.id.nav_host_fragment).navigate(R.id.action_nav_accommodation_list_to_nav_accommodation_detail);
+
+                        AccommodationListFragmentDirections.ActionNavAccommodationListToNavViewAccommodationActivity action =
+                                AccommodationListFragmentDirections.actionNavAccommodationListToNavViewAccommodationActivity(position);
+                        Navigation.findNavController(activity, R.id.nav_host_fragment).navigate(action);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {

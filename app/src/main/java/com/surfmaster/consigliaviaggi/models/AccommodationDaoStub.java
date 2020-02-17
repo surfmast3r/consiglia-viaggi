@@ -21,6 +21,13 @@ public class AccommodationDaoStub implements AccommodationDao {
         return accommodationList;
     }
 
+    @Override
+    public Accommodation getAccommodationById(int id) {
+        createStubData();
+        Accommodation ac = accommodationList.get(id);
+        return ac;
+    }
+
     private void createStubData(){
         accommodationList.add(new Accommodation.Builder()
                 .setName("Da Peppino")

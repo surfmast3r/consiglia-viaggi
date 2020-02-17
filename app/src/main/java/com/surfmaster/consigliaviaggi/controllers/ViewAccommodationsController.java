@@ -1,5 +1,6 @@
 package com.surfmaster.consigliaviaggi.controllers;
 
+import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.AccommodationDao;
 import com.surfmaster.consigliaviaggi.models.AccommodationDaoStub;
 
@@ -18,6 +19,14 @@ public class ViewAccommodationsController {
 
         accommodationList=acDao.getAccommodationList();
         return accommodationList;
+
+    }
+
+    public Accommodation getAccommodationById(int id){
+        Accommodation accommodation;
+
+        accommodation=acDao.getAccommodationById(id);
+        return accommodation;
 
     }
 }

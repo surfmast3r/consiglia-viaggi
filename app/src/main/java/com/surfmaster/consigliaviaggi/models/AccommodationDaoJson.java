@@ -7,4 +7,9 @@ public class AccommodationDaoJson implements AccommodationDao{
     public ArrayList<Accommodation> getAccommodationList() {
         return null;
     }
+
+    @Override
+    public Accommodation getAccommodationById(int id) {
+        return null;
+    }
 }

@@ -30,10 +30,13 @@
         tools:layout="@layout/fragment_tools" />
 
     <activity
-        android:id="@+id/nav_view_accommodations_activity"
-        android:name="com.surfmaster.consigliaviaggi.ViewAccommodationsActivity"
-        android:label="@string/menu_ac_list"
-        tools:layout="@layout/activity_view_accommodations">
+        android:id="@+id/nav_view_accommodation_activity"
+        android:name="com.surfmaster.consigliaviaggi.ViewAccommodationActivity"
+        android:label="@string/menu_ac_view"
+        tools:layout="@layout/activity_view_accommodation">
+        <argument
+            android:name="accommodation_id"
+            app:argType="integer" />
 
     </activity>
 
@@ -49,6 +52,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_nav_accommodation_list_to_nav_view_accommodation_activity"
+            app:destination="@id/nav_view_accommodation_activity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left">
+        </action>
     </fragment>
 
     <fragment
