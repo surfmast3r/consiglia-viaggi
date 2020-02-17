@@ -24,7 +24,7 @@ public class AccommodationViewModel extends ViewModel {
 
         mAccommodation=new MutableLiveData<>();
         mText = new MutableLiveData<>();
-        mAccommodationName = new MutableLiveData();
+        mAccommodationName = new MutableLiveData<>();
         mAccommodationImage = new MutableLiveData<>();
         mText.setValue("This is Accommodation fragment");
         va_controller= new ViewAccommodationsController();
