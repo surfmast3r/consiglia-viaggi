@@ -40,7 +40,22 @@ public class AccommodationFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_accommodation_detail, container, false);
 
         initToolbar(root);
+        bindViews(root);
 
+
+        return root;
+    }
+
+    private void initToolbar(View root) {
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        Toolbar toolbar = root.findViewById(R.id.collapsing_toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(((AppCompatActivity)getActivity()), navController,appBarConfiguration);
+    }
+
+    private void bindViews(View root){
         final TextView textView = root.findViewById(R.id.accommodation_name);
         accommodationViewModel.getAccommodationName().observe(this, new Observer<String>() {
             @Override
@@ -63,16 +78,6 @@ public class AccommodationFragment extends Fragment {
             }
         });
 
-        return root;
-    }
-
-    private void initToolbar(View root) {
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        Toolbar toolbar = root.findViewById(R.id.collapsing_toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
-        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(((AppCompatActivity)getActivity()), navController,appBarConfiguration);
     }
 
     @Override

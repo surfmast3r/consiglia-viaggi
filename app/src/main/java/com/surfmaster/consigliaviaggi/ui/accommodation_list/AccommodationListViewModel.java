@@ -37,7 +37,7 @@ public class AccommodationListViewModel extends ViewModel {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        List acList = va_controller.getAccommodationList();
+                        List acList = va_controller.getAccommodationList("Napoli");
                         mAccommodationList.postValue(acList);
                     }
                 },3000);
@@ -63,5 +63,9 @@ public class AccommodationListViewModel extends ViewModel {
     }
     public MutableLiveData<List> getList(){
         return mAccommodationList;
+    }
+
+    public int getAccommodationId(int position) {
+        return va_controller.getAccommodationId(position);
     }
 }

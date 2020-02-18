@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AccommodationDaoStub implements AccommodationDao {
-
     private ArrayList<Accommodation> accommodationList;
+
 
     public AccommodationDaoStub(){
         accommodationList= new ArrayList<Accommodation>();
@@ -16,20 +16,32 @@ public class AccommodationDaoStub implements AccommodationDao {
     }
 
     @Override
-    public ArrayList<Accommodation> getAccommodationList() {
+    public ArrayList<Accommodation> getAccommodationList(String city) {
         createStubData();
         return accommodationList;
     }
 
     @Override
+    public ArrayList<Accommodation> getAccommodationList(Double latitude, Double longitude) {
+        createStubData();
+        return accommodationList;
+
+    }
+
+    @Override
     public Accommodation getAccommodationById(int id) {
         createStubData();
-        Accommodation ac = accommodationList.get(id);
-        return ac;
+        for (Accommodation ac : accommodationList) {
+            if (ac.getId().equals(id)) {
+                return ac;
+            }
+        }
+        return null;
     }
 
     private void createStubData(){
         accommodationList.add(new Accommodation.Builder()
+                .setId(111)
                 .setName("Da Peppino")
                 .setCategory(Category.RESTAURANT)
                 .setSubcategory(Subcategory.PIZZERIA)
@@ -43,6 +55,7 @@ public class AccommodationDaoStub implements AccommodationDao {
                 .setRating(3)
                 .create());
         accommodationList.add(new Accommodation.Builder()
+                .setId(222)
                 .setName("Da Pasquale")
                 .setCategory(Category.RESTAURANT)
                 .setSubcategory(Subcategory.PIZZERIA)

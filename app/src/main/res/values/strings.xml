@@ -17,4 +17,7 @@
 
     <string name="menu_ac_view">Accommodation View</string>
     <string name="description_label">Description</string>
+    <string name="map_description_title">Esplora luoghi nelle vicinanze</string>
+    <string name="map_description_message">Usa la tua posizione per esplorare le attività intorno a te</string>
+    <string name="use_location_button">Usa la mia posizione</string>
 </resources>

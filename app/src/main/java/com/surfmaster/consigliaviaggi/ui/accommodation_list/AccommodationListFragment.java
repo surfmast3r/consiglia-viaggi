@@ -13,16 +13,12 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -87,7 +83,7 @@ public class AccommodationListFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
 
                         AccommodationListFragmentDirections.ActionNavAccommodationListToNavViewAccommodationActivity action =
-                                AccommodationListFragmentDirections.actionNavAccommodationListToNavViewAccommodationActivity(position);
+                                AccommodationListFragmentDirections.actionNavAccommodationListToNavViewAccommodationActivity(accommodationListViewModel.getAccommodationId(position));
                         Navigation.findNavController(activity, R.id.nav_host_fragment).navigate(action);
                     }
 

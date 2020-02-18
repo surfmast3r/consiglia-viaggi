@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Accommodation {
 
+    private Integer id;
     private String name;
     private String logoUrl;
     private List<String> images;
@@ -14,6 +15,10 @@ public class Accommodation {
     private Subcategory subcategory;
     private Category category;
     private Location accommodationLocation;
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -48,6 +53,7 @@ public class Accommodation {
     }
 
     private Accommodation(Builder builder) {
+        this.id = builder.id;
         this.name = builder.name;
         this.logoUrl = builder.logoUrl;
         this.images = builder.images;
@@ -58,6 +64,8 @@ public class Accommodation {
     }
 
     static class Builder {
+
+        private Integer id;
         private String name;
         private String logoUrl;
         private List<String> images;
@@ -67,6 +75,10 @@ public class Accommodation {
         private Location accommodationLocation;
 
 
+        public Builder setId(Integer id) {
+            this.id = id;
+            return this;
+        }
         public Builder setName(String name) {
             this.name = name;
             return this;
