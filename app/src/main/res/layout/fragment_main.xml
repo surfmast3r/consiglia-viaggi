@@ -35,17 +35,25 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteX="144dp"
                     tools:layout_editor_absoluteY="63dp" />
-                <TextView
+                <androidx.appcompat.widget.AppCompatButton
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:text="@string/city_select"
+                    android:drawableEnd="@android:drawable/arrow_down_float"
+                    android:drawablePadding="5dp"
                     android:id="@+id/text_home"
-                    android:layout_width="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
                     android:textAlignment="center"
                     android:textSize="20sp"
+                    android:backgroundTint="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -134,9 +142,10 @@
                             android:textColorLink="#0099CC">
                         </TextView>
                         <androidx.appcompat.widget.AppCompatButton
+                            android:drawablePadding="5dp"
                             android:drawableStart="@drawable/baseline_near_me_black_18dp"
                             android:textAlignment="center"
-                            android:text="@string/use_location_button"
+                            android:text="@string/explore_map_button"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:id="@+id/btnRound"
