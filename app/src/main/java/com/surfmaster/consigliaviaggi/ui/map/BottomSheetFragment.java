@@ -45,6 +45,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         rating=args.getInt("rating");
         id=args.getInt("id");
         category=args.getString("category");
+        logo=args.getString("logo");
     }
 
     @Nullable

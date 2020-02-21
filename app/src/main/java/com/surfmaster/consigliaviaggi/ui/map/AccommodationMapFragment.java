@@ -120,6 +120,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         args.putInt("rating", myClusterItem.getRating());
         args.putString("address", myClusterItem.getAddress());
         args.putInt("id",myClusterItem.getId());
+        args.putString("logo",myClusterItem.getLogo());
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
     }
