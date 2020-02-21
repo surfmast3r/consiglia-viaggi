@@ -9,19 +9,33 @@
         android:id="@+id/nav_home"
         android:name="com.surfmaster.consigliaviaggi.ui.main.MainFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+
+        <action
+            android:id="@+id/action_nav_home_to_nav_accommodation_list"
+            app:destination="@id/nav_accommodation_list"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_map"
+            app:destination="@id/nav_map"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.surfmaster.consigliaviaggi.ui.location.SelectLocationFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.surfmaster.consigliaviaggi.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_map"
+        android:name="com.surfmaster.consigliaviaggi.ui.map.AccommodationMapFragment"
+        android:label="@string/menu_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_nav_map_to_nav_view_accommodation_activity"
+            app:destination="@id/nav_view_accommodation_activity" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_tools"
@@ -45,6 +59,9 @@
         android:name="com.surfmaster.consigliaviaggi.ui.accommodation_list.AccommodationListFragment"
         android:label="@string/menu_ac_list"
         tools:layout="@layout/fragment_accommodation_list" >
+        <argument
+            android:name="accommodation_category"
+            app:argType="string" />
         <action
             android:id="@+id/action_nav_accommodation_list_to_nav_accommodation_detail"
             app:destination="@id/nav_accommodation_detail"
@@ -60,6 +77,7 @@
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left">
         </action>
+
     </fragment>
 
     <fragment

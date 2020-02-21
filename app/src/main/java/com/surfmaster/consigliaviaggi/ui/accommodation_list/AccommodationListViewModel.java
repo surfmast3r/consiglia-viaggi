@@ -16,11 +16,14 @@ public class AccommodationListViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mFilterText;
+
+    private MutableLiveData<String> mCategoryText;
     private MutableLiveData<List> mAccommodationList;
-    private ViewAccommodationsController va_controller;
+    private ViewAccommodationsController viewAccommodationsController;
 
     public AccommodationListViewModel() {
-        va_controller=new ViewAccommodationsController();
+        viewAccommodationsController =new ViewAccommodationsController();
+        mCategoryText= new MutableLiveData<>();
         mText = new MutableLiveData<>();
         mText.setValue("This is Accommodation List fragment");
         mFilterText = new MutableLiveData<>();
@@ -37,7 +40,7 @@ public class AccommodationListViewModel extends ViewModel {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        List acList = va_controller.getAccommodationList("Napoli");
+                        List acList = viewAccommodationsController.getAccommodationList("Napoli");
                         mAccommodationList.postValue(acList);
                     }
                 },3000);
@@ -45,7 +48,7 @@ public class AccommodationListViewModel extends ViewModel {
 
 
                 // on background thread, obtain a fresh list accommodations
-                //List acList = va_controller.getAccommodationList();
+                //List acList = viewAccommodationsController.getAccommodationList();
 
                 // make it available to outside observers of the "mAccommodationList"
                 // MutableLiveData object
@@ -53,6 +56,10 @@ public class AccommodationListViewModel extends ViewModel {
 
             }
         });
+    }
+
+    public LiveData<String> getCategoryText() {
+        return mCategoryText;
     }
 
     public LiveData<String> getText() {
@@ -65,7 +72,11 @@ public class AccommodationListViewModel extends ViewModel {
         return mAccommodationList;
     }
 
-    public int getAccommodationId(int position) {
-        return va_controller.getAccommodationId(position);
+    /*public int getAccommodationId(int position) {
+        return viewAccommodationsController.getAccommodationId(position);
+    }*/
+
+    public void setCategoryText(String mCategoryText) {
+        this.mCategoryText.setValue(mCategoryText);
     }
 }

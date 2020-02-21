@@ -9,7 +9,7 @@
     <string name="action_filter">Filters</string>
     <string name="action_save">Save</string>
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_map">Mappa</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_ac_detail">Accommodation Detail</string>
@@ -21,8 +21,10 @@
     <string name="map_description_message">Usa la tua posizione per esplorare le attività intorno a te</string>
     <string name="explore_map_button">Esplora mappa</string>
     <string name="use_location_button">Usa la mia posizione</string>
-    <string name="city_select">Seleziona città</string>
+    <string name="city_select">Seleziona provincia</string>
     <string name="clear_location_button_text">Reset Città</string>
+    <string name="category_hotel">hotel</string>
+    <string name="open_detail_button">Visualizza Dettagli</string>
 
 
     <string-array name="cities_array">

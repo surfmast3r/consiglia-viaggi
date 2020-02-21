@@ -18,13 +18,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
 import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.RecyclerItemClickListener;
 
 import java.util.List;
 
@@ -52,13 +50,17 @@ public class AccommodationListFragment extends Fragment {
         accommodationListViewModel =
                 ViewModelProviders.of(this).get(AccommodationListViewModel.class);
         View root = inflater.inflate(R.layout.fragment_accommodation_list, container, false);
+
+        accommodationListViewModel.setCategoryText(AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory());
+
         textView = root.findViewById(R.id.text_send);
-        accommodationListViewModel.getText().observe(this, new Observer<String>() {
+        accommodationListViewModel.getCategoryText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
+
 
         rv = (RecyclerView)root.findViewById(R.id.accommodation_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -78,7 +80,7 @@ public class AccommodationListFragment extends Fragment {
             }
         }
         );
-        rv.addOnItemTouchListener(
+        /*rv.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), rv ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
 
@@ -91,7 +93,7 @@ public class AccommodationListFragment extends Fragment {
                         // do whatever
                     }
                 })
-        );
+        );*/
 
 
 

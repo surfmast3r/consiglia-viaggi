@@ -47,6 +47,12 @@ public class Accommodation {
     public Location getAccommodationLocation() {
         return accommodationLocation;
     }
+    public Double getLatitude() {
+        return accommodationLocation.getLatitude();
+    }
+    public Double getLongitude() {
+        return accommodationLocation.getLongitude();
+    }
 
     public String getAddress(){
         return accommodationLocation.getAddress();

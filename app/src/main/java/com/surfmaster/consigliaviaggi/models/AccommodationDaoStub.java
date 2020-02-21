@@ -1,5 +1,6 @@
 package com.surfmaster.consigliaviaggi.models;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.Category;
 import com.surfmaster.consigliaviaggi.Subcategory;
 
@@ -22,8 +23,12 @@ public class AccommodationDaoStub implements AccommodationDao {
     }
 
     @Override
-    public ArrayList<Accommodation> getAccommodationList(Double latitude, Double longitude) {
-        createStubData();
+    public ArrayList<Accommodation> getAccommodationList(LatLng latLng) {
+        LatLng  mDefaultLocation = new LatLng(45.463619, 9.188120);
+        if (latLng.equals(mDefaultLocation))
+            createStubDataMilano();
+        else
+            createStubData();
         return accommodationList;
 
     }
@@ -40,16 +45,40 @@ public class AccommodationDaoStub implements AccommodationDao {
     }
 
     private void createStubData(){
+
+        for(int i=0 ;i<20;i++){
+            double lat = 40.857362 + Math.random() * (40.857362 - 40.870000);
+
+            double longitude = 14.261627 + Math.random() * (14.261627 - 14.300000);
+            accommodationList.add(new Accommodation.Builder()
+                    .setId(i)
+                    .setName("Da Peppino"+i)
+                    .setCategory(Category.RESTAURANT)
+                    .setSubcategory(Subcategory.PIZZERIA)
+                    .setAccommodationLocation(new Location.Builder()
+                            .setCity("Napoli")
+                            .setAddress("Via Bernardo Cavallino 27")
+                            .setLatitude(lat)
+                            .setLongitude(longitude)
+                            .build())
+                    .setImages(new ArrayList<String>(Arrays.asList("https://www.oasidellapizza.it/wp-content/uploads/revslider/steweysfullslider/5.jpg")))
+                    .setRating(3)
+                    .create());
+        }
+
+    }
+
+    private void createStubDataMilano(){
         accommodationList.add(new Accommodation.Builder()
                 .setId(111)
                 .setName("Da Peppino")
                 .setCategory(Category.RESTAURANT)
                 .setSubcategory(Subcategory.PIZZERIA)
                 .setAccommodationLocation(new Location.Builder()
-                        .setCity("Napoli")
+                        .setCity("Milano")
                         .setAddress("Via Bernardo Cavallino 27")
-                        .setLatitude(40.858560)
-                        .setLongitude(14.230360)
+                        .setLatitude(45.463619)
+                        .setLongitude(9.188120)
                         .build())
                 .setImages(new ArrayList<String>(Arrays.asList("https://www.oasidellapizza.it/wp-content/uploads/revslider/steweysfullslider/5.jpg")))
                 .setRating(3)
@@ -60,15 +89,14 @@ public class AccommodationDaoStub implements AccommodationDao {
                 .setCategory(Category.RESTAURANT)
                 .setSubcategory(Subcategory.PIZZERIA)
                 .setAccommodationLocation(new Location.Builder()
-                        .setCity("Napoli")
+                        .setCity("Milano")
                         .setAddress("Via Bernardo Cavallino 27")
-                        .setLatitude(40.858560)
-                        .setLongitude(14.230360)
+                        .setLatitude(45.463621)
+                        .setLongitude(9.188121)
                         .build())
                 .setImages(new ArrayList<String>(Arrays.asList("https://www.oasidellapizza.it/wp-content/uploads/revslider/steweysfullslider/5.jpg")))
                 .setRating(3)
                 .create());
 
     }
-
 }

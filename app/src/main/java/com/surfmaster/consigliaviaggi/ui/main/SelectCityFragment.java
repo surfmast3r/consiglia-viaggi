@@ -57,12 +57,12 @@ public class SelectCityFragment extends DialogFragment{
         setButtonListener(applyButton);
 
         // Get a reference to the AutoCompleteTextView in the layout
-        cityAutoCompleteTextView = (AutoCompleteTextView) root.findViewById(R.id.autocomplete_city);
+        cityAutoCompleteTextView = root.findViewById(R.id.autocomplete_city);
         // Get the string array
         String[] cities = getResources().getStringArray(R.array.cities_array);
         // Create the adapter and set it to the AutoCompleteTextView
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, cities);
+                new ArrayAdapter<>(root.getContext(), android.R.layout.simple_list_item_1, cities);
         cityAutoCompleteTextView.setAdapter(adapter);
         cityAutoCompleteTextView.setHint(mainViewModel.getCity().getValue());
 

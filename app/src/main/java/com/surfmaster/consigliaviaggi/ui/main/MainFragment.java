@@ -1,27 +1,33 @@
 package com.surfmaster.consigliaviaggi.ui.main;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
-import com.surfmaster.consigliaviaggi.ui.accommodation_list.FiltersFragment;
 
 public class MainFragment extends Fragment {
 
+    private Activity activity;
     private MainViewModel mainViewModel;
     private ViewAccommodationsController viewAccommodationsController;
+    private Button citySelectButton;
+    private Button mapViewButton;
+    private ImageButton hotelButton;
+    private ImageButton restaurantButton;
+    private ImageButton attractionButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -32,10 +38,21 @@ public class MainFragment extends Fragment {
                 ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-
-        final Button citySelectButton = root.findViewById(R.id.text_home);
-
         mainViewModel.setCity(viewAccommodationsController.getSelectedCity(requireContext()));
+
+        mapViewButton=root.findViewById(R.id.explore_map_button);
+        hotelButton = root.findViewById(R.id.hotel_button);
+        restaurantButton = root.findViewById(R.id.restaurant_button);
+        attractionButton = root.findViewById(R.id.attraction_button);
+        citySelectButton = root.findViewById(R.id.text_home);
+
+        bindViews();
+
+        return root;
+    }
+
+    private void bindViews() {
+
         mainViewModel.getCity().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -43,15 +60,75 @@ public class MainFragment extends Fragment {
             }
         });
 
-        citySelectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                DialogFragment newFragment = SelectCityFragment.newInstance();
-                newFragment.show(ft, "dialog");
-            }
-        });
+        setButtonListener(citySelectButton);
+        setButtonListener(hotelButton);
+        setButtonListener(restaurantButton);
+        setButtonListener(attractionButton);
+        setButtonListener(mapViewButton);
 
-        return root;
+    }
+
+
+    private void setButtonListener(View view){
+        int viewId=view.getId();
+        switch (viewId){
+
+            case R.id.text_home:
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        viewAccommodationsController.navigateToSelectCityFragment(activity);
+                    }
+                });
+                break;
+
+            case R.id.hotel_button:
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity,R.id.nav_host_fragment,"hotel");
+                    }
+                });
+                break;
+            case R.id.restaurant_button:
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity,R.id.nav_host_fragment,"restaurant");
+                    }
+                });
+                break;
+            case R.id.attraction_button:
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity,R.id.nav_host_fragment,"attraction");
+                    }
+                });
+                break;
+            case R.id.explore_map_button:
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        viewAccommodationsController.navigateToAccommodationMapFragment(activity,R.id.nav_host_fragment);
+                    }
+                });
+                break;
+        }
+
+
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity){
+            activity=(Activity) context;
+
+        }
+
     }
 }

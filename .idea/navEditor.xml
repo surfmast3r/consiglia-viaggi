@@ -10,12 +10,25 @@
                 <map>
                   <entry key="nav_accommodation_detail">
                     <value>
-                      <LayoutPositions />
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="431" />
+                            <option name="y" value="831" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
                     </value>
                   </entry>
                   <entry key="nav_accommodation_list">
                     <value>
                       <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-107" />
+                            <option name="y" value="509" />
+                          </Point>
+                        </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_nav_accommodation_list_to_nav_accommodation_detail">
@@ -33,29 +46,66 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="nav_gallery">
-                    <value>
-                      <LayoutPositions />
-                    </value>
-                  </entry>
                   <entry key="nav_home">
                     <value>
-                      <LayoutPositions />
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-618" />
+                            <option name="y" value="298" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_home_to_nav_accommodation_list">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_home_to_nav_map">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="nav_slideshow">
+                  <entry key="nav_map">
                     <value>
-                      <LayoutPositions />
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-98" />
+                            <option name="y" value="94" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
                     </value>
                   </entry>
                   <entry key="nav_tools">
                     <value>
-                      <LayoutPositions />
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-615" />
+                            <option name="y" value="679" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
                     </value>
                   </entry>
                   <entry key="nav_view_accommodation_activity">
                     <value>
-                      <LayoutPositions />
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="427" />
+                            <option name="y" value="378" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
                     </value>
                   </entry>
                 </map>
