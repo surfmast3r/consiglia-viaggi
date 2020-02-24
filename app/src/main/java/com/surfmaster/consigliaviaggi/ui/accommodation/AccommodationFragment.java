@@ -19,6 +19,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,13 +34,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
+import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
+
+import java.util.List;
 
 public class AccommodationFragment extends Fragment implements OnMapReadyCallback {
 
     private AccommodationViewModel accommodationViewModel;
-    private GoogleMap googleMap;
-    private GoogleMapOptions googleMapOptions;
     private SupportMapFragment mapFragment;
+    private RecyclerView reviewsRecyclerView;
+    private GoogleMap googleMap;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +121,27 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
                 categoryTextView.setText(s);
             }
         });
+
+        reviewsRecyclerView = root.findViewById(R.id.recyclerview);
+        reviewsRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+        reviewsRecyclerView.setLayoutManager(layoutManager);
+
+        accommodationViewModel.getReviewList().observe(this, new Observer<List>() {
+
+            ReviewsRecyclerViewAdapter adapter;
+                    @Override
+                    public void onChanged(@Nullable List s) {
+                        if (adapter==null){
+                            adapter=new ReviewsRecyclerViewAdapter(getContext(),s);
+                            reviewsRecyclerView.setAdapter(adapter);
+                        }
+                        else
+                            adapter.notifyDataSetChanged();
+
+                    }
+                }
+        );
     }
 
     @Override
@@ -136,7 +162,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMapOptions = new GoogleMapOptions().liteMode(true);
+        GoogleMapOptions googleMapOptions = new GoogleMapOptions().liteMode(true);
 
         MapsInitializer.initialize(requireContext());
         this.googleMap=googleMap;

@@ -2,8 +2,10 @@ package com.surfmaster.consigliaviaggi.ui.accommodation;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
+import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -23,9 +25,12 @@ public class AccommodationViewModel extends ViewModel {
     private MutableLiveData<LatLng> mAccommodationLatLng;
     private MutableLiveData<Accommodation> mAccommodation;
     private ViewAccommodationsController viewAccommodationsController;
+    private ViewReviewController viewReviewController;
+    private MutableLiveData<List> mReviewList;
 
     public AccommodationViewModel() {
 
+        mReviewList=new MutableLiveData<>();
         mAccommodationLatLng= new MutableLiveData<>();
         mAccommodationCategory= new MutableLiveData<>();
         mAccommodationDescritpion= new MutableLiveData<>();
@@ -36,6 +41,7 @@ public class AccommodationViewModel extends ViewModel {
         mText.setValue("This is Accommodation fragment");
         viewAccommodationsController = new ViewAccommodationsController();
 
+        viewReviewController = new ViewReviewController();
     }
 
     public LiveData<String> getText() {
@@ -62,6 +68,10 @@ public class AccommodationViewModel extends ViewModel {
         return mAccommodationLatLng;
     }
 
+    public MutableLiveData<List> getReviewList(){
+        return mReviewList;
+    }
+
     public void setAccommodation(int accommodationId) {
         final int id=accommodationId;
         ExecutorService service =  Executors.newSingleThreadExecutor();
@@ -73,6 +83,7 @@ public class AccommodationViewModel extends ViewModel {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+                        List reviewList= viewReviewController.getReviewList(id);
                         Accommodation ac = viewAccommodationsController.getAccommodationById(id);
                         mAccommodation.postValue(ac);
                         mAccommodationName.postValue(ac.getName());
@@ -80,6 +91,7 @@ public class AccommodationViewModel extends ViewModel {
                         mAccommodationLatLng.postValue(new LatLng(ac.getLatitude(),ac.getLongitude()));
                         mAccommodationDescritpion.postValue(ac.getDescription());
                         mAccommodationCategory.postValue(ac.getSubcategory().toString());
+                        mReviewList.postValue(reviewList);
                     }
                 },3000);
 

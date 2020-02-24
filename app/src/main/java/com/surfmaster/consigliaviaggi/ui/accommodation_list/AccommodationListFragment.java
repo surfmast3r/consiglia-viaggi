@@ -62,7 +62,7 @@ public class AccommodationListFragment extends Fragment {
         });
 
 
-        rv = (RecyclerView)root.findViewById(R.id.accommodation_recycler_view);
+        rv = root.findViewById(R.id.accommodation_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
         accommodationListViewModel.getList().observe(this, new Observer<List>() {

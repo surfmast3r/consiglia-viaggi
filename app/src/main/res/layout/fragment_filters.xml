@@ -113,13 +113,11 @@
                 <RadioButton android:id="@+id/radio_best_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/best_rating"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:text="@string/best_rating"/>
                 <RadioButton android:id="@+id/radio_worst_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/worst_rating"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:text="@string/worst_rating"/>
                 <RadioButton android:id="@+id/radio_default"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -187,11 +185,12 @@
                     android:textSize="14sp"
                     android:textColor="@android:color/black"/>
                 <androidx.appcompat.widget.AppCompatRatingBar
-                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    style="@style/Base.Widget.AppCompat.RatingBar"
                     android:id="@+id/min_rating_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
+                    android:stepSize="0.5"
                     android:rating="0" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -202,11 +201,12 @@
                     android:textSize="14sp"
                     android:textColor="@android:color/black"/>
                 <androidx.appcompat.widget.AppCompatRatingBar
-                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    style="@style/Base.Widget.AppCompat.RatingBar"
                     android:id="@+id/max_rating_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
+                    android:stepSize="0.5"
                     android:rating="5" />
 
             </LinearLayout>

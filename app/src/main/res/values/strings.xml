@@ -20,7 +20,7 @@
     <string name="map_description_title">Esplora luoghi nelle vicinanze</string>
     <string name="map_description_message">Usa la tua posizione per esplorare le attività intorno a te</string>
     <string name="explore_map_button">Esplora mappa</string>
-    <string name="use_location_button">Usa la mia posizione</string>
+    <string name="use_location_button">Localizzami</string>
     <string name="city_select">Seleziona provincia</string>
     <string name="clear_location_button_text">Reset Città</string>
     <string name="category_hotel">hotel</string>

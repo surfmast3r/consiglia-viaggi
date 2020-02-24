@@ -54,11 +54,12 @@
 
 
 
-        <RelativeLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
 
             android:id="@+id/layout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -117,7 +118,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:numStars="5"
-                            android:rating="4" />
+                            android:rating="4"
+                            android:stepSize="0.5"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -211,15 +213,56 @@
                     android:layout_height="150dip"
                     />
             </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cv_review_List"
+                android:layout_margin="6dp"
+                android:background="#d6d6d6">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:linksClickable="true"
+                        android:id="@+id/review_label"
+                        android:text="Recensioni"
+                        android:textSize="16sp"
+                        android:padding="2dip"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="6dp"
+                        android:textColorLink="#0099CC"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.cardview.widget.CardView>
 
             <!-- Add a little space to the end -->
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="30dp" />
 
-        </RelativeLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:scaleType="center"
+        app:srcCompat="@drawable/baseline_add_white_24"
+        android:visibility="visible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
