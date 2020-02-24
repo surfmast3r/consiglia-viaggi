@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.surfmaster.consigliaviaggi.R;
@@ -18,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class FiltersFragment extends DialogFragment{
 
     private AccommodationListViewModel accommodationListViewModel;
+    private Spinner categorySpinner;
 
 
     public static FiltersFragment newInstance() {
@@ -44,6 +47,8 @@ public class FiltersFragment extends DialogFragment{
 
         View applyButton= root.findViewById(R.id.fullscreen_dialog_action);
         setButtonListener(applyButton);
+
+        setCategorySpinner(root);
 
         final TextView textView = root.findViewById(R.id.filter_fragment_text);
         accommodationListViewModel.getFilterText().observe(this, new Observer<String>() {
@@ -79,6 +84,17 @@ public class FiltersFragment extends DialogFragment{
 
 
 
+    }
+
+    private void setCategorySpinner(View root){
+        categorySpinner=root.findViewById(R.id.category_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
+                R.array.category_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        categorySpinner.setAdapter(adapter);
     }
 
     @Override

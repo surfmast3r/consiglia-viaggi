@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_array">
+        <item>-HOTEL-</item>
+        <item>B&amp;B</item>
+        <item>Hotel</item>
+        <item>Hostel</item>
+        <item>-RISTORANTI-</item>
+        <item>Bar</item>
+        <item>Pizzeria</item>
+        <item>Trattoria</item>
+        <item>-ATTRAZIONI-</item>
+        <item>Parchi</item>
+        <item>Musei</item>
+    </string-array>
+</resources>

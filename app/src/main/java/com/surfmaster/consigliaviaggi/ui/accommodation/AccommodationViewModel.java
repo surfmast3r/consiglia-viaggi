@@ -1,5 +1,6 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 
@@ -16,18 +17,24 @@ public class AccommodationViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mAccommodationName;
+    private MutableLiveData<String> mAccommodationDescritpion;
+    private MutableLiveData<String> mAccommodationCategory;
     private MutableLiveData<String> mAccommodationImage;
+    private MutableLiveData<LatLng> mAccommodationLatLng;
     private MutableLiveData<Accommodation> mAccommodation;
-    private ViewAccommodationsController va_controller;
+    private ViewAccommodationsController viewAccommodationsController;
 
     public AccommodationViewModel() {
 
+        mAccommodationLatLng= new MutableLiveData<>();
+        mAccommodationCategory= new MutableLiveData<>();
+        mAccommodationDescritpion= new MutableLiveData<>();
         mAccommodation=new MutableLiveData<>();
         mText = new MutableLiveData<>();
         mAccommodationName = new MutableLiveData<>();
         mAccommodationImage = new MutableLiveData<>();
         mText.setValue("This is Accommodation fragment");
-        va_controller= new ViewAccommodationsController();
+        viewAccommodationsController = new ViewAccommodationsController();
 
     }
 
@@ -39,8 +46,20 @@ public class AccommodationViewModel extends ViewModel {
         return mAccommodationName;
     }
 
+    public LiveData<String> getAccommodationCategory() {
+        return mAccommodationCategory;
+    }
+
     public LiveData<String> getAccommodationImage() {
         return mAccommodationImage;
+    }
+
+    public LiveData<String> getAccommodationDescription() {
+        return mAccommodationDescritpion;
+    }
+
+    public LiveData<LatLng> getAccommodationLatLng() {
+        return mAccommodationLatLng;
     }
 
     public void setAccommodation(int accommodationId) {
@@ -54,10 +73,13 @@ public class AccommodationViewModel extends ViewModel {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        Accommodation ac =va_controller.getAccommodationById(id);
+                        Accommodation ac = viewAccommodationsController.getAccommodationById(id);
                         mAccommodation.postValue(ac);
                         mAccommodationName.postValue(ac.getName());
                         mAccommodationImage.postValue(ac.getImages().get(0));
+                        mAccommodationLatLng.postValue(new LatLng(ac.getLatitude(),ac.getLongitude()));
+                        mAccommodationDescritpion.postValue(ac.getDescription());
+                        mAccommodationCategory.postValue(ac.getSubcategory().toString());
                     }
                 },3000);
 

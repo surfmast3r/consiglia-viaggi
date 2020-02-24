@@ -53,6 +53,7 @@ public class AccommodationDaoStub implements AccommodationDao {
             accommodationList.add(new Accommodation.Builder()
                     .setId(i)
                     .setName("Da Peppino"+i)
+                    .setDescription("Descrizione ristorante da Peppino "+i)
                     .setCategory(Category.RESTAURANT)
                     .setSubcategory(Subcategory.PIZZERIA)
                     .setAccommodationLocation(new Location.Builder()

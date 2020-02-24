@@ -9,6 +9,7 @@ public class Accommodation {
 
     private Integer id;
     private String name;
+    private String description;
     private String logoUrl;
     private List<String> images;
     private Integer rating;
@@ -18,6 +19,10 @@ public class Accommodation {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getName() {
@@ -61,6 +66,7 @@ public class Accommodation {
     private Accommodation(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
+        this.description=builder.description;
         this.logoUrl = builder.logoUrl;
         this.images = builder.images;
         this.rating = builder.rating;
@@ -69,9 +75,12 @@ public class Accommodation {
         this.accommodationLocation=builder.accommodationLocation;
     }
 
+
+
     static class Builder {
 
         private Integer id;
+        private String description;
         private String name;
         private String logoUrl;
         private List<String> images;
@@ -87,6 +96,11 @@ public class Accommodation {
         }
         public Builder setName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder setDescription(String desc) {
+            this.description = desc;
             return this;
         }
 

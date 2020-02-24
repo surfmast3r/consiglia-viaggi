@@ -91,5 +91,21 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.surfmaster.consigliaviaggi.ui.login.LoginFragment"
+        android:label="@string/menu_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_nav_login_to_nav_signup"
+            app:destination="@id/nav_signup" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_signup"
+        android:name="com.surfmaster.consigliaviaggi.ui.login.SignupFragment"
+        android:label="@string/menu_login"
+        tools:layout="@layout/fragment_signup" />
+
 
 </navigation>

@@ -25,6 +25,11 @@
     <string name="clear_location_button_text">Reset Città</string>
     <string name="category_hotel">hotel</string>
     <string name="open_detail_button">Visualizza Dettagli</string>
+    <string name="menu_account">Account</string>
+    <string name="menu_login">Login</string>
+    <string name="best_rating">Best Rating</string>
+    <string name="worst_rating">Worst Rating</string>
+    <string name="default_rating">Default</string>
 
 
     <string-array name="cities_array">

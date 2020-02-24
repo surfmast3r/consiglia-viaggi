@@ -43,8 +43,8 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
     /*edit my location*/
     private Location mLastKnownLocation;
     private  boolean mLocationPermissionGranted;
-    // The entry point to the Fused Location Provider.
 
+    // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
@@ -122,7 +122,9 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         args.putInt("id",myClusterItem.getId());
         args.putString("logo",myClusterItem.getLogo());
         bottomSheetFragment.setArguments(args);
-        bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+        if (getFragmentManager() != null) {
+            bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+        }
     }
 
 

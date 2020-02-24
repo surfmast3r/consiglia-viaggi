@@ -177,7 +177,7 @@
                         >
                     </TextView>
                     <TextView
-                        android:id="@+id/tv"
+                        android:id="@+id/accommodation_description"
                         android:text="Descrizione"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -203,8 +203,8 @@
                 android:layout_below="@id/cv_desc"
                 >
                 <fragment
-                    class="com.google.android.gms.maps.MapFragment"
-                    android:id="@+id/map"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:id="@+id/map_fragment"
                     map:liteMode="true"
                     android:layout_width="match_parent"
                     android:layout_margin="10dp"

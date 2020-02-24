@@ -68,7 +68,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         titleTextView.setText(title);
         addressTextView.setText(address);
         categoryTextView.setText(category);
-        ratingBar.setNumStars(rating);
+        ratingBar.setRating(rating);
         Picasso.get().load(logo)
                 .placeholder(getContext().getResources().getDrawable(R.drawable.placeholder))
                 .error(getContext().getResources()

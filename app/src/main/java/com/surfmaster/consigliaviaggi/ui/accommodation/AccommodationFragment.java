@@ -20,17 +20,30 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
 
-public class AccommodationFragment extends Fragment {
+public class AccommodationFragment extends Fragment implements OnMapReadyCallback {
 
     private AccommodationViewModel accommodationViewModel;
+    private GoogleMap googleMap;
+    private GoogleMapOptions googleMapOptions;
+    private SupportMapFragment mapFragment;
+
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        //AccommodationFragmentArgs args= AccommodationFragmentArgs.fromBundle(getArguments());
-        //acId=args.getAccommodationId();
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,11 +52,21 @@ public class AccommodationFragment extends Fragment {
                 ViewModelProviders.of(requireActivity()).get(AccommodationViewModel.class);
         View root = inflater.inflate(R.layout.fragment_accommodation_detail, container, false);
 
+        /*googleMap*/
+        mapFragment= (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        /*googleMap end*/
+
         initToolbar(root);
         bindViews(root);
 
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+        mapFragment.getMapAsync(this);
     }
 
     private void initToolbar(View root) {
@@ -56,11 +79,11 @@ public class AccommodationFragment extends Fragment {
     }
 
     private void bindViews(View root){
-        final TextView textView = root.findViewById(R.id.accommodation_name);
+        final TextView nametextView = root.findViewById(R.id.accommodation_name);
         accommodationViewModel.getAccommodationName().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                nametextView.setText(s);
             }
         });
 
@@ -78,6 +101,21 @@ public class AccommodationFragment extends Fragment {
             }
         });
 
+        final TextView descriptionTextView = root.findViewById(R.id.accommodation_description);
+        accommodationViewModel.getAccommodationDescription().observe(this,new Observer<String>(){
+            @Override
+            public void onChanged(@Nullable String s) {
+                descriptionTextView.setText(s);
+            }
+        });
+
+        final TextView categoryTextView = root.findViewById(R.id.category);
+        accommodationViewModel.getAccommodationCategory().observe(this,new Observer<String>(){
+            @Override
+            public void onChanged(@Nullable String s) {
+                categoryTextView.setText(s);
+            }
+        });
     }
 
     @Override
@@ -95,4 +133,27 @@ public class AccommodationFragment extends Fragment {
     }
 
 
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMapOptions = new GoogleMapOptions().liteMode(true);
+
+        MapsInitializer.initialize(requireContext());
+        this.googleMap=googleMap;
+        accommodationViewModel.getAccommodationLatLng().observe(this, new Observer<LatLng>() {
+            @Override
+            public void onChanged(LatLng accommodationPosition) {
+                CameraPosition position = CameraPosition.builder()
+                        .target(accommodationPosition)
+                        .zoom(15)
+                        .build();
+
+                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
+                googleMap.addMarker(new MarkerOptions()
+                        .position(accommodationPosition)
+                        .title(accommodationViewModel.getAccommodationName().getValue()));
+            }
+        });
+
+    }
 }
