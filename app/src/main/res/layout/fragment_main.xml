@@ -71,20 +71,20 @@
 
                 <ImageButton
                     android:id="@+id/hotel_button"
-                    android:src="@drawable/round_hotel_black_48"
+                    android:src="@drawable/round_hotel_black_36"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight=".30" />
                 <ImageButton
                     android:id="@+id/restaurant_button"
-                    android:src="@drawable/round_restaurant_black_48"
+                    android:src="@drawable/round_restaurant_black_36"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight=".30" />
 
                 <ImageButton
                     android:id="@+id/attraction_button"
-                    android:src="@drawable/round_account_balance_black_48"
+                    android:src="@drawable/round_account_balance_black_36"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight=".30" />

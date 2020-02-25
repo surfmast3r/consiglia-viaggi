@@ -16,4 +16,8 @@ public class ViewReviewController {
         List reviewList= reviewDao.getReviewList(id);
         return reviewList;
     }
+    public List getFirstNReviewList(int id, int n) {
+        List list = reviewDao.getReviewList(id);
+        return list.subList(0,n);
+    }
 }

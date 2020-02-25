@@ -18,12 +18,14 @@ public class AccommodationDaoStub implements AccommodationDao {
 
     @Override
     public ArrayList<Accommodation> getAccommodationList(String city) {
+        accommodationList.clear();
         createStubData();
         return accommodationList;
     }
 
     @Override
     public ArrayList<Accommodation> getAccommodationList(LatLng latLng) {
+        accommodationList.clear();
         LatLng  mDefaultLocation = new LatLng(45.463619, 9.188120);
         if (latLng.equals(mDefaultLocation))
             createStubDataMilano();

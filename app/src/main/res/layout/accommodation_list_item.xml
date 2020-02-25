@@ -24,23 +24,33 @@
                 android:id="@+id/accommodation_image"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginEnd="16dp"
+
                 />
+            <androidx.appcompat.widget.AppCompatRatingBar
+                style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                android:id="@+id/accommodation_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/accommodation_image"
+                android:numStars="5"
+                android:rating="4"
+                android:stepSize="0.5"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/accommodation_name"
-                android:layout_below="@+id/accommodation_image"
-
+                android:layout_below="@+id/accommodation_rating"
                 android:textSize="30sp"
                 />
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/accommodation_address"
-                android:layout_below="@+id/accommodation_name"
+                android:layout_below="@id/accommodation_name"
                 />
 
         </RelativeLayout>

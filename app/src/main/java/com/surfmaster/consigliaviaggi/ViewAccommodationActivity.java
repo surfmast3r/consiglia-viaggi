@@ -21,7 +21,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class ViewAccommodationActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener{
+public class ViewAccommodationActivity extends AppCompatActivity {
 
     private AccommodationViewModel accommodationViewModel;
 
@@ -33,13 +33,6 @@ public class ViewAccommodationActivity extends AppCompatActivity implements NavC
                 ViewModelProviders.of(this).get(AccommodationViewModel.class);
 
         setContentView(R.layout.activity_view_accommodation);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController,appBarConfiguration);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         int accommodationId=ViewAccommodationActivityArgs.fromBundle(getIntent().getExtras()).getAccommodationId();
         accommodationViewModel.setAccommodation(accommodationId);
@@ -87,15 +80,5 @@ public class ViewAccommodationActivity extends AppCompatActivity implements NavC
         return true;
     }
 
-    @Override
-    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-        if (destination.getId() != R.id.nav_accommodation_detail) {
-            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-            AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-            NavigationUI.setupWithNavController((NavigationView) findViewById(R.id.nav_view), navController);
-        }
-    }
 
 }

@@ -93,7 +93,7 @@
 
     <fragment
         android:id="@+id/nav_login"
-        android:name="com.surfmaster.consigliaviaggi.ui.login.LoginFragment"
+        android:name="com.surfmaster.consigliaviaggi.ui.account.LoginFragment"
         android:label="@string/menu_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -103,8 +103,8 @@
 
     <fragment
         android:id="@+id/nav_signup"
-        android:name="com.surfmaster.consigliaviaggi.ui.login.SignupFragment"
-        android:label="@string/menu_login"
+        android:name="com.surfmaster.consigliaviaggi.ui.account.SignupFragment"
+        android:label="@string/menu_signup"
         tools:layout="@layout/fragment_signup" />
 
 

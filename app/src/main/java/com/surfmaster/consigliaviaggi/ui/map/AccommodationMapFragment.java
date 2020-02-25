@@ -35,9 +35,14 @@ import java.util.List;
 public class AccommodationMapFragment extends Fragment implements ClusterManager.OnClusterItemInfoWindowClickListener<MyClusterItem>{
 
 
+    // Keys for storing activity state.
+    private static final String KEY_CAMERA_POSITION = "camera_position";
+    private static final String KEY_LOCATION = "location";
+
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
     private static final String TAG = "Map Fragment";
     private GoogleMap gMap;
+    private CameraPosition mCameraPosition;
     private ClusterManager<MyClusterItem> mClusterManager;
     private static final int DEFAULT_ZOOM = 11;
     /*edit my location*/
@@ -56,6 +61,13 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        // Retrieve location and camera position from saved instance state.
+        if (savedInstanceState != null) {
+            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+        }
+
         accommodationMapViewModel =
                 ViewModelProviders.of(this).get(AccommodationMapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_map, container, false);
@@ -85,7 +97,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 gMap.setOnMarkerClickListener(mClusterManager);
 
                 gMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-                gMap.setOnInfoWindowClickListener(mClusterManager); //added
+                gMap.setOnInfoWindowClickListener(mClusterManager);
                 mClusterManager.setOnClusterItemInfoWindowClickListener(AccommodationMapFragment.this);
 
 
@@ -97,6 +109,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 // Turn on the My Location layer and the related control on the map.
                 updateLocationUI();
 
+                //if(mLastKnownLocation==null)
                 // Get the current location of the device and set the position of the map.
                 getDeviceLocation();
 
@@ -207,42 +220,51 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
          */
         try {
             if (mLocationPermissionGranted) {
-                Task locationResult = mFusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(requireActivity(), new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
+                if(mLastKnownLocation==null){
+                    Task locationResult = mFusedLocationProviderClient.getLastLocation();
+                    locationResult.addOnCompleteListener(requireActivity(), new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            if (task.isSuccessful()) {
 
-                            // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = (Location) task.getResult();
+                                // Set the map's camera position to the current location of the device.
+                                mLastKnownLocation = (Location) task.getResult();
 
-                            //Set accommodation list
-                            accommodationMapViewModel.setAccommodationList(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()));
+                                //Set accommodation list
+                                accommodationMapViewModel.setAccommodationList(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()));
 
-                            //move camera
-                            CameraPosition myPosition = CameraPosition.builder()
-                                    .target(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()))
-                                    .zoom(DEFAULT_ZOOM)
-                                    .bearing(0)
-                                    .tilt(45)
-                                    .build();
+                                //move camera
+                                CameraPosition myPosition = CameraPosition.builder()
+                                        .target(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()))
+                                        .zoom(DEFAULT_ZOOM)
+                                        .bearing(0)
+                                        .tilt(45)
+                                        .build();
 
-                            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(myPosition), 3000, null);
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-                            CameraPosition defaultPosition = CameraPosition.builder()
-                                    .target(mDefaultLocation)
-                                    .zoom(DEFAULT_ZOOM)
-                                    .bearing(0)
-                                    .tilt(45)
-                                    .build();
+                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(myPosition), 3000, null);
+                            } else {
+                                Log.d(TAG, "Current location is null. Using defaults.");
+                                Log.e(TAG, "Exception: %s", task.getException());
+                                CameraPosition defaultPosition = CameraPosition.builder()
+                                        .target(mDefaultLocation)
+                                        .zoom(DEFAULT_ZOOM)
+                                        .bearing(0)
+                                        .tilt(45)
+                                        .build();
 
-                            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(defaultPosition), 3000, null);
-                            gMap.getUiSettings().setMyLocationButtonEnabled(false);
+                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(defaultPosition), 3000, null);
+                                gMap.getUiSettings().setMyLocationButtonEnabled(false);
+                            }
                         }
-                    }
-                });
+                    });
+
+                }else {
+                    //move camera
+                    CameraPosition myPosition = mCameraPosition;
+                    gMap.animateCamera(CameraUpdateFactory.newCameraPosition(myPosition), 3000, null);
+
+                }
+
             }
         } catch(SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -256,7 +278,8 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
             public void onChanged(@Nullable List s) {
                 List<Accommodation> accommodationList = s;
 
-
+                gMap.clear();
+                mClusterManager.clearItems();
 
                 for (int i = 0; i < accommodationList.size(); i++) {
                     Accommodation ac = accommodationList.get(i);
@@ -273,6 +296,15 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 }
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (gMap != null) {
+            outState.putParcelable(KEY_CAMERA_POSITION, gMap.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
+            super.onSaveInstanceState(outState);
+        }
     }
 
 }

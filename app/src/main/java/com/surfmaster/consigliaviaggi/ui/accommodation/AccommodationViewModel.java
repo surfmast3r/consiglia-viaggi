@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModel;
 
 public class AccommodationViewModel extends ViewModel {
 
+    private static final int NUM_REVIEW=3;
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mAccommodationName;
     private MutableLiveData<String> mAccommodationDescritpion;
@@ -24,6 +25,7 @@ public class AccommodationViewModel extends ViewModel {
     private MutableLiveData<String> mAccommodationImage;
     private MutableLiveData<LatLng> mAccommodationLatLng;
     private MutableLiveData<Accommodation> mAccommodation;
+    private MutableLiveData<Integer> mAccommodationId;
     private ViewAccommodationsController viewAccommodationsController;
     private ViewReviewController viewReviewController;
     private MutableLiveData<List> mReviewList;
@@ -31,6 +33,7 @@ public class AccommodationViewModel extends ViewModel {
     public AccommodationViewModel() {
 
         mReviewList=new MutableLiveData<>();
+        mAccommodationId= new MutableLiveData<>();
         mAccommodationLatLng= new MutableLiveData<>();
         mAccommodationCategory= new MutableLiveData<>();
         mAccommodationDescritpion= new MutableLiveData<>();
@@ -68,11 +71,15 @@ public class AccommodationViewModel extends ViewModel {
         return mAccommodationLatLng;
     }
 
+    public LiveData<Integer> getAccommodationId(){
+        return mAccommodationId;
+    }
+
     public MutableLiveData<List> getReviewList(){
         return mReviewList;
     }
 
-    public void setAccommodation(int accommodationId) {
+    public void setAccommodation(final int accommodationId) {
         final int id=accommodationId;
         ExecutorService service =  Executors.newSingleThreadExecutor();
         service.submit(new Runnable() {
@@ -83,8 +90,9 @@ public class AccommodationViewModel extends ViewModel {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        List reviewList= viewReviewController.getReviewList(id);
+                        List reviewList= viewReviewController.getFirstNReviewList(id,NUM_REVIEW);
                         Accommodation ac = viewAccommodationsController.getAccommodationById(id);
+                        mAccommodationId.postValue(ac.getId());
                         mAccommodation.postValue(ac);
                         mAccommodationName.postValue(ac.getName());
                         mAccommodationImage.postValue(ac.getImages().get(0));

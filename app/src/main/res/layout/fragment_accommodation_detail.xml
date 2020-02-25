@@ -174,7 +174,8 @@
                         android:text="@string/description_label"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
                         android:padding="2dip"
                         >
                     </TextView>
@@ -229,7 +230,8 @@
                         android:linksClickable="true"
                         android:id="@+id/review_label"
                         android:text="Recensioni"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
                         android:padding="2dip"
                         android:layout_marginLeft="6dp"
                         android:layout_marginRight="6dp"
@@ -239,6 +241,18 @@
                         android:id="@+id/recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+
+                        android:textAlignment="center"
+                        android:text="@string/read_all"
+                        android:layout_height="wrap_content"
+                        android:layout_width="220dp"
+                        android:id="@+id/read_all_button"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:backgroundTint="@color/colorAccent"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

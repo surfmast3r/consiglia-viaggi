@@ -30,6 +30,9 @@
     <string name="best_rating">Best Rating</string>
     <string name="worst_rating">Worst Rating</string>
     <string name="default_rating">Default</string>
+    <string name="menu_signup">Signup</string>
+    <string name="read_all">Leggi tutte</string>
+    <string name="menu_review_list">Lista Recensioni</string>
 
 
     <string-array name="cities_array">

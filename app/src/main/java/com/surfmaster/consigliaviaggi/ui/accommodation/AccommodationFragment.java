@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -36,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccommodationFragment extends Fragment implements OnMapReadyCallback {
@@ -43,6 +45,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
     private AccommodationViewModel accommodationViewModel;
     private SupportMapFragment mapFragment;
     private RecyclerView reviewsRecyclerView;
+    private AppCompatButton readAllButton;
     private GoogleMap googleMap;
 
     @Override public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,6 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
     }
 
     private void initToolbar(View root) {
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         Toolbar toolbar = root.findViewById(R.id.collapsing_toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
@@ -142,6 +144,23 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
                     }
                 }
         );
+
+        readAllButton=root.findViewById(R.id.read_all_button);
+        accommodationViewModel.getAccommodationId().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer id) {
+                final int accommodationId =id;
+                readAllButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AccommodationFragmentDirections.ActionNavAccommodationDetailToNavReviewList action =
+                                AccommodationFragmentDirections.actionNavAccommodationDetailToNavReviewList(accommodationId);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -149,13 +168,6 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
         super.onPrepareOptionsMenu(menu);
         //MenuItem menuItem = menu.findItem(R.id.action_settings);
         //menuItem.setVisible(false);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-
     }
 
 

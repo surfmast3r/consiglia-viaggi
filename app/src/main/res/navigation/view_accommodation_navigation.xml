@@ -6,10 +6,27 @@
     app:startDestination="@id/nav_accommodation_detail">
 
     <fragment
-        android:id="@+id/nav_accommodation_detail"
-        android:name="com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationFragment"
-        android:label="@string/menu_ac_detail"
-        tools:layout="@layout/fragment_accommodation_detail">
+    android:id="@+id/nav_accommodation_detail"
+    android:name="com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationFragment"
+    android:label="@string/menu_ac_detail"
+    tools:layout="@layout/fragment_accommodation_detail">
+    <argument
+        android:name="accommodation_id"
+        app:argType="integer" />
+        <action
+            android:id="@+id/action_nav_accommodation_detail_to_nav_review_list"
+            app:destination="@id/nav_review_list"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/nav_review_list"
+        android:name="com.surfmaster.consigliaviaggi.ui.review.ReviewListFragment"
+        android:label="@string/menu_review_list"
+        tools:layout="@layout/fragment_review_list">
         <argument
             android:name="accommodation_id"
             app:argType="integer" />

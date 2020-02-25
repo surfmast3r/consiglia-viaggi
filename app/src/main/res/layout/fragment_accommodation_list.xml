@@ -21,5 +21,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/text_send"
         android:id="@+id/accommodation_recycler_view"
+        android:paddingBottom="50dp"
         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
