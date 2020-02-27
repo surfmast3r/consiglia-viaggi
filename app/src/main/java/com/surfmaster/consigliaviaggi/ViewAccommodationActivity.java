@@ -23,7 +23,9 @@ import androidx.navigation.ui.NavigationUI;
 
 public class ViewAccommodationActivity extends AppCompatActivity {
 
+
     private AccommodationViewModel accommodationViewModel;
+    private int accommodationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +36,12 @@ public class ViewAccommodationActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_view_accommodation);
 
-        int accommodationId=ViewAccommodationActivityArgs.fromBundle(getIntent().getExtras()).getAccommodationId();
+
+        accommodationId = ViewAccommodationActivityArgs.fromBundle(getIntent().getExtras()).getAccommodationId();
         accommodationViewModel.setAccommodation(accommodationId);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
-            }
-        });
+
     }
 
     @Override
@@ -78,6 +74,12 @@ public class ViewAccommodationActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 
 

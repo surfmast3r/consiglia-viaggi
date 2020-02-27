@@ -10,7 +10,7 @@ public class ReviewViewModel extends ViewModel {
 
     public ReviewViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is tools fragment");
+        mText.setValue("This is review list fragment");
     }
 
     public LiveData<String> getText() {

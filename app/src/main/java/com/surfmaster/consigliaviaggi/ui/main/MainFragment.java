@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -25,9 +26,9 @@ public class MainFragment extends Fragment {
     private ViewAccommodationsController viewAccommodationsController;
     private Button citySelectButton;
     private Button mapViewButton;
-    private ImageButton hotelButton;
-    private ImageButton restaurantButton;
-    private ImageButton attractionButton;
+    private AppCompatButton hotelButton;
+    private AppCompatButton restaurantButton;
+    private AppCompatButton attractionButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

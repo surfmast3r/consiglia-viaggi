@@ -35,6 +35,7 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
         CardView cv;
         TextView reviewAuthorTextView;
         TextView reviewTextView;
+        TextView reviewDateTextView;
         RatingBar reviewRatingBar;
 
         ReviewViewHolder(View itemView) {
@@ -43,6 +44,8 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
             reviewAuthorTextView =  itemView.findViewById(R.id.review_author);
             reviewTextView =  itemView.findViewById(R.id.review_text);
             reviewRatingBar =  itemView.findViewById(R.id.review_rating);
+            reviewDateTextView = itemView.findViewById(R.id.review_data);
+
         }
 
     }
@@ -61,13 +64,13 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
         reviewViewHolder.reviewAuthorTextView.setText(reviews.get(position).getAuthor());
         reviewViewHolder.reviewTextView.setText(reviews.get(position).getReviewText());
         reviewViewHolder.reviewRatingBar.setRating(reviews.get(position).getRating());
+        reviewViewHolder.reviewDateTextView.setText(reviews.get(position).getData());
 
     }
 
     @Override
         public int getItemCount() {
-
-            return reviews.size();
+         return reviews.size();
         }
 
     @Override

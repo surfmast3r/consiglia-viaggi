@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:shimmer="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -54,217 +54,257 @@
 
 
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
 
             android:id="@+id/layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+
+            <RelativeLayout
+                android:id="@+id/accommodation_details_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:paddingTop="10dp"
-                android:id="@+id/cv_flyer"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-                >
+                <androidx.cardview.widget.CardView
 
-                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="6dp"
-                    android:background="@color/common_google_signin_btn_text_dark_pressed"
+                    android:layout_marginBottom="6dp"
+                    android:paddingTop="10dp"
+                    android:id="@+id/cv_accommodation"
                     >
-                    <FrameLayout
-                        android:id="@+id/frame"
-                        android:layout_width="wrap_content"
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="3dip"
-                        android:layout_marginEnd="6dip"
-                        android:duplicateParentState="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="3dip"
-                        android:layout_marginBottom="3dip">
-                        <ImageView
-                            android:id="@+id/accommodation_logo"
-                            android:layout_width="80dip"
-                            android:layout_height="80dip"
-                            android:duplicateParentState="true"
-                            android:scaleType="centerCrop"
-                            />
-
-                    </FrameLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_toEndOf="@+id/frame"
-                        android:layout_alignParentTop="true"
-                        android:paddingStart="15dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/accommodation_name"
-                            android:text="Accommodation"
-                            android:textStyle="bold"
-                            android:textSize="20sp"
-                            />
-                        <androidx.appcompat.widget.AppCompatRatingBar
-                            style="@style/Base.Widget.AppCompat.RatingBar.Small"
-                            android:id="@+id/accommodation_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:numStars="5"
-                            android:rating="4"
-                            android:stepSize="0.5"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/category"
-                            android:layout_marginLeft="6dp"
-                            android:text="categoria"
-                            android:textStyle="bold"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/exp_date"
-                            android:text="scadenza"
-                            android:layout_marginStart="6dp"
-                            android:textStyle="bold"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/data_creazione"
-                            android:text="data"
-                            android:layout_marginStart="6dp"
-                            android:textStyle="bold"
-                            />
-                    </LinearLayout>
-
-
-                </RelativeLayout>
-
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cv_flyer"
-
-                android:layout_margin="6dp"
-
-                android:id="@+id/cv_desc"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="6dp"
-                    android:background="@color/common_google_signin_btn_text_dark_default"
-                    >
-                    <TextView
-                        android:id="@+id/flyer_message_title"
-                        android:text="@string/description_label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:padding="2dip"
+                        android:padding="6dp"
+                        android:background="@color/common_google_signin_btn_text_dark_pressed"
                         >
-                    </TextView>
-                    <TextView
-                        android:id="@+id/accommodation_description"
-                        android:text="Descrizione"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:linksClickable="true"
-                        android:textSize="16sp"
-                        android:padding="2dip"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginRight="6dp"
-                        android:layout_below="@id/flyer_message_title"
-                        android:textColorLink="#0099CC">
-                    </TextView>
+                        <FrameLayout
+                            android:id="@+id/frame"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dip"
+                            android:layout_marginEnd="6dip"
+                            android:duplicateParentState="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="3dip"
+                            android:layout_marginBottom="3dip">
+                            <ImageView
+                                android:id="@+id/accommodation_logo"
+                                android:layout_width="80dip"
+                                android:layout_height="80dip"
+                                android:duplicateParentState="true"
+                                android:scaleType="centerCrop"
+                                />
 
-                </RelativeLayout>
+                        </FrameLayout>
 
-            </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/cv_map"
-                android:layout_margin="6dp"
-                xmlns:map="http://schemas.android.com/apk/res-auto"
-                android:layout_below="@id/cv_desc"
-                >
-                <fragment
-                    class="com.google.android.gms.maps.SupportMapFragment"
-                    android:id="@+id/map_fragment"
-                    map:liteMode="true"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_toEndOf="@+id/frame"
+                            android:layout_alignParentTop="true"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/accommodation_name"
+                                android:text="Accommodation"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                />
+                            <androidx.appcompat.widget.AppCompatRatingBar
+                                style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                                android:id="@+id/accommodation_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:numStars="5"
+                                android:rating="4"
+                                android:stepSize="0.5"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/category"
+                                android:layout_marginLeft="6dp"
+                                android:text="categoria"
+                                android:textStyle="bold"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/exp_date"
+                                android:text="scadenza"
+                                android:layout_marginStart="6dp"
+                                android:textStyle="bold"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/data_creazione"
+                                android:text="data"
+                                android:layout_marginStart="6dp"
+                                android:textStyle="bold"
+                                />
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_below="@id/cv_accommodation"
                     android:layout_width="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_height="150dip"
-                    />
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
+                    android:id="@+id/cv_desc"
+                    >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        >
+                        <TextView
+                            android:id="@+id/flyer_message_title"
+                            android:text="@string/description_label"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:padding="2dip"
+                            >
+                        </TextView>
+                        <TextView
+                            android:id="@+id/accommodation_description"
+                            android:text="Descrizione"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:linksClickable="true"
+                            android:textSize="16sp"
+                            android:padding="2dip"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_below="@id/flyer_message_title"
+                            android:textColorLink="#0099CC">
+                        </TextView>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    app:layout_constraintTop_toBottomOf="@id/cv_desc"
+                    android:layout_below="@id/cv_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cv_map"
+                    android:layout_margin="6dp"
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    >
+                    <fragment
+                        class="com.google.android.gms.maps.SupportMapFragment"
+                        android:id="@+id/map_fragment"
+                        map:liteMode="true"
+                        android:layout_width="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_height="150dip"
+                        />
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    app:layout_constraintTop_toBottomOf="@id/cv_map"
+                    android:layout_below="@id/cv_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cv_review_List"
+                    android:layout_margin="6dp"
+                    android:background="#d6d6d6">
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:linksClickable="true"
+                            android:id="@+id/review_label"
+                            android:text="Recensioni"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:padding="2dip"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:textColorLink="#0099CC"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+
+                            android:textAlignment="center"
+                            android:text="@string/read_all"
+                            android:layout_height="wrap_content"
+                            android:layout_width="220dp"
+                            android:id="@+id/read_all_button"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:backgroundTint="@color/colorAccent"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="10dp"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Add a little space to the end -->
+                <View
+                    app:layout_constraintTop_toBottomOf="@id/cv_review_List"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp" />
+            </RelativeLayout>
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:translationZ="2dp"
+                android:id="@+id/shimmer_view_container"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/cv_review_List"
-                android:layout_margin="6dp"
-                android:background="#d6d6d6">
-                <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                shimmer:duration="800">
+
+                <!-- Adding 3 rows of placeholders -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:linksClickable="true"
-                        android:id="@+id/review_label"
-                        android:text="Recensioni"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:padding="2dip"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginRight="6dp"
-                        android:textColorLink="#0099CC"/>
+                    <include layout="@layout/shimmer_default_placeholder_layout" />
+                    <include layout="@layout/shimmer_map_placeholder" />
+                    <include layout="@layout/shimmer_default_placeholder_layout" />
+                    <include layout="@layout/shimmer_default_placeholder_layout" />
+                    <include layout="@layout/shimmer_default_placeholder_layout" />
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-
-                        android:textAlignment="center"
-                        android:text="@string/read_all"
-                        android:layout_height="wrap_content"
-                        android:layout_width="220dp"
-                        android:id="@+id/read_all_button"
-                        style="@style/Widget.AppCompat.Button.Colored"
-                        android:backgroundTint="@color/colorAccent"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Add a little space to the end -->
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="30dp" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.core.widget.NestedScrollView>

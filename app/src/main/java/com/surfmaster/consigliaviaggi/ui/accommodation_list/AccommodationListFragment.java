@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
 import com.surfmaster.consigliaviaggi.R;
 
@@ -32,6 +33,7 @@ public class AccommodationListFragment extends Fragment {
     private RecyclerView rv;
     private TextView textView;
     private Activity activity;
+    private ShimmerFrameLayout mShimmerViewContainer;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -61,6 +63,7 @@ public class AccommodationListFragment extends Fragment {
             }
         });
 
+        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
 
         rv = root.findViewById(R.id.accommodation_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -73,9 +76,12 @@ public class AccommodationListFragment extends Fragment {
                 if (adapter==null){
                     adapter=new AccommodationRecyclerViewAdapter(getContext(),s);
                     rv.setAdapter(adapter);
+                    stopShimmerAnimation();
                 }
-                else
+                else {
                     adapter.notifyDataSetChanged();
+                    stopShimmerAnimation();
+                }
 
             }
         }
@@ -99,6 +105,11 @@ public class AccommodationListFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void stopShimmerAnimation() {
+        mShimmerViewContainer.stopShimmer();
+        mShimmerViewContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -130,6 +141,24 @@ public class AccommodationListFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmer();
+
+    }
+
+
+
+    @Override
+
+    public void onPause() {
+        mShimmerViewContainer.stopShimmer();
+        super.onPause();
+
     }
 
 }

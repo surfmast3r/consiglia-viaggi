@@ -1,6 +1,7 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
@@ -26,14 +27,18 @@ public class AccommodationViewModel extends ViewModel {
     private MutableLiveData<LatLng> mAccommodationLatLng;
     private MutableLiveData<Accommodation> mAccommodation;
     private MutableLiveData<Integer> mAccommodationId;
+    private MutableLiveData<Float> mAccommodationRating;
     private ViewAccommodationsController viewAccommodationsController;
     private ViewReviewController viewReviewController;
     private MutableLiveData<List> mReviewList;
+    private MutableLiveData<List> mReviewSubList;
 
     public AccommodationViewModel() {
 
         mReviewList=new MutableLiveData<>();
+        mReviewSubList=new MutableLiveData<>();
         mAccommodationId= new MutableLiveData<>();
+        mAccommodationRating= new MutableLiveData<>();
         mAccommodationLatLng= new MutableLiveData<>();
         mAccommodationCategory= new MutableLiveData<>();
         mAccommodationDescritpion= new MutableLiveData<>();
@@ -42,8 +47,8 @@ public class AccommodationViewModel extends ViewModel {
         mAccommodationName = new MutableLiveData<>();
         mAccommodationImage = new MutableLiveData<>();
         mText.setValue("This is Accommodation fragment");
-        viewAccommodationsController = new ViewAccommodationsController();
 
+        viewAccommodationsController = new ViewAccommodationsController();
         viewReviewController = new ViewReviewController();
     }
 
@@ -75,8 +80,16 @@ public class AccommodationViewModel extends ViewModel {
         return mAccommodationId;
     }
 
+    public LiveData<Float> getAccommodationRating() {
+        return mAccommodationRating;
+    }
+
     public MutableLiveData<List> getReviewList(){
         return mReviewList;
+    }
+
+    public MutableLiveData<List> getReviewSubList(){
+        return mReviewSubList;
     }
 
     public void setAccommodation(final int accommodationId) {
@@ -90,15 +103,21 @@ public class AccommodationViewModel extends ViewModel {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        List reviewList= viewReviewController.getFirstNReviewList(id,NUM_REVIEW);
+
+                        List reviewList= viewReviewController.getReviewList(id);
+                        reviewList=viewReviewController.orderReviewListByDate(reviewList);
+                        List reviewSubList = viewReviewController.reviewSubList(reviewList,NUM_REVIEW);
+
                         Accommodation ac = viewAccommodationsController.getAccommodationById(id);
                         mAccommodationId.postValue(ac.getId());
+                        mAccommodationRating.postValue(ac.getRating());
                         mAccommodation.postValue(ac);
                         mAccommodationName.postValue(ac.getName());
                         mAccommodationImage.postValue(ac.getImages().get(0));
                         mAccommodationLatLng.postValue(new LatLng(ac.getLatitude(),ac.getLongitude()));
                         mAccommodationDescritpion.postValue(ac.getDescription());
                         mAccommodationCategory.postValue(ac.getSubcategory().toString());
+                        mReviewSubList.postValue(reviewSubList);
                         mReviewList.postValue(reviewList);
                     }
                 },3000);
@@ -107,4 +126,16 @@ public class AccommodationViewModel extends ViewModel {
         });
 
     }
+
+    public void orderReviewList(String order){
+        if(order== Constants.BEST_RATING){
+            mReviewList.setValue(viewReviewController.orderReviewListByRating(mReviewList.getValue(),ViewReviewController.DESCENDING));
+        }else if(order==Constants.DEFAULT){
+            mReviewList.setValue(viewReviewController.orderReviewListByDate(mReviewList.getValue()));
+        }else if(order==Constants.WORST_RATING) {
+            mReviewList.setValue(viewReviewController.orderReviewListByRating(mReviewList.getValue(), ViewReviewController.ASCENDING));
+        }
+    }
+
+
 }

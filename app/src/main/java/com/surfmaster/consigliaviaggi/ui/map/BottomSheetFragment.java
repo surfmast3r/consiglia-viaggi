@@ -28,7 +28,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     private String logo;
     private String title;
     private String address;
-    private int rating;
+    private float rating;
     private int id;
     private String category;
 
@@ -42,7 +42,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         Bundle args = getArguments();
         title=args.getString("title");
         address=args.getString("address");
-        rating=args.getInt("rating");
+        rating=args.getFloat("rating");
         id=args.getInt("id");
         category=args.getString("category");
         logo=args.getString("logo");

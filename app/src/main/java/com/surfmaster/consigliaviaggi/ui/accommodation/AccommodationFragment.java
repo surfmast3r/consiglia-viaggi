@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -23,21 +25,22 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AccommodationFragment extends Fragment implements OnMapReadyCallback {
@@ -47,6 +50,8 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
     private RecyclerView reviewsRecyclerView;
     private AppCompatButton readAllButton;
     private GoogleMap googleMap;
+    private ShimmerFrameLayout mShimmerViewContainer;
+    private RelativeLayout accommodationDetailLayout;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,10 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
                 ViewModelProviders.of(requireActivity()).get(AccommodationViewModel.class);
         View root = inflater.inflate(R.layout.fragment_accommodation_detail, container, false);
 
+        /*bind shimmer container*/
+        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+
+        accommodationDetailLayout = root.findViewById(R.id.accommodation_details_layout);
         /*googleMap*/
         mapFragment= (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
         /*googleMap end*/
@@ -91,6 +100,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
             @Override
             public void onChanged(@Nullable String s) {
                 nametextView.setText(s);
+                stopShimmerAnimation();
             }
         });
 
@@ -124,12 +134,20 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
             }
         });
 
+        final RatingBar accommodationRatingBar = root.findViewById(R.id.accommodation_rating);
+        accommodationViewModel.getAccommodationRating().observe(this,new Observer<Float>(){
+            @Override
+            public void onChanged(@Nullable Float s) {
+                accommodationRatingBar.setRating(s);
+            }
+        });
+
         reviewsRecyclerView = root.findViewById(R.id.recyclerview);
         reviewsRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         reviewsRecyclerView.setLayoutManager(layoutManager);
 
-        accommodationViewModel.getReviewList().observe(this, new Observer<List>() {
+        accommodationViewModel.getReviewSubList().observe(this, new Observer<List>() {
 
             ReviewsRecyclerViewAdapter adapter;
                     @Override
@@ -161,6 +179,22 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
             }
         });
 
+        FloatingActionButton fab = root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
+
+    }
+
+    private void stopShimmerAnimation() {
+        mShimmerViewContainer.stopShimmer();
+        mShimmerViewContainer.setVisibility(View.GONE);
+        accommodationDetailLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -192,6 +226,22 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
                         .title(accommodationViewModel.getAccommodationName().getValue()));
             }
         });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmer();
+
+    }
+
+
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmer();
+        super.onPause();
 
     }
 }

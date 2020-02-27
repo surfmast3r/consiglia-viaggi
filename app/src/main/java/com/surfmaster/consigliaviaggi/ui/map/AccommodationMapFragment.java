@@ -130,7 +130,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         Bundle args = new Bundle();
         args.putString("title", myClusterItem.getTitle());
         args.putString("category", myClusterItem.getCategory().toString());
-        args.putInt("rating", myClusterItem.getRating());
+        args.putFloat("rating", myClusterItem.getRating());
         args.putString("address", myClusterItem.getAddress());
         args.putInt("id",myClusterItem.getId());
         args.putString("logo",myClusterItem.getLogo());

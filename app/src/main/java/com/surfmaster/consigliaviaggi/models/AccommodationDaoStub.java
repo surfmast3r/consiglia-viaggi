@@ -65,7 +65,7 @@ public class AccommodationDaoStub implements AccommodationDao {
                             .setLongitude(longitude)
                             .build())
                     .setImages(new ArrayList<String>(Arrays.asList("https://www.oasidellapizza.it/wp-content/uploads/revslider/steweysfullslider/5.jpg")))
-                    .setRating(3)
+                    .setRating((float) (1 + Math.random() * (5 - 1)))
                     .create());
         }
 

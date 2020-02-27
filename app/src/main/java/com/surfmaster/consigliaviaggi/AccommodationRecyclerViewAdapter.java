@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.ui.accommodation_list.AccommodationListFragmentDirections;
-import com.surfmaster.consigliaviaggi.ui.accommodation_list.AccommodationListViewModel;
 
 import java.util.List;
 
@@ -37,6 +37,7 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
         TextView accommodationName;
         TextView accommodationAddress;
         ImageView accommodationImage;
+        RatingBar accommodationRatingBar;
 
         AccommodationViewHolder(View itemView) {
             super(itemView);
@@ -44,6 +45,7 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
             accommodationName =  itemView.findViewById(R.id.accommodation_name);
             accommodationAddress =  itemView.findViewById(R.id.accommodation_address);
             accommodationImage =  itemView.findViewById(R.id.accommodation_image);
+            accommodationRatingBar = itemView.findViewById(R.id.accommodation_rating);
         }
 
     }
@@ -60,6 +62,7 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
     public void onBindViewHolder(@NonNull AccommodationViewHolder accommodationViewHolder, final int position) {
 
         accommodationViewHolder.accommodationName.setText(accommodations.get(position).getName());
+        accommodationViewHolder.accommodationRatingBar.setRating(accommodations.get(position).getRating());
         accommodationViewHolder.accommodationAddress.setText(accommodations.get(position).getAddress());
         Picasso.get().load(accommodations.get(position).getImages().get(0)).into(accommodationViewHolder.accommodationImage);
         accommodationViewHolder.cv.setOnClickListener(new View.OnClickListener() {

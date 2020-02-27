@@ -1,15 +1,23 @@
 package com.surfmaster.consigliaviaggi.models;
 
-public class Review {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
+
+
+public class Review implements Comparable{
 
     private String author;
     private String reviewText;
     private float rating;
+    private String data;
 
     public Review(Builder builder) {
         this.author=builder.author;
         this.reviewText=builder.reviewText;
         this.rating=builder.rating;
+        this.data= builder.data;
     }
 
     public String getAuthor() {
@@ -20,12 +28,31 @@ public class Review {
         return reviewText;
     }
 
+    public String getData() {
+        return data;
+    }
+
     public float getRating() {
         return rating;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        Review review = (Review) o ;
+        try {
+            Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(data);
+            Date date2=new SimpleDateFormat("dd/MM/yyyy").parse(review.getData());
+            return date1.compareTo(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
     static class Builder {
 
+        public String data;
         private String author;
         private String reviewText;
         private float rating;
@@ -44,8 +71,20 @@ public class Review {
             this.author = author;
             return this;
         }
+        public Builder setData(String data) {
+            this.data = data;
+            return this;
+        }
+
         public Review build() {
             return new Review(this);
+        }
+    }
+
+    public static class ReviewRatingComparator implements Comparator<Review> {
+        @Override
+        public int compare(Review review1, Review review2) {
+            return Float.compare(review1.getRating(), review2.getRating());
         }
     }
 }

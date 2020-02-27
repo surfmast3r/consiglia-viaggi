@@ -12,7 +12,7 @@ public class Accommodation {
     private String description;
     private String logoUrl;
     private List<String> images;
-    private Integer rating;
+    private Float rating;
     private Subcategory subcategory;
     private Category category;
     private Location accommodationLocation;
@@ -37,7 +37,7 @@ public class Accommodation {
         return images;
     }
 
-    public Integer getRating() {
+    public Float getRating() {
         return rating;
     }
 
@@ -84,7 +84,7 @@ public class Accommodation {
         private String name;
         private String logoUrl;
         private List<String> images;
-        private Integer rating;
+        private Float rating;
         private Subcategory subcategory;
         private Category category;
         private Location accommodationLocation;
@@ -117,7 +117,7 @@ public class Accommodation {
         }
 
 
-        public Builder setRating(Integer rating) {
+        public Builder setRating(float rating) {
             this.rating = rating;
             return this;
         }

@@ -11,14 +11,14 @@ public class MyClusterItem implements ClusterItem {
     private LatLng position;
     private String title;
     private Subcategory category;
-    private int rating;
+    private float rating;
     private String address;
     private int id;
     private String logo;
 
 
 
-    public MyClusterItem(LatLng latLng, String title, Subcategory cat, String logo, String address, int acRating, int id) {
+    public MyClusterItem(LatLng latLng, String title, Subcategory cat, String logo, String address, float acRating, int id) {
         position = latLng;
         this.title=title;
         this.category=cat;
@@ -43,7 +43,7 @@ public class MyClusterItem implements ClusterItem {
     public String getAddress() {
         return address;
     }
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
     public String getTitle() {

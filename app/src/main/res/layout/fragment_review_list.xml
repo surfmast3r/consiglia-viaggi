@@ -86,7 +86,7 @@
                 <RadioButton android:id="@+id/radio_default"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/default_rating"
+                    android:text="@string/date"
                     android:checked="true"/>
             </RadioGroup>
 
