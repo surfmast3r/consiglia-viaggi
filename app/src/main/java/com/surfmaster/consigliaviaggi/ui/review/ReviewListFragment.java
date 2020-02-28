@@ -34,6 +34,9 @@ public class ReviewListFragment extends Fragment {
     private ReviewViewModel reviewViewModel;
     private AccommodationViewModel accommodationViewModel;
 
+    private List reviewList;
+    private RatingBar minRatingBar;
+    private RatingBar maxRatingBar;
     private RecyclerView reviewsRecyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,8 +47,9 @@ public class ReviewListFragment extends Fragment {
         accommodationViewModel =
                 ViewModelProviders.of(requireActivity()).get(AccommodationViewModel.class);
 
+        reviewViewModel.setReviewList(accommodationViewModel.getReviewList().getValue());
 
-        accommodationViewModel.orderReviewList(Constants.DEFAULT);
+
         View root = inflater.inflate(R.layout.fragment_review_list, container, false);
 
         bindViews(root);
@@ -66,55 +70,35 @@ public class ReviewListFragment extends Fragment {
         });
 
 
-        final RatingBar minRatingBar = root.findViewById(R.id.min_rating_filter);
-        minRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+        minRatingBar = root.findViewById(R.id.min_rating_filter);
+        minRatingBar.setOnRatingBarChangeListener(setRatingFilter());
 
-            }
-        });
-        final RatingBar maxRatingBar = root.findViewById(R.id.max_rating_filter);
-        maxRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-
-            }
-        });
+        maxRatingBar = root.findViewById(R.id.max_rating_filter);
+        maxRatingBar.setOnRatingBarChangeListener(setRatingFilter());
 
         RadioGroup orderRadioGroup = root.findViewById(R.id.order_radio_button);
-        orderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                switch (checkedId) {
-                    case R.id.radio_best_rating:
-                        accommodationViewModel.orderReviewList(Constants.BEST_RATING);
-                        break;
-                    case R.id.radio_worst_rating:
-                        accommodationViewModel.orderReviewList(Constants.WORST_RATING);
-                        break;
-                    case R.id.radio_default:
-                        accommodationViewModel.orderReviewList(Constants.DEFAULT);
-                        break;
-                }
-            }
-        });
+        orderRadioGroup.setOnCheckedChangeListener(setListOrderFilter());
 
         reviewsRecyclerView = root.findViewById(R.id.review_recyclerview);
         reviewsRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         reviewsRecyclerView.setLayoutManager(layoutManager);
 
-        accommodationViewModel.getReviewList().observe(this, new Observer<List>() {
+        reviewViewModel.getFilteredReviewList().observe(this, new Observer<List>() {
 
                     ReviewsRecyclerViewAdapter adapter;
                     @Override
                     public void onChanged(@Nullable List s) {
+
                         if (adapter==null){
                             adapter=new ReviewsRecyclerViewAdapter(getContext(),s);
                             reviewsRecyclerView.setAdapter(adapter);
                         }
-                        else
-                            adapter.notifyDataSetChanged();
+                        else {
+                            adapter.refreshList(s);
+
+                        }
 
                     }
                 }
@@ -129,4 +113,38 @@ public class ReviewListFragment extends Fragment {
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(((AppCompatActivity)getActivity()), navController,appBarConfiguration);
     }
+
+    private RatingBar.OnRatingBarChangeListener setRatingFilter(){
+         return new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+                float minRating=minRatingBar.getRating();
+                float maxRating=maxRatingBar.getRating();
+                reviewViewModel.filterReviewList(minRating,maxRating);
+            }
+        };
+    }
+
+    private RadioGroup.OnCheckedChangeListener setListOrderFilter(){
+
+        return new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radio_best_rating:
+                        reviewViewModel.orderReviewList(Constants.BEST_RATING);
+                        break;
+                    case R.id.radio_worst_rating:
+                        reviewViewModel.orderReviewList(Constants.WORST_RATING);
+                        break;
+                    case R.id.radio_default:
+                        reviewViewModel.orderReviewList(Constants.DEFAULT);
+                        break;
+                }
+            }
+        };
+    }
+
+
 }

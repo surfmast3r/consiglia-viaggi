@@ -30,6 +30,11 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
         this.context=context;
     }
 
+    public void refreshList(List<Review> list){
+        reviews=list;
+        notifyDataSetChanged();
+    }
+
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         CardView cv;

@@ -79,7 +79,7 @@ public class AccommodationListFragment extends Fragment {
                     stopShimmerAnimation();
                 }
                 else {
-                    adapter.notifyDataSetChanged();
+                    adapter.refreshList(s);
                     stopShimmerAnimation();
                 }
 

@@ -31,6 +31,10 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
         this.context=context;
     }
 
+    public void refreshList(List<Accommodation> list){
+        accommodations=list;
+        notifyDataSetChanged();
+    }
 
     public static class AccommodationViewHolder extends RecyclerView.ViewHolder {
         CardView cv;

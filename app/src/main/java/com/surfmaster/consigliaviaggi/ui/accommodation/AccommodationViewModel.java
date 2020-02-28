@@ -127,15 +127,5 @@ public class AccommodationViewModel extends ViewModel {
 
     }
 
-    public void orderReviewList(String order){
-        if(order== Constants.BEST_RATING){
-            mReviewList.setValue(viewReviewController.orderReviewListByRating(mReviewList.getValue(),ViewReviewController.DESCENDING));
-        }else if(order==Constants.DEFAULT){
-            mReviewList.setValue(viewReviewController.orderReviewListByDate(mReviewList.getValue()));
-        }else if(order==Constants.WORST_RATING) {
-            mReviewList.setValue(viewReviewController.orderReviewListByRating(mReviewList.getValue(), ViewReviewController.ASCENDING));
-        }
-    }
-
 
 }

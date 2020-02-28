@@ -23,7 +23,7 @@ public class ViewReviewController {
         return reviewList;
     }
 
-    // chops a list into non-view sublists of length L
+    // create sublist of length size
     public List reviewSubList(List reviewList, final int size) {
         List sublist = new ArrayList();
         for(int i=0;i<size;i++){
@@ -42,5 +42,15 @@ public class ViewReviewController {
         else if (order == DESCENDING)
             Collections.sort(reviewList, Collections.reverseOrder (new Review.ReviewRatingComparator()));
         return reviewList;
+    }
+
+    public List filterReviewList(List<Review> reviewList, float minRating, float maxRating) {
+
+        List filteredList = new ArrayList();
+        for(Review review : reviewList){
+            if(review.getRating()>minRating&&review.getRating()<maxRating)
+                filteredList.add(review);
+        }
+        return filteredList;
     }
 }
