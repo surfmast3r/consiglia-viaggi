@@ -20,6 +20,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_nav_accommodation_detail_to_nav_create_review"
+            app:destination="@id/nav_create_review"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
     <fragment
@@ -30,6 +37,14 @@
         <argument
             android:name="accommodation_id"
             app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_create_review"
+        android:name="com.surfmaster.consigliaviaggi.ui.review.CreateReviewFragment"
+        android:label="@string/menu_create_review"
+        tools:layout="@layout/fragment_create_review">
 
     </fragment>
 

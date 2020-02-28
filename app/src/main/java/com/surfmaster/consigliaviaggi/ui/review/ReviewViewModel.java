@@ -44,13 +44,13 @@ public class ReviewViewModel extends ViewModel {
     public void orderReviewList(String order){
         switch (order) {
             case Constants.BEST_RATING:
-                mFilteredReviewList.setValue(viewReviewController.orderReviewListByRating(mFilteredReviewList.getValue(), ViewReviewController.DESCENDING));
+                mFilteredReviewList.setValue(viewReviewController.orderReviewListByRating(mFilteredReviewList.getValue(), Constants.DESCENDING));
                 break;
             case Constants.DEFAULT:
                 mFilteredReviewList.setValue(viewReviewController.orderReviewListByDate(mFilteredReviewList.getValue()));
                 break;
             case Constants.WORST_RATING:
-                mFilteredReviewList.setValue(viewReviewController.orderReviewListByRating(mFilteredReviewList.getValue(), ViewReviewController.ASCENDING));
+                mFilteredReviewList.setValue(viewReviewController.orderReviewListByRating(mFilteredReviewList.getValue(), Constants.ASCENDING));
                 break;
         }
     }

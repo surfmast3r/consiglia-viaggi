@@ -36,6 +36,9 @@
     <string name="category_restaurant">Ristoranti</string>
     <string name="category_attraction">Attrazioni</string>
     <string name="default_order">Default</string>
+    <string name="write_review">Scrivi una recensione</string>
+    <string name="menu_create_review">Scrivi Recensione</string>
+    <string name="publish">Pubblica</string>
 
 
     <string-array name="cities_array">

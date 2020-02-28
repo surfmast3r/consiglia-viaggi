@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.AccommodationDao;
@@ -15,6 +16,7 @@ import com.surfmaster.consigliaviaggi.ui.main.MainFragmentDirections;
 import com.surfmaster.consigliaviaggi.ui.main.SelectCityFragment;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.fragment.app.DialogFragment;
@@ -130,5 +132,13 @@ public class ViewAccommodationsController {
     public void navigateToAccommodationMapFragment(Context context, int nav_host_fragment) {
         Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(MainFragmentDirections.actionNavHomeToNavMap());
 
+    }
+
+    public List orderAccommodationListByRating(List accommodationList, int order) {
+        if(order== Constants.ASCENDING)
+            Collections.sort(accommodationList);
+        else if (order == Constants.DESCENDING)
+            Collections.sort(accommodationList,Collections.reverseOrder());
+        return accommodationList;
     }
 }

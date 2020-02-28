@@ -1,5 +1,6 @@
 package com.surfmaster.consigliaviaggi.controllers;
 
+import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.Review;
 import com.surfmaster.consigliaviaggi.models.ReviewDao;
 import com.surfmaster.consigliaviaggi.models.ReviewDaoStub;
@@ -10,8 +11,6 @@ import java.util.List;
 
 public class ViewReviewController {
 
-    public static final int ASCENDING=1;
-    public static final int DESCENDING=2;
     private ReviewDao reviewDao;
     public ViewReviewController() {
 
@@ -37,9 +36,9 @@ public class ViewReviewController {
         return reviewList;
     }
     public List orderReviewListByRating(List reviewList, int order){
-        if(order==ASCENDING)
+        if(order== Constants.ASCENDING)
             Collections.sort(reviewList, new Review.ReviewRatingComparator());
-        else if (order == DESCENDING)
+        else if (order == Constants.DESCENDING)
             Collections.sort(reviewList, Collections.reverseOrder (new Review.ReviewRatingComparator()));
         return reviewList;
     }

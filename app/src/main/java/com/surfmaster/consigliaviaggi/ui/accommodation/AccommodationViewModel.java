@@ -127,5 +127,4 @@ public class AccommodationViewModel extends ViewModel {
 
     }
 
-
 }

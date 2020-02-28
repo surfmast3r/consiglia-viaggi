@@ -2,6 +2,7 @@ package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,12 +28,13 @@ import com.surfmaster.consigliaviaggi.R;
 
 import java.util.List;
 
-public class AccommodationListFragment extends Fragment {
+public class AccommodationListFragment extends Fragment{
 
     private AccommodationListViewModel accommodationListViewModel;
     private RecyclerView rv;
     private TextView textView;
     private Activity activity;
+    private String category;
     private ShimmerFrameLayout mShimmerViewContainer;
 
     @Override
@@ -51,9 +53,16 @@ public class AccommodationListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         accommodationListViewModel =
                 ViewModelProviders.of(this).get(AccommodationListViewModel.class);
+
+
         View root = inflater.inflate(R.layout.fragment_accommodation_list, container, false);
 
-        accommodationListViewModel.setCategoryText(AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory());
+
+        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+
+        category=AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
+
+        accommodationListViewModel.setAccommodationList(category,"Napoli");
 
         textView = root.findViewById(R.id.text_send);
         accommodationListViewModel.getCategoryText().observe(this, new Observer<String>() {
@@ -63,7 +72,6 @@ public class AccommodationListFragment extends Fragment {
             }
         });
 
-        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
 
         rv = root.findViewById(R.id.accommodation_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -86,23 +94,6 @@ public class AccommodationListFragment extends Fragment {
             }
         }
         );
-        /*rv.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(), rv ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-
-                        AccommodationListFragmentDirections.ActionNavAccommodationListToNavViewAccommodationActivity action =
-                                AccommodationListFragmentDirections.actionNavAccommodationListToNavViewAccommodationActivity(accommodationListViewModel.getAccommodationId(position));
-                        Navigation.findNavController(activity, R.id.nav_host_fragment).navigate(action);
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );*/
-
-
-
 
         return root;
     }
@@ -132,6 +123,7 @@ public class AccommodationListFragment extends Fragment {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 DialogFragment newFragment = FiltersFragment.newInstance();
+
                 newFragment.show(ft, "dialog");
                 return true;
 
