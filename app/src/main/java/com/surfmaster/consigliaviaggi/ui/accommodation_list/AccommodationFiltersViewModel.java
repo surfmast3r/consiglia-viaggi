@@ -11,12 +11,10 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mCategory;
-    private ViewAccommodationsController viewAccommodationsController;
     private MutableLiveData<String> mSortParam;
 
     public AccommodationFiltersViewModel() {
 
-        viewAccommodationsController = new ViewAccommodationsController();
         mText = new MutableLiveData<>();
         mSortParam=new MutableLiveData<>();
         mCategory=new MutableLiveData<>();

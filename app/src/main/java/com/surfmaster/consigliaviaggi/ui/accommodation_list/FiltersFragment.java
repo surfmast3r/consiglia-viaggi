@@ -27,6 +27,7 @@ public class FiltersFragment extends DialogFragment{
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private Spinner categorySpinner;
     private String currentSortOrder;
+    private String currentCategory;
 
 
 
@@ -74,9 +75,9 @@ public class FiltersFragment extends DialogFragment{
     private int getCurrentSortParam() {
         int currentSelection= R.id.radio_default;
         if(accommodationFiltersViewModel.getSortParam().getValue()!=null){
-            String currentSort=accommodationFiltersViewModel.getSortParam().getValue();
+            currentSortOrder=accommodationFiltersViewModel.getSortParam().getValue();
 
-            switch (currentSort) {
+            switch (currentSortOrder) {
                 case Constants.BEST_RATING:
                     currentSelection= R.id.radio_best_rating;
                     break;
@@ -145,8 +146,11 @@ public class FiltersFragment extends DialogFragment{
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         categorySpinner.setAdapter(adapter);
-        if(accommodationFiltersViewModel.getCategory().getValue()!=null)
+        if(accommodationFiltersViewModel.getCategory().getValue()!=null){
             categorySpinner.setSelection(adapter.getPosition(accommodationFiltersViewModel.getCategory().getValue()));
+            currentCategory=accommodationFiltersViewModel.getCategory().getValue();
+        }
+
     }
 
     @Override
@@ -158,8 +162,14 @@ public class FiltersFragment extends DialogFragment{
     }
 
     private void applyFilters(){
-        accommodationFiltersViewModel.setCategory(categorySpinner.getSelectedItem().toString());
+
         accommodationFiltersViewModel.setSortParam(currentSortOrder);
+
+        if (!categorySpinner.getSelectedItem().toString().equals(currentCategory)) {
+            accommodationFiltersViewModel.setCategory(categorySpinner.getSelectedItem().toString());
+            accommodationFiltersViewModel.setSortParam(Constants.DEFAULT);
+        }
+
     }
 
 

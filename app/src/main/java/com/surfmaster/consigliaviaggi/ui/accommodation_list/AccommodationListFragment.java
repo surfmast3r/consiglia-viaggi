@@ -2,7 +2,6 @@ package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
+import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 
 import java.util.List;
@@ -31,11 +31,15 @@ import java.util.List;
 public class AccommodationListFragment extends Fragment{
 
     private AccommodationListViewModel accommodationListViewModel;
+    private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private RecyclerView rv;
     private TextView textView;
+    private String sortOrder;
     private Activity activity;
     private String category;
+    private String currentCategory;
     private ShimmerFrameLayout mShimmerViewContainer;
+    private AccommodationRecyclerViewAdapter adapter;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -54,53 +58,97 @@ public class AccommodationListFragment extends Fragment{
         accommodationListViewModel =
                 ViewModelProviders.of(this).get(AccommodationListViewModel.class);
 
+        accommodationFiltersViewModel =
+                ViewModelProviders.of(requireActivity()).get(AccommodationFiltersViewModel.class);
+
+        currentCategory="";
+        category=AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
 
         View root = inflater.inflate(R.layout.fragment_accommodation_list, container, false);
 
+        bindViews(root);
 
+        initFilters(category);
+
+        return root;
+    }
+
+    private void bindViews(View root) {
         mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
 
-        category=AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
-
-        accommodationListViewModel.setAccommodationList(category,"Napoli");
-
         textView = root.findViewById(R.id.text_send);
-        accommodationListViewModel.getCategoryText().observe(this, new Observer<String>() {
+        accommodationFiltersViewModel.getCategory().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                if(!s.equals(currentCategory)) {
+                    textView.setText(s);
+                    updateAccommodationList(s, "Napoli");
+                    currentCategory=s;
+                }
             }
         });
-
 
         rv = root.findViewById(R.id.accommodation_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
         accommodationListViewModel.getList().observe(this, new Observer<List>() {
 
-            AccommodationRecyclerViewAdapter adapter;
-            @Override
-            public void onChanged(@Nullable List s) {
-                if (adapter==null){
-                    adapter=new AccommodationRecyclerViewAdapter(getContext(),s);
-                    rv.setAdapter(adapter);
-                    stopShimmerAnimation();
-                }
-                else {
-                    adapter.refreshList(s);
-                    stopShimmerAnimation();
-                }
+                    @Override
+                    public void onChanged(@Nullable List s) {
+                        if (adapter==null){
+                            adapter=new AccommodationRecyclerViewAdapter(getContext(),s);
+                            rv.setAdapter(adapter);
+                            stopShimmerAnimation();
+                        }
+                        else {
+                            adapter.refreshList(s);
+                            stopShimmerAnimation();
+                        }
 
-            }
-        }
+                    }
+                }
         );
 
-        return root;
+        accommodationFiltersViewModel.getSortParam().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if(!s.equals(sortOrder)) {
+                    sortAccommodationList(s);
+                    sortOrder=s;
+                }
+            }
+        });
+
+
+    }
+
+    private void sortAccommodationList(String order) {
+        accommodationListViewModel.orderAccommodationList(order);
+    }
+
+    private void updateAccommodationList(String category, String city) {
+        if (adapter!=null)
+            adapter.clearList();
+        sortOrder=Constants.DEFAULT;
+        startShimmerAnimation();
+        accommodationListViewModel.setAccommodationList(category,city);
+    }
+
+
+    private void initFilters(String category) {
+        sortOrder=Constants.DEFAULT;
+        accommodationFiltersViewModel.setCategory(category);
+        accommodationFiltersViewModel.setSortParam(Constants.DEFAULT);
+
     }
 
     private void stopShimmerAnimation() {
         mShimmerViewContainer.stopShimmer();
         mShimmerViewContainer.setVisibility(View.GONE);
+    }
+    private void startShimmerAnimation() {
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
+        mShimmerViewContainer.startShimmer();
     }
 
     @Override
@@ -136,17 +184,13 @@ public class AccommodationListFragment extends Fragment{
     }
 
     @Override
-
     public void onResume() {
         super.onResume();
         mShimmerViewContainer.startShimmer();
 
     }
 
-
-
     @Override
-
     public void onPause() {
         mShimmerViewContainer.stopShimmer();
         super.onPause();

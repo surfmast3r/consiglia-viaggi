@@ -15,6 +15,7 @@ import com.surfmaster.consigliaviaggi.models.AccommodationDaoStub;
 import com.surfmaster.consigliaviaggi.ui.main.MainFragmentDirections;
 import com.surfmaster.consigliaviaggi.ui.main.SelectCityFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,9 +28,6 @@ public class ViewAccommodationsController {
 
     private static final String CITY="SelectedCity";
     private static final String PREFERENCES="SharedPreferences";
-    private static final String CATEGORY_HOTEL="hotel";
-    private static final String CATEGORY_RESTAURANT="restaurant";
-    private static final String CATEGORY_ATTRACTION="attraction";
 
     private List accommodationList;
     private AccommodationDao acDao;
@@ -94,28 +92,13 @@ public class ViewAccommodationsController {
         return context.getString(R.string.city_select);
     }
 
-    public void navigateToAccommodationListFragment(Context context, int resId, String category) {
+    public void navigateToAccommodationListFragment(Context context, String category) {
 
         MainFragmentDirections.ActionNavHomeToNavAccommodationList action;
 
         if (!getSelectedCity(context).equals(context.getString(R.string.city_select))) {
-
-            switch (category) {
-
-                case CATEGORY_HOTEL:
-                    action = MainFragmentDirections.actionNavHomeToNavAccommodationList(CATEGORY_HOTEL);
-                    Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(action);
-                    break;
-                case CATEGORY_RESTAURANT:
-                    action = MainFragmentDirections.actionNavHomeToNavAccommodationList(CATEGORY_RESTAURANT);
-                    Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(action);
-                    break;
-                case CATEGORY_ATTRACTION:
-                    action = MainFragmentDirections.actionNavHomeToNavAccommodationList(CATEGORY_ATTRACTION);
-                    Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(action);
-                    break;
-
-            }
+            action = MainFragmentDirections.actionNavHomeToNavAccommodationList(category);
+            Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(action);
         }
         else {
             navigateToSelectCityFragment(context);
@@ -140,5 +123,15 @@ public class ViewAccommodationsController {
         else if (order == Constants.DESCENDING)
             Collections.sort(accommodationList,Collections.reverseOrder());
         return accommodationList;
+    }
+
+    public List copyList(List acList) {
+
+        List copyList= new ArrayList();
+        for(Accommodation ac : (ArrayList<Accommodation>) acList){
+            copyList.add(ac);
+        }
+
+        return copyList;
     }
 }

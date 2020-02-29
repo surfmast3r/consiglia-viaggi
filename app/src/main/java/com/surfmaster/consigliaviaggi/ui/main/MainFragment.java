@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 
@@ -88,7 +89,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity,R.id.nav_host_fragment,"hotel");
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity,Constants.CATEGORY_HOTEL);
                     }
                 });
                 break;
@@ -96,7 +97,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity,R.id.nav_host_fragment,"restaurant");
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity,Constants.CATEGORY_RESTAURANT);
                     }
                 });
                 break;
@@ -104,7 +105,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity,R.id.nav_host_fragment,"attraction");
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity,Constants.CATEGORY_ATTRACTION);
                     }
                 });
                 break;

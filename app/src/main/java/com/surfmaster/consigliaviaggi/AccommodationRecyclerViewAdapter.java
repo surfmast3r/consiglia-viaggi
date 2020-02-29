@@ -31,6 +31,10 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
         this.context=context;
     }
 
+    public void clearList(){
+        accommodations.clear();
+        notifyDataSetChanged();
+    }
     public void refreshList(List<Accommodation> list){
         accommodations=list;
         notifyDataSetChanged();
