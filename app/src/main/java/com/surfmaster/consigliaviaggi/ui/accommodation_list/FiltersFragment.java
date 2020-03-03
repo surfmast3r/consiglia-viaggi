@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,8 +27,12 @@ public class FiltersFragment extends DialogFragment{
 
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private Spinner categorySpinner;
+    private RatingBar minRatingBar;
+    private RatingBar maxRatingBar;
     private String currentSortOrder;
     private String currentCategory;
+    private float minRating;
+    private float maxRating;
 
 
 
@@ -56,6 +61,10 @@ public class FiltersFragment extends DialogFragment{
         View applyButton= root.findViewById(R.id.fullscreen_dialog_action);
         setButtonListener(applyButton);
 
+        initRatingBars(root);
+
+        initOrderRadioGroup(root);
+
         initCategorySpinner(root);
 
         final TextView textView = root.findViewById(R.id.filter_fragment_text);
@@ -65,9 +74,6 @@ public class FiltersFragment extends DialogFragment{
                 textView.setText(s);
             }
         });
-        RadioGroup orderRadioGroup = root.findViewById(R.id.order_radio_button);
-        orderRadioGroup.check(getCurrentSortParam());
-        orderRadioGroup.setOnCheckedChangeListener(setListOrderFilter());
 
         return root;
     }
@@ -91,26 +97,6 @@ public class FiltersFragment extends DialogFragment{
         }
 
         return currentSelection;
-    }
-
-    private RadioGroup.OnCheckedChangeListener setListOrderFilter(){
-
-        return new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                switch (checkedId) {
-                    case R.id.radio_best_rating:
-                        currentSortOrder=Constants.BEST_RATING;
-                        break;
-                    case R.id.radio_worst_rating:
-                        currentSortOrder=Constants.WORST_RATING;
-                        break;
-                    case R.id.radio_default:
-                        currentSortOrder=Constants.DEFAULT;
-                        break;
-                }
-            }
-        };
     }
 
     private void setButtonListener(View view){
@@ -138,6 +124,53 @@ public class FiltersFragment extends DialogFragment{
 
     }
 
+    private void initRatingBars(View root){
+        minRatingBar =root.findViewById(R.id.min_rating_filter);
+        minRatingBar.setOnRatingBarChangeListener(setRatingFilter());
+        maxRatingBar = root.findViewById(R.id.max_rating_filter);
+        maxRatingBar.setOnRatingBarChangeListener(setRatingFilter());
+
+    }
+
+    private RatingBar.OnRatingBarChangeListener setRatingFilter(){
+        return new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+                minRating=minRatingBar.getRating();
+                maxRating=maxRatingBar.getRating();
+
+            }
+        };
+    }
+
+    private void initOrderRadioGroup(View root){
+        RadioGroup orderRadioGroup = root.findViewById(R.id.order_radio_button);
+        orderRadioGroup.check(getCurrentSortParam());
+        orderRadioGroup.setOnCheckedChangeListener(setListOrderFilter());
+
+    }
+
+    private RadioGroup.OnCheckedChangeListener setListOrderFilter(){
+
+        return new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radio_best_rating:
+                        currentSortOrder=Constants.BEST_RATING;
+                        break;
+                    case R.id.radio_worst_rating:
+                        currentSortOrder=Constants.WORST_RATING;
+                        break;
+                    case R.id.radio_default:
+                        currentSortOrder=Constants.DEFAULT;
+                        break;
+                }
+            }
+        };
+    }
+
     private void initCategorySpinner(View root){
         categorySpinner=root.findViewById(R.id.category_spinner);
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
@@ -146,9 +179,33 @@ public class FiltersFragment extends DialogFragment{
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         categorySpinner.setAdapter(adapter);
-        if(accommodationFiltersViewModel.getCategory().getValue()!=null){
-            categorySpinner.setSelection(adapter.getPosition(accommodationFiltersViewModel.getCategory().getValue()));
-            currentCategory=accommodationFiltersViewModel.getCategory().getValue();
+        currentCategory=accommodationFiltersViewModel.getCategory().getValue();
+        if(currentCategory!=null){
+            categorySpinner.setSelection(adapter.getPosition(currentCategory));
+
+        }
+
+    }
+
+    private boolean checkCategoryChanged(String newCategory){
+
+        if(newCategory.equals(currentCategory))
+            return false;
+        else
+            return true;
+    }
+
+    private void applyFilters(){
+        String newCategory=categorySpinner.getSelectedItem().toString();
+
+        if (checkCategoryChanged(newCategory)) {
+            accommodationFiltersViewModel.setCategory(newCategory);
+            accommodationFiltersViewModel.setSortParam(Constants.DEFAULT);
+            accommodationFiltersViewModel.setMinRating(Constants.DEFAULT_MIN_RATING);
+            accommodationFiltersViewModel.setMaxRating(Constants.DEFAULT_MAX_RATING);
+
+        }else{
+            accommodationFiltersViewModel.setSortParam(currentSortOrder);
         }
 
     }
@@ -159,17 +216,6 @@ public class FiltersFragment extends DialogFragment{
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.getWindow().getAttributes().windowAnimations = R.style.Animation_Design_BottomSheetDialog;
         return dialog;
-    }
-
-    private void applyFilters(){
-
-        accommodationFiltersViewModel.setSortParam(currentSortOrder);
-
-        if (!categorySpinner.getSelectedItem().toString().equals(currentCategory)) {
-            accommodationFiltersViewModel.setCategory(categorySpinner.getSelectedItem().toString());
-            accommodationFiltersViewModel.setSortParam(Constants.DEFAULT);
-        }
-
     }
 
 

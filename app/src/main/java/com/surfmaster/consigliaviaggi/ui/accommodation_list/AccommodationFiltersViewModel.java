@@ -26,19 +26,25 @@ public class AccommodationFiltersViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
+
     public LiveData<String> getCategory() {
         return mCategory;
     }
-
 
     public LiveData<String> getSortParam(){return mSortParam;}
 
     public void setSortParam(String sortParam) {
         mSortParam.setValue(sortParam);
-
     }
+
     public void setCategory(String category) {
         mCategory.setValue(category);
+    }
+
+    public void setMinRating(float minRating) {
+    }
+
+    public void setMaxRating(float maxRating) {
 
     }
 }
