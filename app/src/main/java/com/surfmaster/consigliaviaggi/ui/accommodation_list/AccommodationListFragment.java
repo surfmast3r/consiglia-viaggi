@@ -32,7 +32,7 @@ public class AccommodationListFragment extends Fragment{
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private RecyclerView rv;
     private TextView textView;
-    private int sortOrder;
+    private Integer sortOrder;
     private float minRating;
     private float maxRating;
     private String category;
@@ -111,10 +111,7 @@ public class AccommodationListFragment extends Fragment{
         accommodationFiltersViewModel.getSortParam().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer s) {
-                if(!s.equals(sortOrder)) {
                     sortAccommodationList(s);
-                    sortOrder=s;
-                }
             }
         });
 
@@ -149,8 +146,11 @@ public class AccommodationListFragment extends Fragment{
         accommodationListViewModel.filterAccommodationList(minRating,maxRating);
     }
 
-    private void sortAccommodationList(int order) {
-        accommodationListViewModel.orderAccommodationList(order);
+    private void sortAccommodationList(Integer order) {
+        if(!order.equals(sortOrder)) {
+            accommodationListViewModel.orderAccommodationList(order);
+            sortOrder=order;
+        }
     }
 
     private void updateAccommodationList(String category, String city) {
