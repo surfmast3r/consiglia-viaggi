@@ -134,4 +134,14 @@ public class ViewAccommodationsController {
 
         return copyList;
     }
+
+    public List filterAccommodationList(List<Accommodation> accommodationList, float minRating, float maxRating) {
+
+        List filteredList = new ArrayList();
+        for(Accommodation review : accommodationList){
+            if(review.getRating()>minRating&&review.getRating()<maxRating)
+                filteredList.add(review);
+        }
+        return filteredList;
+    }
 }

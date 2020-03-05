@@ -1,7 +1,6 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
 import com.surfmaster.consigliaviaggi.Constants;
-import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,14 +10,20 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mCategory;
-    private MutableLiveData<String> mSortParam;
+    private MutableLiveData<Integer> mSortParam;
+    private MutableLiveData<Float> mMinRating;
+    private MutableLiveData<Float> mMaxRating;
 
     public AccommodationFiltersViewModel() {
 
+        mMinRating=new MutableLiveData<>();
+        mMaxRating=new MutableLiveData<>();
+        mMinRating.setValue(Constants.DEFAULT_MIN_RATING);
+        mMaxRating.setValue(Constants.DEFAULT_MAX_RATING);
         mText = new MutableLiveData<>();
         mSortParam=new MutableLiveData<>();
         mCategory=new MutableLiveData<>();
-        mSortParam.setValue(Constants.DEFAULT);
+        mSortParam.setValue(Constants.DEFAULT_ORDER);
 
         mText.setValue("This is accommodation filter fragment");
     }
@@ -31,9 +36,17 @@ public class AccommodationFiltersViewModel extends ViewModel {
         return mCategory;
     }
 
-    public LiveData<String> getSortParam(){return mSortParam;}
+    public LiveData<Integer> getSortParam(){return mSortParam;}
 
-    public void setSortParam(String sortParam) {
+    public MutableLiveData<Float> getMinRating() {
+        return mMinRating;
+    }
+
+    public MutableLiveData<Float> getMaxRating() {
+        return mMaxRating;
+    }
+
+    public void setSortParam(Integer sortParam) {
         mSortParam.setValue(sortParam);
     }
 
@@ -42,9 +55,10 @@ public class AccommodationFiltersViewModel extends ViewModel {
     }
 
     public void setMinRating(float minRating) {
+        mMinRating.setValue(minRating);
     }
 
     public void setMaxRating(float maxRating) {
-
+        mMaxRating.setValue(maxRating);
     }
 }

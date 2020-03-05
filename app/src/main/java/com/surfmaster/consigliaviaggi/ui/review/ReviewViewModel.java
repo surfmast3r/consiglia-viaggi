@@ -4,6 +4,7 @@ import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Review;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -13,17 +14,18 @@ import androidx.lifecycle.ViewModel;
 public class ReviewViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private MutableLiveData<List> mReviewList;
+    private List mReviewList;
     private MutableLiveData<List> mFilteredReviewList;
     private ViewReviewController viewReviewController;
+    private int currentOrder;
 
     public ReviewViewModel() {
 
         viewReviewController = new ViewReviewController();
         mText = new MutableLiveData<>();
-        mReviewList=new MutableLiveData<>();
+        mReviewList=new ArrayList();
         mFilteredReviewList=new MutableLiveData<>();
-
+        currentOrder=Constants.DEFAULT_ORDER;
         mText.setValue("This is review list fragment");
     }
 
@@ -36,28 +38,33 @@ public class ReviewViewModel extends ViewModel {
     }
 
     public void setReviewList(List reviewList){
-        mReviewList.setValue(reviewList);
+        mReviewList=viewReviewController.copyList(reviewList);
         mFilteredReviewList.setValue(reviewList);
 
     }
 
-    public void orderReviewList(String order){
+    public void orderReviewList(int order){
+        currentOrder=order;
         switch (order) {
-            case Constants.BEST_RATING:
+
+            case Constants.BEST_RATING_ORDER:
                 mFilteredReviewList.setValue(viewReviewController.orderReviewListByRating(mFilteredReviewList.getValue(), Constants.DESCENDING));
                 break;
-            case Constants.DEFAULT:
+            case Constants.DEFAULT_ORDER:
                 mFilteredReviewList.setValue(viewReviewController.orderReviewListByDate(mFilteredReviewList.getValue()));
                 break;
-            case Constants.WORST_RATING:
+            case Constants.WORST_RATING_ORDER:
                 mFilteredReviewList.setValue(viewReviewController.orderReviewListByRating(mFilteredReviewList.getValue(), Constants.ASCENDING));
                 break;
         }
     }
 
     public void filterReviewList(float minRating, float maxRating) {
-        List<Review> unfilteredList=mReviewList.getValue();
-        if (unfilteredList!=null)
+        List<Review> unfilteredList=mReviewList;
+        if (unfilteredList!=null){
             mFilteredReviewList.setValue(viewReviewController.filterReviewList(unfilteredList,minRating,maxRating));
+            orderReviewList(currentOrder);
+        }
+
     }
 }

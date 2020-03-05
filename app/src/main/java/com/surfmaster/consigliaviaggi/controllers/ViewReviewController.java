@@ -52,4 +52,14 @@ public class ViewReviewController {
         }
         return filteredList;
     }
+
+    public List copyList(List acList) {
+
+        List copyList= new ArrayList();
+        for(Review ac : (ArrayList<Review>) acList){
+            copyList.add(ac);
+        }
+
+        return copyList;
+    }
 }

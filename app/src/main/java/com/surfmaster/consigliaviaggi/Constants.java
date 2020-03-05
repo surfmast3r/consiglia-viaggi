@@ -13,6 +13,9 @@ public final class Constants  {
     public static final int DESCENDING=2;
     public static final float DEFAULT_MIN_RATING=0;
     public static final float DEFAULT_MAX_RATING=5;
+    public static final int DEFAULT_ORDER = 0;
+    public static final int BEST_RATING_ORDER = 1;
+    public static final int WORST_RATING_ORDER = 2;
 
 
     private Constants(){

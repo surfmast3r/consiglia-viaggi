@@ -133,13 +133,13 @@ public class ReviewListFragment extends Fragment {
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 switch (checkedId) {
                     case R.id.radio_best_rating:
-                        reviewViewModel.orderReviewList(Constants.BEST_RATING);
+                        reviewViewModel.orderReviewList(Constants.BEST_RATING_ORDER);
                         break;
                     case R.id.radio_worst_rating:
-                        reviewViewModel.orderReviewList(Constants.WORST_RATING);
+                        reviewViewModel.orderReviewList(Constants.WORST_RATING_ORDER);
                         break;
                     case R.id.radio_default:
-                        reviewViewModel.orderReviewList(Constants.DEFAULT);
+                        reviewViewModel.orderReviewList(Constants.DEFAULT_ORDER);
                         break;
                 }
             }

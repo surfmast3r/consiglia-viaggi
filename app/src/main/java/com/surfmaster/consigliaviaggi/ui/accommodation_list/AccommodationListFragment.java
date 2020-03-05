@@ -1,7 +1,5 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,8 +32,9 @@ public class AccommodationListFragment extends Fragment{
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private RecyclerView rv;
     private TextView textView;
-    private String sortOrder;
-    private Activity activity;
+    private int sortOrder;
+    private float minRating;
+    private float maxRating;
     private String category;
     private String currentCategory;
     private ShimmerFrameLayout mShimmerViewContainer;
@@ -109,9 +108,9 @@ public class AccommodationListFragment extends Fragment{
                 }
         );
 
-        accommodationFiltersViewModel.getSortParam().observe(this, new Observer<String>() {
+        accommodationFiltersViewModel.getSortParam().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(String s) {
+            public void onChanged(Integer s) {
                 if(!s.equals(sortOrder)) {
                     sortAccommodationList(s);
                     sortOrder=s;
@@ -119,26 +118,60 @@ public class AccommodationListFragment extends Fragment{
             }
         });
 
+        bindRatingFilters();
 
     }
 
-    private void sortAccommodationList(String order) {
+    private void bindRatingFilters() {
+
+        accommodationFiltersViewModel.getMinRating().observe(this, new Observer<Float>() {
+            @Override
+            public void onChanged(Float min) {
+                if(!min.equals(minRating)) {
+                    minRating=min;
+                    filterAccommodationList(minRating,maxRating);
+                }
+
+            }
+        });
+        accommodationFiltersViewModel.getMaxRating().observe(this, new Observer<Float>() {
+            @Override
+            public void onChanged(Float max) {
+                if(!max.equals(maxRating)) {
+                    maxRating = max;
+                    filterAccommodationList(minRating, maxRating);
+                }
+            }
+        });
+    }
+
+    private void filterAccommodationList(float minRating, float maxRating) {
+        accommodationListViewModel.filterAccommodationList(minRating,maxRating);
+    }
+
+    private void sortAccommodationList(int order) {
         accommodationListViewModel.orderAccommodationList(order);
     }
 
     private void updateAccommodationList(String category, String city) {
         if (adapter!=null)
             adapter.clearList();
-        sortOrder=Constants.DEFAULT;
+        sortOrder=Constants.DEFAULT_ORDER;
+        minRating=Constants.DEFAULT_MIN_RATING;
+        maxRating=Constants.DEFAULT_MAX_RATING;
         startShimmerAnimation();
         accommodationListViewModel.setAccommodationList(category,city);
     }
 
 
     private void initFilters(String category) {
-        sortOrder=Constants.DEFAULT;
+        sortOrder=Constants.DEFAULT_ORDER;
+        minRating=Constants.DEFAULT_MIN_RATING;
+        maxRating=Constants.DEFAULT_MAX_RATING;
+        accommodationFiltersViewModel.setMinRating(minRating);
+        accommodationFiltersViewModel.setMaxRating(maxRating);
         accommodationFiltersViewModel.setCategory(category);
-        accommodationFiltersViewModel.setSortParam(Constants.DEFAULT);
+        accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
 
     }
 
@@ -151,16 +184,6 @@ public class AccommodationListFragment extends Fragment{
         mShimmerViewContainer.startShimmer();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity){
-            activity=(Activity) context;
-
-        }
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
