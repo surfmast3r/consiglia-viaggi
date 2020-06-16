@@ -2,6 +2,7 @@ package com.surfmaster.consigliaviaggi;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
+import com.surfmaster.consigliaviaggi.models.Location;
 import com.surfmaster.consigliaviaggi.ui.accommodation_list.AccommodationListFragmentDirections;
 
 import java.util.List;
@@ -72,7 +74,10 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
         accommodationViewHolder.accommodationName.setText(accommodations.get(position).getName());
         accommodationViewHolder.accommodationRatingBar.setRating(accommodations.get(position).getRating());
         accommodationViewHolder.accommodationAddress.setText(accommodations.get(position).getAddress());
-        Picasso.get().load(accommodations.get(position).getImages().get(0)).into(accommodationViewHolder.accommodationImage);
+        String image= accommodations.get(position).getImages().get(0);
+
+        if(!image.equals(""))
+            Picasso.get().load(accommodations.get(position).getImages().get(0)).into(accommodationViewHolder.accommodationImage);
         accommodationViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

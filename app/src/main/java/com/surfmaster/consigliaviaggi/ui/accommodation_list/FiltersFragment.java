@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
+import com.surfmaster.consigliaviaggi.models.Category;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +33,7 @@ public class FiltersFragment extends DialogFragment{
     private RatingBar minRatingBar;
     private RatingBar maxRatingBar;
     private int currentSortOrder;
-    private String currentCategory;
+    private Category currentCategory;
     private Float minRating;
     private Float maxRating;
 
@@ -182,12 +185,14 @@ public class FiltersFragment extends DialogFragment{
 
     private void initCategorySpinner(View root){
         categorySpinner=root.findViewById(R.id.category_spinner);
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.category_array, android.R.layout.simple_spinner_item);
+        final CategorySpinnerAdapter adapter = new CategorySpinnerAdapter(this.getContext(),
+                android.R.layout.simple_spinner_item,
+                accommodationFiltersViewModel.getCategoryList());
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         categorySpinner.setAdapter(adapter);
+
         currentCategory=accommodationFiltersViewModel.getCategory().getValue();
         if(currentCategory!=null){
             categorySpinner.setSelection(adapter.getPosition(currentCategory));
@@ -196,16 +201,16 @@ public class FiltersFragment extends DialogFragment{
 
     }
 
-    private boolean checkCategoryChanged(String newCategory){
+    private boolean checkCategoryChanged(Category newCategory){
 
-        if(newCategory.equals(currentCategory))
+        if(newCategory.getCategoryName().equals(currentCategory.getCategoryName()))
             return false;
         else
             return true;
     }
 
     private void applyFilters(){
-        String newCategory=categorySpinner.getSelectedItem().toString();
+        Category newCategory= (Category) categorySpinner.getSelectedItem();
 
         if (checkCategoryChanged(newCategory)) {
             accommodationFiltersViewModel.setCategory(newCategory);

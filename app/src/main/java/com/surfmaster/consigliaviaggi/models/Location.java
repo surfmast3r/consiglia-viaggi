@@ -31,7 +31,7 @@ public class Location {
         address=builder.address;
     }
 
-    static class Builder {
+    public static class Builder {
 
         private String city;
         private Double latitude;

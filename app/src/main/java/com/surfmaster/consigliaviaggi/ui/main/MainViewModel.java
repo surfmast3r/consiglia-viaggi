@@ -1,10 +1,5 @@
 package com.surfmaster.consigliaviaggi.ui.main;
 
-import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
-import com.surfmaster.consigliaviaggi.models.AccommodationDaoStub;
-
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

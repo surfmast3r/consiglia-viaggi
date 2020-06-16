@@ -1,7 +1,12 @@
 package com.surfmaster.consigliaviaggi.ui.map;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,7 +116,14 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
 
                 //if(mLastKnownLocation==null)
                 // Get the current location of the device and set the position of the map.
-                getDeviceLocation();
+                final LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
+
+                if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                    buildAlertMessageNoGps();
+                } else{
+                    getDeviceLocation();
+                }
+                //getDeviceLocation();
 
 
                 setMapListObserver();
@@ -166,9 +178,16 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    mLocationPermissionGranted = true;
-                    gMap.setMyLocationEnabled(true);
-                    getDeviceLocation();
+                    final LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
+
+                    if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                        buildAlertMessageNoGps();
+                    } else{
+                        mLocationPermissionGranted = true;
+                        gMap.setMyLocationEnabled(true);
+                        getDeviceLocation();
+                    }
+
                 } else {
                     // no granted
                     showDefaultLocation();
@@ -307,4 +326,21 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         }
     }
 
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

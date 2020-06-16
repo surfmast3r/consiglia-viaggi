@@ -112,7 +112,7 @@ public class SelectCityFragment extends DialogFragment{
     }
 
     private void resetCityField() {
-        viewAccommodationsController.resetSelectedCity(requireContext());
+        //viewAccommodationsController.resetSelectedCity(requireContext());
         mainViewModel.setCity(viewAccommodationsController.resetSelectedCity(requireContext()));
         cityAutoCompleteTextView.setHint(mainViewModel.getCity().getValue());
     }
@@ -128,7 +128,7 @@ public class SelectCityFragment extends DialogFragment{
 
     private void updateCityField(){
         mainViewModel.setCity(cityAutoCompleteTextView.getText().toString());
-        viewAccommodationsController.updateSelectedCity(requireContext(),cityAutoCompleteTextView.getText().toString());
+        viewAccommodationsController.updateSelectedCity(requireContext(),cityAutoCompleteTextView.getText().toString(),40.124124,14.124123);
 
     }
 

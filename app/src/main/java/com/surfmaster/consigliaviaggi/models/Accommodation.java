@@ -1,6 +1,6 @@
 package com.surfmaster.consigliaviaggi.models;
 
-import com.surfmaster.consigliaviaggi.Category;
+import com.surfmaster.consigliaviaggi.CategoryEnum;
 import com.surfmaster.consigliaviaggi.Subcategory;
 
 import java.util.Comparator;
@@ -15,7 +15,7 @@ public class Accommodation implements Comparable{
     private List<String> images;
     private Float rating;
     private Subcategory subcategory;
-    private Category category;
+    private CategoryEnum category;
     private Location accommodationLocation;
 
     public Integer getId() {
@@ -46,7 +46,7 @@ public class Accommodation implements Comparable{
         return subcategory;
     }
 
-    public Category getCategory() {
+    public CategoryEnum getCategory() {
         return category;
     }
 
@@ -73,17 +73,26 @@ public class Accommodation implements Comparable{
         this.rating = builder.rating;
         this.subcategory = builder.subcategory;
         this.category = builder.category;
-        this.accommodationLocation=builder.accommodationLocation;
+        this.accommodationLocation= new Location.Builder()
+                .setAddress(builder.address)
+                .setCity(builder.city)
+                .setLatitude(builder.latitude)
+                .setLongitude(builder.longitude)
+                .build();
     }
 
     @Override
     public int compareTo(Object o) {
-        Accommodation accommodation=(Accommodation) o;
-        return Float.compare(rating, accommodation.getRating());
+        if((o.getClass()!= Accommodation.class) ) {//check se funziona
+            return -10;
+        }
+            Accommodation accommodation = (Accommodation) o;
+            return Float.compare(rating, accommodation.getRating());
+
     }
 
 
-    static class Builder {
+    public static class Builder {
 
         private Integer id;
         private String description;
@@ -92,7 +101,12 @@ public class Accommodation implements Comparable{
         private List<String> images;
         private Float rating;
         private Subcategory subcategory;
-        private Category category;
+        private CategoryEnum category;
+        private String city;
+        private String address;
+        private Double latitude;
+        private Double longitude;
+
         private Location accommodationLocation;
 
 
@@ -134,13 +148,29 @@ public class Accommodation implements Comparable{
             return this;
         }
 
-        public Builder setCategory(Category category) {
+        public Builder setCategory(CategoryEnum category) {
             this.category = category;
             return this;
         }
 
-        public Builder setAccommodationLocation(Location accommodationLocation) {
-            this.accommodationLocation = accommodationLocation;
+        public Builder setLatitude(Double latitude) {
+            this.latitude = latitude;
+            return this;
+        }
+        public Builder setLongitude(Double longitude) {
+            this.longitude = longitude;
+            return this;
+        }
+        public Builder setCity(String city) {
+            this.city = city;
+            return this;
+        }
+        public Builder setAddress(String address) {
+            this.address = address;
+            return this;
+        }
+        public Builder setAccommodationLocation(Location accommodationLocation){
+            this.accommodationLocation=accommodationLocation;
             return this;
         }
 

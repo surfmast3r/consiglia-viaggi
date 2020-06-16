@@ -10,8 +10,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
-import com.surfmaster.consigliaviaggi.models.AccommodationDao;
-import com.surfmaster.consigliaviaggi.models.AccommodationDaoStub;
+import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDao;
+import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoJson;
+import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoStub;
+import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
+import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 import com.surfmaster.consigliaviaggi.ui.main.MainFragmentDirections;
 import com.surfmaster.consigliaviaggi.ui.main.SelectCityFragment;
 
@@ -26,18 +29,29 @@ import androidx.navigation.Navigation;
 
 public class ViewAccommodationsController {
 
+    private static final String LATITUDE="currentLat",LONGITUDE="currentLong";
     private static final String CITY="SelectedCity";
     private static final String PREFERENCES="SharedPreferences";
 
-    private List accommodationList;
+    private List<Accommodation> accommodationList;
     private AccommodationDao acDao;
 
     public ViewAccommodationsController(){
-        acDao= new AccommodationDaoStub();
+        acDao= new AccommodationDaoJson();
     }
 
-    public List getAccommodationList(String city){
+    public List<Accommodation> getAccommodationList(String city){
         accommodationList=acDao.getAccommodationList(city);
+        return accommodationList;
+
+    }
+
+    public List<Accommodation> getAccommodationList(SearchParamsAccommodation params){
+        try {
+            accommodationList=acDao.getAccommodationList(params).getContent();
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
         return accommodationList;
 
     }
@@ -49,7 +63,7 @@ public class ViewAccommodationsController {
 
     }
 
-    public List getAccommodationList(LatLng latLng){
+    public List<Accommodation> getAccommodationList(LatLng latLng){
         accommodationList  =  acDao.getAccommodationList(latLng);
         return accommodationList;
     }
@@ -77,10 +91,12 @@ public class ViewAccommodationsController {
         return context.getString(R.string.city_select);
     }
 
-    public void updateSelectedCity(Context context, String city) {
+    public void updateSelectedCity(Context context, String city, Double lat, Double lon) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(CITY,city);
+        editor.putLong(LATITUDE, Double.doubleToRawLongBits(lat));
+        editor.putLong(LONGITUDE, Double.doubleToRawLongBits(lon));
         editor.apply();
     }
 
@@ -88,6 +104,8 @@ public class ViewAccommodationsController {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         editor.remove(CITY);
+        editor.remove(LATITUDE);
+        editor.remove(LONGITUDE);
         editor.apply();
         return context.getString(R.string.city_select);
     }
@@ -112,12 +130,12 @@ public class ViewAccommodationsController {
         newFragment.show(ft, "dialog");
     }
 
-    public void navigateToAccommodationMapFragment(Context context, int nav_host_fragment) {
+    public void navigateToAccommodationMapFragment(Context context) {
         Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(MainFragmentDirections.actionNavHomeToNavMap());
 
     }
 
-    public List orderAccommodationListByRating(List accommodationList, int order) {
+    public List<Accommodation> orderAccommodationListByRating(List<Accommodation> accommodationList, int order) {
         if(order== Constants.ASCENDING)
             Collections.sort(accommodationList);
         else if (order == Constants.DESCENDING)
@@ -125,22 +143,16 @@ public class ViewAccommodationsController {
         return accommodationList;
     }
 
-    public List copyList(List acList) {
-
-        List copyList= new ArrayList();
-        for(Accommodation ac : (ArrayList<Accommodation>) acList){
-            copyList.add(ac);
-        }
-
-        return copyList;
+    public List<Accommodation> copyList(List<Accommodation> acList) {
+        return new ArrayList<>(acList);
     }
 
-    public List filterAccommodationList(List<Accommodation> accommodationList, float minRating, float maxRating) {
+    public List<Accommodation> filterAccommodationList(List<Accommodation> accommodationList, float minRating, float maxRating) {
 
-        List filteredList = new ArrayList();
-        for(Accommodation review : accommodationList){
-            if(review.getRating()>minRating&&review.getRating()<maxRating)
-                filteredList.add(review);
+        List<Accommodation> filteredList = new ArrayList<>();
+        for(Accommodation accommodation : accommodationList){
+            if(accommodation.getRating()>minRating&&accommodation.getRating()<maxRating)
+                filteredList.add(accommodation);
         }
         return filteredList;
     }

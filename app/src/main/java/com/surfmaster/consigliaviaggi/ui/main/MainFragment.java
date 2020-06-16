@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -16,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.CategoryEnum;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 
@@ -46,7 +45,7 @@ public class MainFragment extends Fragment {
         hotelButton = root.findViewById(R.id.hotel_button);
         restaurantButton = root.findViewById(R.id.restaurant_button);
         attractionButton = root.findViewById(R.id.attraction_button);
-        citySelectButton = root.findViewById(R.id.text_home);
+        citySelectButton = root.findViewById(R.id.text_select_city);
 
         bindViews();
 
@@ -75,7 +74,7 @@ public class MainFragment extends Fragment {
         int viewId=view.getId();
         switch (viewId){
 
-            case R.id.text_home:
+            case R.id.text_select_city:
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -89,7 +88,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity,Constants.CATEGORY_HOTEL);
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity, CategoryEnum.HOTEL.name());
                     }
                 });
                 break;
@@ -97,7 +96,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity,Constants.CATEGORY_RESTAURANT);
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity, CategoryEnum.RESTAURANT.name());
                     }
                 });
                 break;
@@ -105,7 +104,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity,Constants.CATEGORY_ATTRACTION);
+                        viewAccommodationsController.navigateToAccommodationListFragment(activity, CategoryEnum.ATTRACTION.name());
                     }
                 });
                 break;
@@ -113,7 +112,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationMapFragment(activity,R.id.nav_host_fragment);
+                        viewAccommodationsController.navigateToAccommodationMapFragment(activity);
                     }
                 });
                 break;

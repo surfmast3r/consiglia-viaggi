@@ -100,9 +100,9 @@ public class AccommodationViewModel extends ViewModel {
             public void run() {
 
                 Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
 
                         List reviewList= viewReviewController.getReviewList(id);
                         reviewList=viewReviewController.orderReviewListByDate(reviewList);

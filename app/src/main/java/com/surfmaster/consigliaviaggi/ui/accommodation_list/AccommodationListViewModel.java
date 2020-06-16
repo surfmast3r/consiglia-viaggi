@@ -3,8 +3,8 @@ package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
+import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -24,21 +24,24 @@ public class AccommodationListViewModel extends ViewModel {
     private ViewAccommodationsController viewAccommodationsController;
     private MutableLiveData<List> mFilteredAccommodationList;
     private int currentOrder;
+    private MutableLiveData<Integer> pageNumber;
+    private SearchParamsAccommodation currentSearchParams;
 
     public AccommodationListViewModel() {
         viewAccommodationsController =new ViewAccommodationsController();
-
-        currentOrder=Constants.DEFAULT_ORDER;
+        pageNumber=new MutableLiveData<>();
         mFilteredAccommodationList=new MutableLiveData<>();
         mText = new MutableLiveData<>();
+        mAccommodationList=new ArrayList<Accommodation>();
+        unsortedAccommodationList=new ArrayList<Accommodation>();
+
         mText.setValue("This is Accommodation List fragment");
-        mAccommodationList=new ArrayList();
-        unsortedAccommodationList=new ArrayList();
+        currentOrder=Constants.DEFAULT_ORDER;
 
 
     }
 
-
+    public MutableLiveData<Integer> getPageNumber(){return pageNumber;}
     public LiveData<String> getText() {
         return mText;
     }
@@ -46,12 +49,13 @@ public class AccommodationListViewModel extends ViewModel {
         return mFilteredAccommodationList;
     }
 
-    public void setAccommodationList(String category, final String city){
+    public void setAccommodationList(SearchParamsAccommodation searchParams){
 
         if (mAccommodationList!=null)
             mAccommodationList.clear();
         // do async operation to fetch data
-        final String currentCity=city;
+        currentSearchParams= searchParams;
+        //final String currentCity=city;
         ExecutorService service =  Executors.newSingleThreadExecutor();
         service.submit(new Runnable() {
             @Override
@@ -61,7 +65,8 @@ public class AccommodationListViewModel extends ViewModel {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        List acList = viewAccommodationsController.getAccommodationList(currentCity);
+                        //List acList = viewAccommodationsController.getAccommodationList(currentCity);
+                        List acList = viewAccommodationsController.getAccommodationList(currentSearchParams);
                         unsortedAccommodationList = viewAccommodationsController.copyList(acList);
                         mAccommodationList=viewAccommodationsController.copyList(acList);
                         mFilteredAccommodationList.postValue(acList);

@@ -23,6 +23,8 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
+import com.surfmaster.consigliaviaggi.models.Category;
+import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
 import java.util.List;
 
@@ -31,11 +33,12 @@ public class AccommodationListFragment extends Fragment{
     private AccommodationListViewModel accommodationListViewModel;
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private RecyclerView rv;
-    private TextView textView;
+    private TextView categoryTextView;
     private Integer sortOrder;
     private float minRating;
     private float maxRating;
     private String category;
+    private SearchParamsAccommodation currentSearchParams;
     private String currentCategory;
     private ShimmerFrameLayout mShimmerViewContainer;
     private AccommodationRecyclerViewAdapter adapter;
@@ -61,8 +64,14 @@ public class AccommodationListFragment extends Fragment{
                 ViewModelProviders.of(requireActivity()).get(AccommodationFiltersViewModel.class);
 
         currentCategory="";
-        category=AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
 
+        if(getArguments()!=null) {
+            category = AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
+            currentSearchParams= new SearchParamsAccommodation.Builder()
+                    .setCurrentCategory("")
+                    .setCurrentSearchString("Napoli")
+                    .create();
+        }
         View root = inflater.inflate(R.layout.fragment_accommodation_list, container, false);
 
         bindViews(root);
@@ -75,14 +84,16 @@ public class AccommodationListFragment extends Fragment{
     private void bindViews(View root) {
         mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
 
-        textView = root.findViewById(R.id.text_send);
-        accommodationFiltersViewModel.getCategory().observe(this, new Observer<String>() {
+        categoryTextView = root.findViewById(R.id.category_text_view);
+        accommodationFiltersViewModel.getCategory().observe(this, new Observer<Category>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                if(!s.equals(currentCategory)) {
-                    textView.setText(s);
-                    updateAccommodationList(s, "Napoli");
-                    currentCategory=s;
+            public void onChanged(@Nullable Category category) {
+                if(!category.getCategoryName().equals(currentSearchParams.getCurrentCategory())) {
+                    categoryTextView.setText(category.getCategoryLabel());
+                    currentSearchParams.setCurrentCategory(category.getCategoryName());
+                    updateAccommodationList(currentSearchParams);
+                    currentCategory=category.getCategoryName();
+
                 }
             }
         });
@@ -115,12 +126,6 @@ public class AccommodationListFragment extends Fragment{
             }
         });
 
-        bindRatingFilters();
-
-    }
-
-    private void bindRatingFilters() {
-
         accommodationFiltersViewModel.getMinRating().observe(this, new Observer<Float>() {
             @Override
             public void onChanged(Float min) {
@@ -140,6 +145,7 @@ public class AccommodationListFragment extends Fragment{
                 }
             }
         });
+
     }
 
     private void filterAccommodationList(float minRating, float maxRating) {
@@ -153,14 +159,14 @@ public class AccommodationListFragment extends Fragment{
         }
     }
 
-    private void updateAccommodationList(String category, String city) {
+    private void updateAccommodationList(SearchParamsAccommodation searchParams) {
         if (adapter!=null)
             adapter.clearList();
         sortOrder=Constants.DEFAULT_ORDER;
         minRating=Constants.DEFAULT_MIN_RATING;
         maxRating=Constants.DEFAULT_MAX_RATING;
         startShimmerAnimation();
-        accommodationListViewModel.setAccommodationList(category,city);
+        accommodationListViewModel.setAccommodationList(searchParams);
     }
 
 

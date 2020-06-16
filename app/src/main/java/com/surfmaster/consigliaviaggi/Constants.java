@@ -6,9 +6,9 @@ public final class Constants  {
     public static final String DEFAULT = "default";
     public static final String BEST_RATING = "best";
     public static final String WORST_RATING = "worst";
-    public static final String CATEGORY_HOTEL = "-HOTEL-";
-    public static final String CATEGORY_RESTAURANT = "-RISTORANTI-";
-    public static final String CATEGORY_ATTRACTION = "-ATTRAZIONI-";
+    public static final String CATEGORY_HOTEL = "Hotel";
+    public static final String CATEGORY_RESTAURANT = "Ristoranti";
+    public static final String CATEGORY_ATTRACTION = "Attrazioni";
     public static final int ASCENDING=1;
     public static final int DESCENDING=2;
     public static final float DEFAULT_MIN_RATING=0;
@@ -16,6 +16,26 @@ public final class Constants  {
     public static final int DEFAULT_ORDER = 0;
     public static final int BEST_RATING_ORDER = 1;
     public static final int WORST_RATING_ORDER = 2;
+
+    /*JSON URLs*/
+    public static final String SERVER_URL="http://10.0.2.2:5000/";
+    public static final String LOGIN_URL = SERVER_URL+"authenticate";
+    public static final String PAGE_PARAM ="page=";
+    //Accommodation
+    public static final String GET_ACCOMMODATION_LIST_URL = SERVER_URL+"accommodation";
+    public static final String QUERY_PARAM ="query=";
+    public static final String CATEGORY_PARAM ="category=";
+    public static final String SUBCATEGORY_PARAM ="subCategory=";
+    //Review
+    public static final String GET_REVIEW_LIST_URL = SERVER_URL+"review_view";
+    public static final String REVIEW_ID_PARAM ="reviewId=";
+    public static final String STATUS_PARAM ="status=";
+    public static final String ACCOMMODATION_ID_PARAM ="accommodationId=";
+    public static final String CONTENT_PARAM ="content=" ;
+    public static final String ACCOMMODATION_NAME_PARAM ="accommodationName=" ;
+    public static final String GET_REVIEW_URL=SERVER_URL+"single_review_view";
+    public static final String ORDER_BY_PARAM ="orderBy=" ;
+    public static final String DIRECTION_PARAM ="direction=" ;
 
 
     private Constants(){
