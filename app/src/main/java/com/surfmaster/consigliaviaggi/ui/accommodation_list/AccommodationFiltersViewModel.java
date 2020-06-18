@@ -5,6 +5,7 @@ import com.surfmaster.consigliaviaggi.models.Category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,6 +15,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<Category> mCategory;
+    private MutableLiveData<Category> mSubCategory;
     private MutableLiveData<Integer> mSortParam;
     private MutableLiveData<Float> mMinRating;
     private MutableLiveData<Float> mMaxRating;
@@ -22,7 +24,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
     public AccommodationFiltersViewModel() {
 
         categoryArrayList=new ArrayList<>();
-        categoryArrayList.addAll(createCategoryList());
+        categoryArrayList.addAll(Category.createCategoryList());
         mMinRating=new MutableLiveData<>();
         mMaxRating=new MutableLiveData<>();
         mMinRating.setValue(Constants.DEFAULT_MIN_RATING);
@@ -30,6 +32,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mSortParam=new MutableLiveData<>();
         mCategory=new MutableLiveData<>();
+        mSubCategory=new MutableLiveData<>();
         mSortParam.setValue(Constants.DEFAULT_ORDER);
 
         mText.setValue("This is accommodation filter fragment");
@@ -41,6 +44,9 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     public LiveData<Category> getCategory() {
         return mCategory;
+    }
+    public LiveData<Category> getSubCategory() {
+        return mSubCategory;
     }
 
     public LiveData<Integer> getSortParam(){return mSortParam;}
@@ -60,9 +66,15 @@ public class AccommodationFiltersViewModel extends ViewModel {
     public void setCategory(Category category) {
         mCategory.setValue(category);
     }
+    public void setSubCategory(Category newSubCategory) {
+        mSubCategory.setValue(newSubCategory);
+    }
 
+    /*pensare a qualcosa di meglio*/
     public void setCategory(String categoryName) {
         mCategory.setValue(findCategoryByName(categoryName));
+        mSubCategory.setValue(Objects.requireNonNull(
+                findCategoryByName(categoryName)).getSubcategoryList().get(0));
     }
 
     private Category findCategoryByName(String categoryName) {
@@ -86,11 +98,6 @@ public class AccommodationFiltersViewModel extends ViewModel {
         return categoryArrayList;
     }
 
-    public List<Category> createCategoryList(){
-        ArrayList<Category> categoryArrayList = new ArrayList<>();
-        categoryArrayList.add(new Category("HOTEL","Hotel"));
-        categoryArrayList.add(new Category("RESTAURANT","Ristoranti"));
-        categoryArrayList.add(new Category("ATTRACTION","Attrazioni"));
-        return categoryArrayList;
-    }
+
+
 }

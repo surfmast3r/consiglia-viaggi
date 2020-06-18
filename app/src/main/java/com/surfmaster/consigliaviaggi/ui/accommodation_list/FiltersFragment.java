@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -17,6 +18,7 @@ import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Category;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,13 +32,15 @@ public class FiltersFragment extends DialogFragment{
 
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private Spinner categorySpinner;
+    private Spinner subCategorySpinner;
     private RatingBar minRatingBar;
     private RatingBar maxRatingBar;
     private int currentSortOrder;
     private Category currentCategory;
+    private Category currentSubCategory;
     private Float minRating;
     private Float maxRating;
-
+    private boolean initialize =true;
 
 
     public static FiltersFragment newInstance() {
@@ -185,6 +189,8 @@ public class FiltersFragment extends DialogFragment{
 
     private void initCategorySpinner(View root){
         categorySpinner=root.findViewById(R.id.category_spinner);
+        subCategorySpinner=root.findViewById(R.id.sub_category_spinner);
+
         final CategorySpinnerAdapter adapter = new CategorySpinnerAdapter(this.getContext(),
                 android.R.layout.simple_spinner_item,
                 accommodationFiltersViewModel.getCategoryList());
@@ -193,31 +199,67 @@ public class FiltersFragment extends DialogFragment{
         // Apply the adapter to the spinner
         categorySpinner.setAdapter(adapter);
 
+        final CategorySpinnerAdapter subCategoryAdapter = new CategorySpinnerAdapter(this.getContext(),
+                android.R.layout.simple_spinner_item,
+                new ArrayList<Category>());
+        subCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        subCategorySpinner.setAdapter(subCategoryAdapter);
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!initialize) {
+                    subCategorySpinner.setSelection(0);
+                    subCategoryAdapter.clear();
+                    subCategoryAdapter.addAll(Objects.requireNonNull(adapter.getItem(i)).getSubcategoryList());
+                }else
+                    initialize=false;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
         currentCategory=accommodationFiltersViewModel.getCategory().getValue();
         if(currentCategory!=null){
             categorySpinner.setSelection(adapter.getPosition(currentCategory));
+            subCategoryAdapter.addAll(accommodationFiltersViewModel.getCategory().getValue().getSubcategoryList());
+        }
+
+        currentSubCategory=accommodationFiltersViewModel.getSubCategory().getValue();
+        if(currentSubCategory!=null){
+            subCategorySpinner.setSelection(subCategoryAdapter.getPosition(currentSubCategory));
 
         }
+
+
 
     }
 
     private boolean checkCategoryChanged(Category newCategory){
 
-        if(newCategory.getCategoryName().equals(currentCategory.getCategoryName()))
-            return false;
-        else
-            return true;
+        return !newCategory.getCategoryName().equals(currentCategory.getCategoryName());
+    }
+    private boolean checkSubCategoryChanged(Category newCategory){
+
+        return !newCategory.getCategoryName().equals(currentSubCategory.getCategoryName());
     }
 
     private void applyFilters(){
         Category newCategory= (Category) categorySpinner.getSelectedItem();
-
+        Category newSubCategory= (Category) subCategorySpinner.getSelectedItem();
         if (checkCategoryChanged(newCategory)) {
+            accommodationFiltersViewModel.setSubCategory(newSubCategory);
             accommodationFiltersViewModel.setCategory(newCategory);
             accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
             accommodationFiltersViewModel.setMinRating(Constants.DEFAULT_MIN_RATING);
             accommodationFiltersViewModel.setMaxRating(Constants.DEFAULT_MAX_RATING);
-
+        }else if(checkSubCategoryChanged(newSubCategory)) {
+            accommodationFiltersViewModel.setSubCategory(newSubCategory);
+            accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
+            accommodationFiltersViewModel.setMinRating(Constants.DEFAULT_MIN_RATING);
+            accommodationFiltersViewModel.setMaxRating(Constants.DEFAULT_MAX_RATING);
         }else{
             accommodationFiltersViewModel.setSortParam(currentSortOrder);
             accommodationFiltersViewModel.setMinRating(minRating);
@@ -226,11 +268,12 @@ public class FiltersFragment extends DialogFragment{
 
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.Animation_Design_BottomSheetDialog;
+        Objects.requireNonNull(dialog.getWindow()).getAttributes().windowAnimations = R.style.Animation_Design_BottomSheetDialog;
         return dialog;
     }
 
