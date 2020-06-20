@@ -2,6 +2,7 @@ package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.Category;
+import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,12 @@ public class AccommodationFiltersViewModel extends ViewModel {
     private MutableLiveData<Float> mMinRating;
     private MutableLiveData<Float> mMaxRating;
     private ArrayList<Category> categoryArrayList;
+    private MutableLiveData<SearchParamsAccommodation> mCurrentSearchParams;
+    private SearchParamsAccommodation searchParamsAccommodation;
 
     public AccommodationFiltersViewModel() {
 
+        mCurrentSearchParams =new MutableLiveData<>();
         categoryArrayList=new ArrayList<>();
         categoryArrayList.addAll(Category.createCategoryList());
         mMinRating=new MutableLiveData<>();
@@ -36,6 +40,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
         mSortParam.setValue(Constants.DEFAULT_ORDER);
 
         mText.setValue("This is accommodation filter fragment");
+        searchParamsAccommodation= new SearchParamsAccommodation.Builder().create();
     }
 
     public LiveData<String> getText() {
@@ -61,20 +66,30 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     public void setSortParam(Integer sortParam) {
         mSortParam.setValue(sortParam);
+        //searchParamsAccommodation.setDirection(1);
     }
 
     public void setCategory(Category category) {
         mCategory.setValue(category);
+        searchParamsAccommodation.setCurrentCategory(category.getCategoryName());
     }
     public void setSubCategory(Category newSubCategory) {
         mSubCategory.setValue(newSubCategory);
+        searchParamsAccommodation.setCurrentSubCategory(newSubCategory.getCategoryName());
     }
 
     /*pensare a qualcosa di meglio*/
     public void setCategory(String categoryName) {
-        mCategory.setValue(findCategoryByName(categoryName));
-        mSubCategory.setValue(Objects.requireNonNull(
-                findCategoryByName(categoryName)).getSubcategoryList().get(0));
+        Category cat = findCategoryByName(categoryName);
+        if (cat!=null) {
+            Category subCat = cat.getSubcategoryList().get(0);
+            mCategory.setValue(cat);
+            mSubCategory.setValue(subCat);
+            searchParamsAccommodation.setCurrentCategory(cat.getCategoryName());
+            searchParamsAccommodation.setCurrentSubCategory(subCat.getCategoryName());
+
+        }
+
     }
 
     private Category findCategoryByName(String categoryName) {
@@ -94,10 +109,16 @@ public class AccommodationFiltersViewModel extends ViewModel {
         mMaxRating.setValue(maxRating);
     }
 
+    public MutableLiveData<SearchParamsAccommodation> getCurrentSearchParams() {
+        return mCurrentSearchParams;
+    }
+
     public List<Category> getCategoryList(){
         return categoryArrayList;
     }
 
 
-
+    public void applySearchParams() {
+        mCurrentSearchParams.setValue(searchParamsAccommodation);
+    }
 }

@@ -72,12 +72,14 @@ public class AccommodationListFragment extends Fragment{
                     .setCurrentSearchString("Napoli")
                     .create();
         }
+
         View root = inflater.inflate(R.layout.fragment_accommodation_list, container, false);
 
         bindViews(root);
 
         initFilters(category);
 
+        updateAccommodationList(currentSearchParams);
         return root;
     }
 
@@ -88,13 +90,13 @@ public class AccommodationListFragment extends Fragment{
         accommodationFiltersViewModel.getCategory().observe(this, new Observer<Category>() {
             @Override
             public void onChanged(@Nullable Category category) {
-                if(!category.getCategoryName().equals(currentSearchParams.getCurrentCategory())) {
+               // if(!category.getCategoryName().equals(currentSearchParams.getCurrentCategory())) {
                     categoryTextView.setText(category.getCategoryLabel());
-                    currentSearchParams.setCurrentCategory(category.getCategoryName());
-                    updateAccommodationList(currentSearchParams);
-                    currentCategory=category.getCategoryName();
+                    //currentSearchParams.setCurrentCategory(category.getCategoryName());
+                    //updateAccommodationList(currentSearchParams);
+                    //currentCategory=category.getCategoryName();
 
-                }
+                //}
             }
         });
 
@@ -119,6 +121,14 @@ public class AccommodationListFragment extends Fragment{
                 }
         );
 
+        accommodationFiltersViewModel.getCurrentSearchParams().observe(this, new Observer<SearchParamsAccommodation>() {
+            @Override
+            public void onChanged(SearchParamsAccommodation searchParamsAccommodation) {
+                updateAccommodationList( searchParamsAccommodation);
+            }
+        });
+
+        /*
         accommodationFiltersViewModel.getSortParam().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer s) {
@@ -145,6 +155,8 @@ public class AccommodationListFragment extends Fragment{
                 }
             }
         });
+
+         */
 
     }
 
@@ -174,10 +186,11 @@ public class AccommodationListFragment extends Fragment{
         sortOrder=Constants.DEFAULT_ORDER;
         minRating=Constants.DEFAULT_MIN_RATING;
         maxRating=Constants.DEFAULT_MAX_RATING;
-        accommodationFiltersViewModel.setMinRating(minRating);
-        accommodationFiltersViewModel.setMaxRating(maxRating);
         accommodationFiltersViewModel.setCategory(category);
-        accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
+        //accommodationFiltersViewModel.setMinRating(minRating);
+        //accommodationFiltersViewModel.setMaxRating(maxRating);
+
+        //accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
 
     }
 

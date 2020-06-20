@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Category;
+import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -31,6 +32,7 @@ public class FiltersFragment extends DialogFragment{
     private DialogInterface.OnDismissListener onDismissListener;
 
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
+    private RadioGroup orderRadioGroup;
     private Spinner categorySpinner;
     private Spinner subCategorySpinner;
     private RatingBar minRatingBar;
@@ -40,6 +42,9 @@ public class FiltersFragment extends DialogFragment{
     private Category currentSubCategory;
     private Float minRating;
     private Float maxRating;
+
+    private boolean ratingChanged=false,orderChanged=false;
+
     private boolean initialize =true;
 
 
@@ -131,6 +136,7 @@ public class FiltersFragment extends DialogFragment{
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
 
+                ratingChanged=true;
                 minRating=minRatingBar.getRating();
                 maxRating=maxRatingBar.getRating();
 
@@ -161,17 +167,13 @@ public class FiltersFragment extends DialogFragment{
 
 
     private void initOrderRadioGroup(View root){
-        RadioGroup orderRadioGroup = root.findViewById(R.id.order_radio_button);
+        orderRadioGroup = root.findViewById(R.id.order_radio_button);
         orderRadioGroup.check(getCurrentSortParam());
-        orderRadioGroup.setOnCheckedChangeListener(setListOrderFilter());
 
-    }
-
-    private RadioGroup.OnCheckedChangeListener setListOrderFilter(){
-
-        return new RadioGroup.OnCheckedChangeListener() {
+        orderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                orderChanged=true;
                 switch (checkedId) {
                     case R.id.radio_best_rating:
                         currentSortOrder=Constants.BEST_RATING_ORDER;
@@ -184,7 +186,8 @@ public class FiltersFragment extends DialogFragment{
                         break;
                 }
             }
-        };
+        });
+
     }
 
     private void initCategorySpinner(View root){
@@ -221,6 +224,7 @@ public class FiltersFragment extends DialogFragment{
             }
         });
 
+
         currentCategory=accommodationFiltersViewModel.getCategory().getValue();
         if(currentCategory!=null){
             categorySpinner.setSelection(adapter.getPosition(currentCategory));
@@ -230,7 +234,8 @@ public class FiltersFragment extends DialogFragment{
         currentSubCategory=accommodationFiltersViewModel.getSubCategory().getValue();
         if(currentSubCategory!=null){
             subCategorySpinner.setSelection(subCategoryAdapter.getPosition(currentSubCategory));
-
+        }else{
+            subCategorySpinner.setSelection(0);
         }
 
 
@@ -247,25 +252,38 @@ public class FiltersFragment extends DialogFragment{
     }
 
     private void applyFilters(){
+        boolean applyFlag=false;
         Category newCategory= (Category) categorySpinner.getSelectedItem();
         Category newSubCategory= (Category) subCategorySpinner.getSelectedItem();
         if (checkCategoryChanged(newCategory)) {
+            applyFlag=true;
             accommodationFiltersViewModel.setSubCategory(newSubCategory);
             accommodationFiltersViewModel.setCategory(newCategory);
             accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
             accommodationFiltersViewModel.setMinRating(Constants.DEFAULT_MIN_RATING);
             accommodationFiltersViewModel.setMaxRating(Constants.DEFAULT_MAX_RATING);
         }else if(checkSubCategoryChanged(newSubCategory)) {
+            applyFlag=true;
             accommodationFiltersViewModel.setSubCategory(newSubCategory);
             accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
             accommodationFiltersViewModel.setMinRating(Constants.DEFAULT_MIN_RATING);
             accommodationFiltersViewModel.setMaxRating(Constants.DEFAULT_MAX_RATING);
-        }else{
-            accommodationFiltersViewModel.setSortParam(currentSortOrder);
+        }
+        if(ratingChanged){
+            applyFlag=true;
+            //accommodationFiltersViewModel.setSortParam(currentSortOrder);
             accommodationFiltersViewModel.setMinRating(minRating);
             accommodationFiltersViewModel.setMaxRating(maxRating);
         }
+        if(orderChanged)
+            applyFlag=true;
+            accommodationFiltersViewModel.setSortParam(currentSortOrder);
 
+        if(applyFlag) {
+            accommodationFiltersViewModel.applySearchParams();
+            ratingChanged=false;
+            orderChanged=false;
+        }
     }
 
     @NonNull
