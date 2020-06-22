@@ -6,7 +6,6 @@ import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -22,7 +21,6 @@ public class AccommodationFiltersViewModel extends ViewModel {
     private MutableLiveData<Float> mMaxRating;
     private ArrayList<Category> categoryArrayList;
     private MutableLiveData<SearchParamsAccommodation> mCurrentSearchParams;
-    private SearchParamsAccommodation searchParamsAccommodation;
 
     public AccommodationFiltersViewModel() {
 
@@ -40,7 +38,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
         mSortParam.setValue(Constants.DEFAULT_ORDER);
 
         mText.setValue("This is accommodation filter fragment");
-        searchParamsAccommodation= new SearchParamsAccommodation.Builder().create();
+        //searchParamsAccommodation= new SearchParamsAccommodation.Builder().create();
     }
 
     public LiveData<String> getText() {
@@ -71,11 +69,11 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     public void setCategory(Category category) {
         mCategory.setValue(category);
-        searchParamsAccommodation.setCurrentCategory(category.getCategoryName());
+        //searchParamsAccommodation.setCurrentCategory(category.getCategoryName());
     }
     public void setSubCategory(Category newSubCategory) {
         mSubCategory.setValue(newSubCategory);
-        searchParamsAccommodation.setCurrentSubCategory(newSubCategory.getCategoryName());
+        //searchParamsAccommodation.setCurrentSubCategory(newSubCategory.getCategoryName());
     }
 
     /*pensare a qualcosa di meglio*/
@@ -85,13 +83,11 @@ public class AccommodationFiltersViewModel extends ViewModel {
             Category subCat = cat.getSubcategoryList().get(0);
             mCategory.setValue(cat);
             mSubCategory.setValue(subCat);
-            searchParamsAccommodation.setCurrentCategory(cat.getCategoryName());
-            searchParamsAccommodation.setCurrentSubCategory(subCat.getCategoryName());
-
+            //searchParamsAccommodation.setCurrentCategory(cat.getCategoryName());
+            //searchParamsAccommodation.setCurrentSubCategory(subCat.getCategoryName());
         }
 
     }
-
     private Category findCategoryByName(String categoryName) {
         for(int i=0; i<categoryArrayList.size();i++) {
             if (categoryArrayList.get(i).getCategoryName().equals(categoryName)){
@@ -104,7 +100,6 @@ public class AccommodationFiltersViewModel extends ViewModel {
     public void setMinRating(float minRating) {
         mMinRating.setValue(minRating);
     }
-
     public void setMaxRating(float maxRating) {
         mMaxRating.setValue(maxRating);
     }
@@ -119,6 +114,10 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
 
     public void applySearchParams() {
+        SearchParamsAccommodation searchParamsAccommodation = new SearchParamsAccommodation.Builder()
+                .setCurrentCategory(mCategory.getValue().getCategoryName())
+                .setCurrentSubCategory(mSubCategory.getValue().getCategoryName())
+                .create();
         mCurrentSearchParams.setValue(searchParamsAccommodation);
     }
 }

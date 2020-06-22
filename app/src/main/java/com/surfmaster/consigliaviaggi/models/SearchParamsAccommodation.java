@@ -5,11 +5,11 @@ public class SearchParamsAccommodation {
     private String currentSearchString,currentCategory,currentSubCategory;
     private String orderBy;
     private String direction;
-    long currentpage;
+    long currentPage;
 
     public SearchParamsAccommodation(Builder builder) {
         this.currentCategory=builder.currentCategory;
-        this.currentpage=builder.currentpage;
+        this.currentPage =builder.currentPage;
         this.currentSubCategory=builder.currentSubCategory;
         this.currentSearchString=builder.currentSearchString;
         this.direction=builder.direction;
@@ -22,7 +22,7 @@ public class SearchParamsAccommodation {
         private String currentSearchString="",currentCategory="",currentSubCategory="";
         private String orderBy="id";
         private String direction="DESC";
-        long currentpage=0;
+        long currentPage =0;
 
         public Builder setCurrentSearchString(String currentSearchParam) {
             this.currentSearchString = currentSearchParam;
@@ -39,8 +39,8 @@ public class SearchParamsAccommodation {
             return this;
         }
 
-        public Builder setCurrentpage(long currentpage) {
-            this.currentpage = currentpage;
+        public Builder setCurrentPage(long currentPage) {
+            this.currentPage = currentPage;
             return this;
         }
         public Builder setOrderBy(String orderBy) {
@@ -73,7 +73,7 @@ public class SearchParamsAccommodation {
     }
 
     public long getCurrentPage() {
-        return currentpage;
+        return currentPage;
     }
 
     public String getOrderBy() {
@@ -104,7 +104,7 @@ public class SearchParamsAccommodation {
         this.direction = direction;
     }
 
-    public void setCurrentpage(long currentpage) {
-        this.currentpage = currentpage;
+    public void setCurrentPage(long currentPage) {
+        this.currentPage = currentPage;
     }
 }
