@@ -1,6 +1,7 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +43,12 @@ public class AccommodationListFragment extends Fragment{
     private String currentCategory;
     private ShimmerFrameLayout mShimmerViewContainer;
     private AccommodationRecyclerViewAdapter adapter;
+    //endless scroll
+    private int previousTotal = 0;
+    private boolean loading = true;
+    private int visibleThreshold = 2;
+    int firstVisibleItem, visibleItemCount, totalItemCount;
+    //endless scroll end
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -103,6 +110,35 @@ public class AccommodationListFragment extends Fragment{
         rv = root.findViewById(R.id.accommodation_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                visibleItemCount = llm.getChildCount();
+                totalItemCount = llm.getItemCount();
+                firstVisibleItem = llm.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount)
+                        <= (firstVisibleItem + visibleThreshold)) {
+                    // End has been reached
+
+                    Log.i("Recyler Endless scroll", "end called");
+                    accommodationListViewModel.loadMore();
+                    // Do something
+
+                    loading = true;
+                }
+            }
+        });
         accommodationListViewModel.getList().observe(this, new Observer<List>() {
 
                     @Override
@@ -111,10 +147,12 @@ public class AccommodationListFragment extends Fragment{
                             adapter=new AccommodationRecyclerViewAdapter(getContext(),s);
                             rv.setAdapter(adapter);
                             stopShimmerAnimation();
+                            previousTotal=0;
                         }
                         else {
                             adapter.refreshList(s);
                             stopShimmerAnimation();
+                            previousTotal=0;
                         }
 
                     }

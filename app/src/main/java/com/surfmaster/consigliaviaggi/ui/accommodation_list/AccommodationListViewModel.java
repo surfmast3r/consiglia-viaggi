@@ -1,5 +1,7 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
+import android.util.Log;
+
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
@@ -7,6 +9,7 @@ import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -19,10 +22,10 @@ import androidx.lifecycle.ViewModel;
 public class AccommodationListViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private List mAccommodationList;
+    private List<Accommodation> mAccommodationList;
     private List unsortedAccommodationList;
     private ViewAccommodationsController viewAccommodationsController;
-    private MutableLiveData<List> mFilteredAccommodationList;
+    private MutableLiveData<List<Accommodation>> mFilteredAccommodationList;
     private int currentOrder;
     private MutableLiveData<Integer> pageNumber;
     private SearchParamsAccommodation currentSearchParams;
@@ -45,7 +48,7 @@ public class AccommodationListViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
-    public MutableLiveData<List> getList(){
+    public MutableLiveData<List<Accommodation>> getList(){
         return mFilteredAccommodationList;
     }
 
@@ -66,10 +69,34 @@ public class AccommodationListViewModel extends ViewModel {
                     @Override
                     public void run() {
                         //List acList = viewAccommodationsController.getAccommodationList(currentCity);
-                        List acList = viewAccommodationsController.getAccommodationList(currentSearchParams);
+                        List<Accommodation> acList = viewAccommodationsController.getAccommodationList(currentSearchParams);
                         unsortedAccommodationList = viewAccommodationsController.copyList(acList);
                         mAccommodationList=viewAccommodationsController.copyList(acList);
                         mFilteredAccommodationList.postValue(acList);
+                    }
+                },3000);
+
+            }
+        });
+    }
+
+    public void loadMore(){
+        Log.i("Recyler Endless scroll", "Load More");
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        //List acList = viewAccommodationsController.getAccommodationList(currentCity);
+                        List<Accommodation> acList = viewAccommodationsController.nextPage();
+                        if (acList!= null) {
+                            mAccommodationList.addAll(acList);
+                            mFilteredAccommodationList.postValue(mAccommodationList);
+                        }
                     }
                 },3000);
 

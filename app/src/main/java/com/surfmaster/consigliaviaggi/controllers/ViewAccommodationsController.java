@@ -14,6 +14,7 @@ import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDao;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoJson;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoStub;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
+import com.surfmaster.consigliaviaggi.models.DTO.JsonPageResponse;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 import com.surfmaster.consigliaviaggi.ui.main.MainFragmentDirections;
 import com.surfmaster.consigliaviaggi.ui.main.SelectCityFragment;
@@ -32,7 +33,10 @@ public class ViewAccommodationsController {
     private static final String LATITUDE="currentLat",LONGITUDE="currentLong";
     private static final String CITY="SelectedCity";
     private static final String PREFERENCES="SharedPreferences";
-
+    private long pageNumber;
+    private long totalPageNumber;
+    private long totalElementNumber;
+    private SearchParamsAccommodation currentSearchParams;
     private List<Accommodation> accommodationList;
     private AccommodationDao acDao;
 
@@ -48,7 +52,12 @@ public class ViewAccommodationsController {
 
     public List<Accommodation> getAccommodationList(SearchParamsAccommodation params){
         try {
-            accommodationList=acDao.getAccommodationList(params).getContent();
+            currentSearchParams=params;
+            JsonPageResponse<Accommodation> jsonPageResponse=acDao.getAccommodationList(params);
+            accommodationList=jsonPageResponse.getContent();
+            pageNumber=jsonPageResponse.getPage();
+            totalPageNumber=jsonPageResponse.getTotalPages();
+            totalElementNumber=jsonPageResponse.getTotalElements();
         } catch (DaoException e) {
             e.printStackTrace();
         }
@@ -56,6 +65,13 @@ public class ViewAccommodationsController {
 
     }
 
+    public List<Accommodation> nextPage() {
+        if (pageNumber+1<totalPageNumber) {
+            currentSearchParams.setCurrentPage(pageNumber+1);
+            return getAccommodationList(currentSearchParams);
+        }
+        else return null;
+    }
     public Accommodation getAccommodationById(int id){
         Accommodation accommodation;
         accommodation=acDao.getAccommodationById(id);
