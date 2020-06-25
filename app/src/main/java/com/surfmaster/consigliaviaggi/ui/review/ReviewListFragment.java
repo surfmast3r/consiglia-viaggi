@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
+import com.surfmaster.consigliaviaggi.ViewAccommodationActivityArgs;
 import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
 
 import java.util.List;
@@ -32,9 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ReviewListFragment extends Fragment {
 
     private ReviewViewModel reviewViewModel;
-    private AccommodationViewModel accommodationViewModel;
 
-    private List reviewList;
     private RatingBar minRatingBar;
     private RatingBar maxRatingBar;
     private RecyclerView reviewsRecyclerView;
@@ -44,12 +43,12 @@ public class ReviewListFragment extends Fragment {
 
         reviewViewModel =
                 ViewModelProviders.of(this).get(ReviewViewModel.class);
-        accommodationViewModel =
-                ViewModelProviders.of(requireActivity()).get(AccommodationViewModel.class);
 
-        reviewViewModel.setReviewList(accommodationViewModel.getReviewList().getValue());
-
-
+        //reviewViewModel.setReviewList(accommodationViewModel.getReviewList().getValue());
+        if(getArguments()!=null) {
+            int accommodationId = ViewAccommodationActivityArgs.fromBundle(getArguments()).getAccommodationId();
+            reviewViewModel.setReviewList(accommodationId);
+        }
         View root = inflater.inflate(R.layout.fragment_review_list, container, false);
 
         bindViews(root);

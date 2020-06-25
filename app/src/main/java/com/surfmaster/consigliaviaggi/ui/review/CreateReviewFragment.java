@@ -5,10 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.surfmaster.consigliaviaggi.R;
+import com.surfmaster.consigliaviaggi.models.Review;
 import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
 
 import androidx.annotation.NonNull;
@@ -26,15 +26,15 @@ import androidx.navigation.ui.NavigationUI;
 public class CreateReviewFragment extends Fragment {
 
     private RatingBar ratingBar;
-    private AccommodationViewModel accommodationViewModel;
+    private ReviewViewModel reviewViewModel;
     private AppCompatEditText reviewEditText;
     private AppCompatButton publishButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        accommodationViewModel =
-                ViewModelProviders.of(requireActivity()).get(AccommodationViewModel.class);
+        reviewViewModel =
+                ViewModelProviders.of(requireActivity()).get(ReviewViewModel.class);
 
 
         View root = inflater.inflate(R.layout.fragment_create_review, container, false);
@@ -61,6 +61,7 @@ public class CreateReviewFragment extends Fragment {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with publish review action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         };
     }

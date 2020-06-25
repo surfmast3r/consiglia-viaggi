@@ -36,7 +36,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;

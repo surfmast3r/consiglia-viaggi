@@ -1,7 +1,6 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
@@ -23,7 +22,7 @@ public class AccommodationViewModel extends ViewModel {
     private static final int NUM_REVIEW=3;
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mAccommodationName;
-    private MutableLiveData<String> mAccommodationDescritpion;
+    private MutableLiveData<String> mAccommodationDescription;
     private MutableLiveData<String> mAccommodationCategory;
     private MutableLiveData<String> mAccommodationImage;
     private MutableLiveData<LatLng> mAccommodationLatLng;
@@ -32,8 +31,8 @@ public class AccommodationViewModel extends ViewModel {
     private MutableLiveData<Float> mAccommodationRating;
     private ViewAccommodationsController viewAccommodationsController;
     private ViewReviewController viewReviewController;
-    private MutableLiveData<List> mReviewList;
-    private MutableLiveData<List> mReviewSubList;
+    private MutableLiveData<List<Review>> mReviewList;
+    private MutableLiveData<List<Review>> mReviewSubList;
 
     public AccommodationViewModel() {
 
@@ -43,7 +42,7 @@ public class AccommodationViewModel extends ViewModel {
         mAccommodationRating= new MutableLiveData<>();
         mAccommodationLatLng= new MutableLiveData<>();
         mAccommodationCategory= new MutableLiveData<>();
-        mAccommodationDescritpion= new MutableLiveData<>();
+        mAccommodationDescription = new MutableLiveData<>();
         mAccommodation=new MutableLiveData<>();
         mText = new MutableLiveData<>();
         mAccommodationName = new MutableLiveData<>();
@@ -71,7 +70,7 @@ public class AccommodationViewModel extends ViewModel {
     }
 
     public LiveData<String> getAccommodationDescription() {
-        return mAccommodationDescritpion;
+        return mAccommodationDescription;
     }
 
     public LiveData<LatLng> getAccommodationLatLng() {
@@ -86,11 +85,11 @@ public class AccommodationViewModel extends ViewModel {
         return mAccommodationRating;
     }
 
-    public MutableLiveData<List> getReviewList(){
+    public MutableLiveData<List<Review>> getReviewList(){
         return mReviewList;
     }
 
-    public MutableLiveData<List> getReviewSubList(){
+    public MutableLiveData<List<Review>> getReviewSubList(){
         return mReviewSubList;
     }
 
@@ -123,7 +122,7 @@ public class AccommodationViewModel extends ViewModel {
                         mAccommodationName.postValue(ac.getName());
                         mAccommodationImage.postValue(ac.getImages().get(0));
                         mAccommodationLatLng.postValue(new LatLng(ac.getLatitude(),ac.getLongitude()));
-                        mAccommodationDescritpion.postValue(ac.getDescription());
+                        mAccommodationDescription.postValue(ac.getDescription());
                         mAccommodationCategory.postValue(ac.getSubcategory().toString());
                         mReviewSubList.postValue(reviewSubList);
                         mReviewList.postValue(reviewList);

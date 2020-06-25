@@ -6,6 +6,10 @@ import com.surfmaster.consigliaviaggi.models.Review;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,8 +18,8 @@ import androidx.lifecycle.ViewModel;
 public class ReviewViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private List mReviewList;
-    private MutableLiveData<List> mFilteredReviewList;
+    private List<Review> mReviewList;
+    private MutableLiveData<List<Review>> mFilteredReviewList;
     private ViewReviewController viewReviewController;
     private int currentOrder;
 
@@ -23,7 +27,7 @@ public class ReviewViewModel extends ViewModel {
 
         viewReviewController = new ViewReviewController();
         mText = new MutableLiveData<>();
-        mReviewList=new ArrayList();
+        mReviewList=new ArrayList<>();
         mFilteredReviewList=new MutableLiveData<>();
         currentOrder=Constants.DEFAULT_ORDER;
         mText.setValue("This is review list fragment");
@@ -33,13 +37,31 @@ public class ReviewViewModel extends ViewModel {
         return mText;
     }
 
-    public MutableLiveData<List> getFilteredReviewList(){
+    public MutableLiveData<List<Review>> getFilteredReviewList(){
         return mFilteredReviewList;
     }
 
-    public void setReviewList(List reviewList){
-        mReviewList=viewReviewController.copyList(reviewList);
-        mFilteredReviewList.setValue(reviewList);
+    public void setReviewList(final int accommodationId){
+
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        List<Review>  reviewList= viewReviewController.getReviewList(accommodationId);
+                        reviewList=viewReviewController.orderReviewListByDate(reviewList);
+                        mReviewList=viewReviewController.copyList(reviewList);
+                        mFilteredReviewList.postValue(reviewList);
+                    }
+                },3000);
+
+            }
+        });
 
     }
 
