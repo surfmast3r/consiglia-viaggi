@@ -1,15 +1,16 @@
-package com.surfmaster.consigliaviaggi.models;
+package com.surfmaster.consigliaviaggi.models.DAO;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.surfmaster.consigliaviaggi.models.DAO.ReviewDao;
+import com.surfmaster.consigliaviaggi.models.Review;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewDaoStub implements ReviewDao{
+public class ReviewDaoStub implements ReviewDao {
 
     @Override
-    public List<Review> getReviewList(int id) {
-        List reviewList=createReviewList(id);
+    public List<Review> getReviewList(int accommodationId) {
+        List<Review> reviewList=createReviewList(accommodationId);
         return reviewList;
     }
 
@@ -23,8 +24,8 @@ public class ReviewDaoStub implements ReviewDao{
         return false;
     }
 
-    private List createReviewList(int id) {
-        List reviewList=new ArrayList();
+    private List<Review> createReviewList(int id) {
+        List<Review> reviewList=new ArrayList<>();
         for (int i=0; i<10;i++){
             String sDate=(i+1)+"/12/2020";
             reviewList.add(new Review.Builder()

@@ -12,12 +12,16 @@ public class Review implements Comparable{
     private String reviewText;
     private float rating;
     private String data;
+    private int accommodationId;
+    private String accommodationName;
 
     public Review(Builder builder) {
         this.author=builder.author;
         this.reviewText=builder.reviewText;
         this.rating=builder.rating;
         this.data= builder.data;
+        this.accommodationId=builder.accommodationId;
+        this.accommodationName=builder.accommodationName;
     }
 
     public String getAuthor() {
@@ -36,6 +40,14 @@ public class Review implements Comparable{
         return rating;
     }
 
+    public int getAccommodationId() {
+        return accommodationId;
+    }
+
+    public String getAccommodationName() {
+        return accommodationName;
+    }
+
     @Override
     public int compareTo(Object o) {
         Review review = (Review) o ;
@@ -50,12 +62,14 @@ public class Review implements Comparable{
     }
 
 
-    static class Builder {
+    public static class Builder {
 
-        public String data;
+        private String data;
         private String author;
         private String reviewText;
         private float rating;
+        private int accommodationId;
+        private String accommodationName;
 
         public Builder setReviewText(String reviewText) {
             this.reviewText = reviewText;
@@ -73,6 +87,16 @@ public class Review implements Comparable{
         }
         public Builder setData(String data) {
             this.data = data;
+            return this;
+        }
+
+        public Builder setAccommodationId(int accommodationId) {
+            this.accommodationId = accommodationId;
+            return this;
+        }
+
+        public Builder setAccommodationName(String accommodationName) {
+            this.accommodationName = accommodationName;
             return this;
         }
 

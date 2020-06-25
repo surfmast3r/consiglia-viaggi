@@ -1,5 +1,6 @@
 package com.surfmaster.consigliaviaggi.ui.map;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -171,6 +172,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -240,7 +242,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         try {
             if (mLocationPermissionGranted) {
                 if(mLastKnownLocation==null){
-                    Task locationResult = mFusedLocationProviderClient.getLastLocation();
+                    Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
                     locationResult.addOnCompleteListener(requireActivity(), new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
@@ -291,28 +293,28 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
     }
 
     private void setMapListObserver(){
-        accommodationMapViewModel.getAccommodationList().observe(AccommodationMapFragment.this, new Observer<List>() {
+        accommodationMapViewModel.getAccommodationList().observe(AccommodationMapFragment.this, new Observer<List<Accommodation>>() {
 
             @Override
-            public void onChanged(@Nullable List s) {
-                List<Accommodation> accommodationList = s;
+            public void onChanged(@Nullable List<Accommodation> accommodationList) {
 
                 gMap.clear();
                 mClusterManager.clearItems();
 
-                for (int i = 0; i < accommodationList.size(); i++) {
-                    Accommodation ac = accommodationList.get(i);
-                    MyClusterItem myitem = new MyClusterItem(new LatLng(ac.getLatitude(), ac.getLongitude()),
-                            ac.getName(),
-                            ac.getSubcategory(),
-                            ac.getLogoUrl(),
-                            ac.getAddress(),
-                            ac.getRating(),
-                            ac.getId()
-                    );
-                    mClusterManager.addItem(myitem);
+                if(accommodationList!=null)
+                    for (int i = 0; i < accommodationList.size(); i++) {
+                        Accommodation ac = accommodationList.get(i);
+                        MyClusterItem myitem = new MyClusterItem(new LatLng(ac.getLatitude(), ac.getLongitude()),
+                                ac.getName(),
+                                ac.getSubcategory(),
+                                ac.getLogoUrl(),
+                                ac.getAddress(),
+                                ac.getRating(),
+                                ac.getId()
+                        );
+                        mClusterManager.addItem(myitem);
 
-                }
+                    }
             }
         });
     }

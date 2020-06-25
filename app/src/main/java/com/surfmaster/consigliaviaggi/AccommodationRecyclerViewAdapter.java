@@ -16,9 +16,11 @@ import com.surfmaster.consigliaviaggi.models.Location;
 import com.surfmaster.consigliaviaggi.ui.accommodation_list.AccommodationListFragmentDirections;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -76,8 +78,16 @@ public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Accom
         accommodationViewHolder.accommodationAddress.setText(accommodations.get(position).getAddress());
         String image= accommodations.get(position).getImages().get(0);
 
-        if(!image.equals(""))
-            Picasso.get().load(accommodations.get(position).getImages().get(0)).into(accommodationViewHolder.accommodationImage);
+        if (image.isEmpty()) {
+            accommodationViewHolder.accommodationImage.setImageResource(R.drawable.placeholder);
+        } else{
+            Picasso.get().load(accommodations.get(position).getImages().get(0))
+                .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.placeholder)))
+                    .error(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.placeholder)))
+                .into(accommodationViewHolder.accommodationImage);
+        }
+
+
         accommodationViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

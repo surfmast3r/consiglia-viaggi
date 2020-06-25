@@ -2,6 +2,7 @@ package com.surfmaster.consigliaviaggi.ui.map;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
+import com.surfmaster.consigliaviaggi.models.Accommodation;
 
 import java.util.List;
 import java.util.Timer;
@@ -16,7 +17,7 @@ import androidx.lifecycle.ViewModel;
 public class AccommodationMapViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private MutableLiveData<List> mAccommodationList;
+    private MutableLiveData<List<Accommodation>> mAccommodationList;
     private ViewAccommodationsController viewAccommodationsController;
 
     public AccommodationMapViewModel() {
@@ -30,7 +31,7 @@ public class AccommodationMapViewModel extends ViewModel {
         return mText;
     }
 
-    public MutableLiveData<List> getAccommodationList(){
+    public MutableLiveData<List<Accommodation>> getAccommodationList(){
         return mAccommodationList;
     }
 

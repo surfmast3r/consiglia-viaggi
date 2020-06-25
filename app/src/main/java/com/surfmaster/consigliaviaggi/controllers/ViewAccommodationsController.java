@@ -11,8 +11,7 @@ import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDao;
-import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoJson;
-import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoStub;
+import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoJSON;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 import com.surfmaster.consigliaviaggi.models.DTO.JsonPageResponse;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
@@ -41,7 +40,7 @@ public class ViewAccommodationsController {
     private AccommodationDao acDao;
 
     public ViewAccommodationsController(){
-        acDao= new AccommodationDaoJson();
+        acDao= new AccommodationDaoJSON();
     }
 
     public List<Accommodation> getAccommodationList(String city){
@@ -73,8 +72,12 @@ public class ViewAccommodationsController {
         else return null;
     }
     public Accommodation getAccommodationById(int id){
-        Accommodation accommodation;
-        accommodation=acDao.getAccommodationById(id);
+        Accommodation accommodation = null;
+        try {
+            accommodation=acDao.getAccommodationById(id);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
         return accommodation;
 
     }

@@ -5,7 +5,9 @@ import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
+import com.surfmaster.consigliaviaggi.models.Review;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -100,13 +102,19 @@ public class AccommodationViewModel extends ViewModel {
             public void run() {
 
                 Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
 
-                        List reviewList= viewReviewController.getReviewList(id);
+                        List<Review>  reviewList= viewReviewController.getReviewList(id);
                         reviewList=viewReviewController.orderReviewListByDate(reviewList);
-                        List reviewSubList = viewReviewController.reviewSubList(reviewList,NUM_REVIEW);
+                        List<Review>  reviewSubList = new ArrayList<>();
+                        if(reviewList.size()>NUM_REVIEW){
+                            reviewSubList.addAll(reviewList.subList(0,NUM_REVIEW));
+                        }else{
+                            reviewSubList.addAll(reviewList);
+                        }
+
 
                         Accommodation ac = viewAccommodationsController.getAccommodationById(id);
                         mAccommodationId.postValue(ac.getId());

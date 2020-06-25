@@ -110,11 +110,16 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
 
             @Override
             public void onChanged(@Nullable String s) {
-                Picasso.get().load(s)
-                        .placeholder(getContext().getResources().getDrawable(R.drawable.placeholder))
-                        .error(getContext().getResources()
-                                .getDrawable(R.drawable.placeholder)).
-                        into(accommodationImage);
+                if (s.isEmpty()) {
+                    accommodationImage.setImageResource(R.drawable.placeholder);
+                } else{
+                    Picasso.get().load(s)
+                            .placeholder(getContext().getResources().getDrawable(R.drawable.placeholder))
+                            .error(getContext().getResources()
+                                    .getDrawable(R.drawable.placeholder))
+                            .into(accommodationImage);
+                }
+
             }
         });
 

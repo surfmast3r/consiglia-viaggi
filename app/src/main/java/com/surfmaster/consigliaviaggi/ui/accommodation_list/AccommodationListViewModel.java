@@ -9,7 +9,6 @@ import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;

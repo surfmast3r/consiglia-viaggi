@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AccommodationDaoJson implements AccommodationDao{
+public class AccommodationDaoJSON implements AccommodationDao{
 
     @Override
     public ArrayList<Accommodation> getAccommodationList(String city) {
@@ -41,8 +41,8 @@ public class AccommodationDaoJson implements AccommodationDao{
 
 
     @Override
-    public Accommodation getAccommodationById(int id) {
-        return null;
+    public Accommodation getAccommodationById(int id) throws DaoException{
+        return getAccommodationJSON(id);
     }
 
     // GET
@@ -72,7 +72,7 @@ public class AccommodationDaoJson implements AccommodationDao{
             throw new DaoException(DaoException.ERROR,e.getMessage());
         }
 
-        Log.v("Url richiesta pagina", urlString);
+        Log.i("Url richiesta pagina", urlString);
         BufferedReader bufferedReader;
         try {
             bufferedReader = getJSONFromUrl(urlString);
@@ -83,6 +83,20 @@ public class AccommodationDaoJson implements AccommodationDao{
         JsonObject jsonObject= JsonParser.parseReader(bufferedReader).getAsJsonObject();
 
         return parseAccommodationsPage(jsonObject);
+    }
+
+    private Accommodation getAccommodationJSON(int id) throws DaoException {
+        String urlString= Constants.GET_ACCOMMODATION_LIST_URL+"?"+Constants.ACCOMMODATION_ID_PARAM+id;
+
+        BufferedReader bufferedReader;
+        try {
+            bufferedReader = getJSONFromUrl(urlString);
+        } catch (MalformedURLException e) {
+            throw new DaoException(DaoException.ERROR,e.getMessage());
+        }
+        JsonElement jsonTree  = JsonParser.parseReader(bufferedReader);
+        JsonObject accommodationJSON = jsonTree.getAsJsonObject();
+        return parseAccommodation(accommodationJSON);
     }
     private BufferedReader getJSONFromUrl(String urlString) throws MalformedURLException, DaoException {
         URL url = new URL(urlString);
