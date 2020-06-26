@@ -1,5 +1,6 @@
 package com.surfmaster.consigliaviaggi.models.DAO;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -11,9 +12,11 @@ import com.surfmaster.consigliaviaggi.models.Review;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,8 +35,32 @@ public class ReviewDaoJSON implements ReviewDao{
     }
 
     @Override
-    public boolean postReview(Review review) {
-        return false;
+    public Review postReview(Review review) throws  DaoException {
+        JsonObject jsonReview=encodeReview(review);
+        Review newReview= null;
+        try {
+            newReview = parseReview(createReviewJSON(jsonReview));
+        } catch (IOException e) {
+            throw new DaoException(DaoException.ERROR, "Errore di rete");
+        }
+        return newReview;
+    }
+
+    private JsonObject createReviewJSON(JsonObject accommodationJson) throws IOException,DaoException {
+        int responseCode;
+        HttpURLConnection connection = createAuthenticatedConnection(Constants.CREATE_REVIEW_URL, "POST");
+        writeOutputStream(connection, accommodationJson.toString());
+        responseCode = connection.getResponseCode();
+
+        BufferedReader jsonResponse;
+        if (responseCode == HttpURLConnection.HTTP_CREATED) {
+            jsonResponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        } else if (responseCode == 401) {
+            throw new DaoException(DaoException.FORBIDDEN_ACCESS, "Non autorizzato");
+        } else {
+            throw new DaoException(DaoException.ERROR, "Errore di rete");
+        }
+        return JsonParser.parseReader(jsonResponse).getAsJsonObject();
     }
 
     private JsonPageResponse<Review> getReviewListJSONParsing(int accommodationId) throws DaoException {
@@ -124,5 +151,32 @@ public class ReviewDaoJSON implements ReviewDao{
         }
         return new SimpleDateFormat("dd/MM/yyyy, HH:mm").format(date);
 
+    }
+
+    // Authenticate for Create/Delete/Edit methods
+    private HttpURLConnection createAuthenticatedConnection(String urlString,String requestMethod) throws IOException {
+        //TO DO: Autenticazione
+        String token="";
+        URL url = new URL(urlString);
+        HttpURLConnection connection;
+        connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod(requestMethod);
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Authorization","Bearer "+token);
+        connection.setRequestProperty("Content-Type","application/json");
+        return connection;
+    }
+    private void writeOutputStream(HttpURLConnection connection,String stream) throws IOException {
+        OutputStream os = connection.getOutputStream();
+        byte[] input = stream.getBytes(StandardCharsets.UTF_8);
+        os.write(input, 0, input.length);
+    }
+
+    private JsonObject encodeReview(Review review) {
+        Gson gson = new Gson();
+        JsonObject reviewJson = JsonParser.parseString(gson.toJson(review)).getAsJsonObject();
+        System.out.println("\nAuto encoded: " + reviewJson);
+
+        return reviewJson;
     }
 }

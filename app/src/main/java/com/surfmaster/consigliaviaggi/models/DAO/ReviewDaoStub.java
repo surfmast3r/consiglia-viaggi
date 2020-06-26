@@ -1,6 +1,5 @@
 package com.surfmaster.consigliaviaggi.models.DAO;
 
-import com.surfmaster.consigliaviaggi.models.DAO.ReviewDao;
 import com.surfmaster.consigliaviaggi.models.Review;
 
 import java.util.ArrayList;
@@ -20,8 +19,8 @@ public class ReviewDaoStub implements ReviewDao {
     }
 
     @Override
-    public boolean postReview(Review review) {
-        return false;
+    public Review postReview(Review review) {
+        return null;
     }
 
     private List<Review> createReviewList(int id) {
