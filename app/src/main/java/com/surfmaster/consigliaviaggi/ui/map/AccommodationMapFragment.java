@@ -78,7 +78,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 ViewModelProviders.of(this).get(AccommodationMapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_map, container, false);
         final TextView textView = root.findViewById(R.id.text_map);
-        accommodationMapViewModel.getText().observe(this, new Observer<String>() {
+        accommodationMapViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

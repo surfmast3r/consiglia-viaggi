@@ -21,7 +21,7 @@
 
 
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:id="@+id/frg"
             android:layout_width="match_parent"

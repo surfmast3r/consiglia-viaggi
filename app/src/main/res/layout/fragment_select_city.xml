@@ -104,6 +104,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view" />
+            <EditText
+                android:id="@+id/place_search"
+                android:hint="Search"
+                android:inputType="textPostalAddress"
+                android:padding="15dp"
+                android:layout_marginBottom="15dp"
+                android:drawableLeft="@drawable/places_ic_search"
+                app:layout_constraintTop_toBottomOf="@id/autocomplete_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/places_recycler_view"
+                android:background="#FFF"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/place_search"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -114,7 +133,7 @@
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/autocomplete_city">
+                app:layout_constraintTop_toBottomOf="@id/place_search">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/positionButton"
