@@ -29,10 +29,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SelectCityFragment extends DialogFragment implements PlacesAutoCompleteAdapter.ClickListener{
 
     private MainViewModel mainViewModel;
-    private AutoCompleteTextView cityAutoCompleteTextView;
+    private EditText cityAutoCompleteTextView;
     private ViewAccommodationsController viewAccommodationsController;
     private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
     private RecyclerView recyclerView;
+    private Double latitude,longitude;
+
 
 
     public static SelectCityFragment newInstance() {
@@ -69,7 +71,7 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
 
         /*google places autocomplete*/
         // Get a reference to the AutoCompleteTextView in the layout
-        cityAutoCompleteTextView = root.findViewById(R.id.autocomplete_city);
+        cityAutoCompleteTextView = root.findViewById(R.id.place_search);
         recyclerView = root.findViewById(R.id.places_recycler_view);
         ((EditText) root.findViewById(R.id.place_search)).addTextChangedListener(filterTextWatcher);
         mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(requireContext());
@@ -80,11 +82,11 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
         /*google places autocomplete end*/
 
         // Get the string array
-        String[] cities = getResources().getStringArray(R.array.cities_array);
+        //String[] cities = getResources().getStringArray(R.array.cities_array);
         // Create the adapter and set it to the AutoCompleteTextView
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(root.getContext(), android.R.layout.simple_list_item_1, cities);
-        cityAutoCompleteTextView.setAdapter(adapter);
+        //ArrayAdapter<String> adapter =
+        //        new ArrayAdapter<>(root.getContext(), android.R.layout.simple_list_item_1, cities);
+        //cityAutoCompleteTextView.setAdapter(adapter);
         cityAutoCompleteTextView.setHint(mainViewModel.getCity().getValue());
 
         final TextView textView = root.findViewById(R.id.select_city_fragment_text);
@@ -106,7 +108,8 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        validateCityField();
+
+                        updateCityField();
                     }
                 });
                 break;
@@ -138,14 +141,6 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
         cityAutoCompleteTextView.setHint(mainViewModel.getCity().getValue());
     }
 
-    private void validateCityField(){
-        if(new ViewAccommodationsController().cityIsValid(requireContext(),cityAutoCompleteTextView.getText().toString())) {
-            updateCityField();
-            dismiss();
-        }
-        else
-        cityAutoCompleteTextView.setError("Città non valida");
-    }
 
     private void updateCityField(){
         mainViewModel.setCity(cityAutoCompleteTextView.getText().toString());
@@ -177,7 +172,10 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
 
 
     @Override
-    public void click(Place place) {
-        Toast.makeText(requireContext(), place.getAddress()+", "+place.getLatLng().latitude+place.getLatLng().longitude, Toast.LENGTH_SHORT).show();
+    public void click(Place place, String placeName) {
+        cityAutoCompleteTextView.setText(placeName);
+        latitude=place.getLatLng().latitude;
+        longitude=place.getLatLng().longitude;
+        Toast.makeText(requireContext(), place.getName()+", "+place.getLatLng().latitude+place.getLatLng().longitude, Toast.LENGTH_SHORT).show();
     }
 }

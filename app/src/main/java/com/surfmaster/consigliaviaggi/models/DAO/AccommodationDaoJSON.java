@@ -57,13 +57,17 @@ public class AccommodationDaoJSON implements AccommodationDao{
         try {
             urlString = Constants.GET_ACCOMMODATION_LIST_URL+"?"+
                     Constants.QUERY_PARAM+
-                    URLEncoder.encode(params.getCurrentSearchString(), StandardCharsets.UTF_8.name())+"&"+
+                    URLEncoder.encode(params.getCurrentCity(), StandardCharsets.UTF_8.name())+"&"+
                     Constants.CATEGORY_PARAM+
                     params.getCurrentCategory()+"&"+
                     Constants.SUBCATEGORY_PARAM+
                     params.getCurrentSubCategory()+"&"+
                     Constants.ORDER_BY_PARAM+
                     params.getOrderBy()+"&"+
+                    Constants.MIN_RATING+
+                    params.getMinRating()+"&"+
+                    Constants.MAX_RATING+
+                    params.getMaxRating()+"&"+
                     Constants.DIRECTION_PARAM+
                     params.getDirection()+"&"+
                     Constants.PAGE_PARAM+
@@ -126,11 +130,11 @@ public class AccommodationDaoJSON implements AccommodationDao{
         }
         JsonPageResponse<Accommodation> response = new JsonPageResponse<>();
         response.setContent(accommodationCollection);
-        response.setPage(jsonPage.get("page").getAsLong());
-        response.setOffset(jsonPage.get("offset").getAsLong());
-        response.setPageSize(jsonPage.get("pageSize").getAsLong());
-        response.setTotalPages(jsonPage.get("totalPages").getAsLong());
-        response.setTotalElements(jsonPage.get("totalElements").getAsLong());
+        response.setPage(jsonPage.get("page").getAsInt());
+        response.setOffset(jsonPage.get("offset").getAsInt());
+        response.setPageSize(jsonPage.get("pageSize").getAsInt());
+        response.setTotalPages(jsonPage.get("totalPages").getAsInt());
+        response.setTotalElements(jsonPage.get("totalElements").getAsInt());
         return response;
     }
     private Accommodation parseAccommodation(JsonObject accommodationJson){

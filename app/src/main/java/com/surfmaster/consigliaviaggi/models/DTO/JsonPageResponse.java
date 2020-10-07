@@ -6,7 +6,7 @@ import java.util.List;
 public class JsonPageResponse <T> implements Serializable {
 
     private List<T> content;
-    private long offset,page,pageSize,totalPages,totalElements;
+    private int offset,page,pageSize,totalPages,totalElements;
 
     public List<T> getContent() {
         return content;
@@ -20,15 +20,15 @@ public class JsonPageResponse <T> implements Serializable {
         return offset;
     }
 
-    public void setOffset(long offset) {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
 
-    public long getPage() {
+    public int getPage() {
         return page;
     }
 
-    public void setPage(long page) {
+    public void setPage(int page) {
         this.page = page;
     }
 
@@ -36,23 +36,23 @@ public class JsonPageResponse <T> implements Serializable {
         return pageSize;
     }
 
-    public void setPageSize(long pageSize) {
+    public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
 
-    public long getTotalPages() {
+    public int getTotalPages() {
         return totalPages;
     }
 
-    public void setTotalPages(long totalPages) {
+    public void setTotalPages(int totalPages) {
         this.totalPages = totalPages;
     }
 
-    public long getTotalElements() {
+    public int getTotalElements() {
         return totalElements;
     }
 
-    public void setTotalElements(long totalElements) {
+    public void setTotalElements(int totalElements) {
         this.totalElements = totalElements;
     }
 

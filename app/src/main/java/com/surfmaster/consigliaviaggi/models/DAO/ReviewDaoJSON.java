@@ -91,11 +91,11 @@ public class ReviewDaoJSON implements ReviewDao{
         System.out.println("COLLECTION" + reviewCollection);
         JsonPageResponse<Review> response = new JsonPageResponse<>();
         response.setContent(reviewCollection);
-        response.setPage(jsonPage.get("page").getAsLong());
-        response.setOffset(jsonPage.get("offset").getAsLong());
-        response.setPageSize(jsonPage.get("pageSize").getAsLong());
-        response.setTotalPages(jsonPage.get("totalPages").getAsLong());
-        response.setTotalElements(jsonPage.get("totalElements").getAsLong());
+        response.setPage(jsonPage.get("page").getAsInt());
+        response.setOffset(jsonPage.get("offset").getAsInt());
+        response.setPageSize(jsonPage.get("pageSize").getAsInt());
+        response.setTotalPages(jsonPage.get("totalPages").getAsInt());
+        response.setTotalElements(jsonPage.get("totalElements").getAsInt());
         return response;
     }
 

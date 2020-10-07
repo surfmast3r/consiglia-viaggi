@@ -39,6 +39,7 @@ public class AccommodationListFragment extends Fragment{
     private float minRating;
     private float maxRating;
     private String category;
+    private String city;
     private SearchParamsAccommodation currentSearchParams;
     private String currentCategory;
     private ShimmerFrameLayout mShimmerViewContainer;
@@ -74,9 +75,10 @@ public class AccommodationListFragment extends Fragment{
 
         if(getArguments()!=null) {
             category = AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
+            city = AccommodationListFragmentArgs.fromBundle(getArguments()).getCity();
             currentSearchParams= new SearchParamsAccommodation.Builder()
                     .setCurrentCategory(category)
-                    .setCurrentSearchString("Napoli")
+                    .setCurrentCity(city)
                     .create();
         }
 
@@ -84,7 +86,7 @@ public class AccommodationListFragment extends Fragment{
 
         bindViews(root);
 
-        initFilters(category);
+        initFilters();
 
         updateAccommodationList(currentSearchParams);
         return root;
@@ -220,11 +222,12 @@ public class AccommodationListFragment extends Fragment{
     }
 
 
-    private void initFilters(String category) {
+    private void initFilters() {
         sortOrder=Constants.DEFAULT_ORDER;
         minRating=Constants.DEFAULT_MIN_RATING;
         maxRating=Constants.DEFAULT_MAX_RATING;
         accommodationFiltersViewModel.setCategory(category);
+
         //accommodationFiltersViewModel.setMinRating(minRating);
         //accommodationFiltersViewModel.setMaxRating(maxRating);
 

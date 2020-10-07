@@ -47,6 +47,7 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
     private CharacterStyle STYLE_NORMAL;
     private final PlacesClient placesClient;
     private ClickListener clickListener;
+    private String placeName;
 
     public PlacesAutoCompleteAdapter(Context context) {
         mContext = context;
@@ -60,7 +61,7 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
     }
 
     public interface ClickListener {
-        void click(Place place);
+        void click(Place place , String placeName);
     }
 
     /**
@@ -112,7 +113,7 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
                 //.setLocationBias(bounds)
-                //.setCountry("BD")
+                .setCountry("IT")
                 //.setTypeFilter(TypeFilter.ADDRESS)
                 .setSessionToken(token)
                 .setQuery(constraint.toString())
@@ -183,16 +184,16 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
         public void onClick(View v) {
             PlaceAutocomplete item = mResultList.get(getAdapterPosition());
             //if (v.getId() == R.id.place_item_view) {
-
+            placeName=String.valueOf(item.area);
             String placeId = String.valueOf(item.placeId);
-
             List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
             FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
+
             placesClient.fetchPlace(request).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
                 @Override
                 public void onSuccess(FetchPlaceResponse response) {
                     Place place = response.getPlace();
-                    clickListener.click(place);
+                    clickListener.click(place , placeName);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

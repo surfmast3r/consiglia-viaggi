@@ -35,6 +35,8 @@ public final class Constants  {
     public static final String ACCOMMODATION_NAME_PARAM ="accommodationName=" ;
     public static final String GET_REVIEW_URL=SERVER_URL+"single_review_view";
     public static final String ORDER_BY_PARAM ="orderBy=" ;
+    public static final String MIN_RATING ="minRating=" ;
+    public static final String MAX_RATING ="maxRating=" ;
     public static final String DIRECTION_PARAM ="direction=" ;
     public static final String CREATE_REVIEW_URL = SERVER_URL+"/review/create";
 

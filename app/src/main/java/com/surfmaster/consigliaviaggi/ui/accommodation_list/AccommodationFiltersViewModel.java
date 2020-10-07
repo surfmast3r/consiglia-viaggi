@@ -117,6 +117,9 @@ public class AccommodationFiltersViewModel extends ViewModel {
         SearchParamsAccommodation searchParamsAccommodation = new SearchParamsAccommodation.Builder()
                 .setCurrentCategory(mCategory.getValue().getCategoryName())
                 .setCurrentSubCategory(mSubCategory.getValue().getCategoryName())
+                .setDirection(mSortParam.getValue().toString())
+                .setMinRating(mMinRating.getValue())
+                .setMaxRating(mMaxRating.getValue())
                 .create();
         mCurrentSearchParams.setValue(searchParamsAccommodation);
     }

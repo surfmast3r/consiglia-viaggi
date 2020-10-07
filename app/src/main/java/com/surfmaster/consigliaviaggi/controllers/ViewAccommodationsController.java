@@ -32,9 +32,9 @@ public class ViewAccommodationsController {
     private static final String LATITUDE="currentLat",LONGITUDE="currentLong";
     private static final String CITY="SelectedCity";
     private static final String PREFERENCES="SharedPreferences";
-    private long pageNumber;
-    private long totalPageNumber;
-    private long totalElementNumber;
+    private int pageNumber;
+    private int totalPageNumber;
+    private int totalElementNumber;
     private SearchParamsAccommodation currentSearchParams;
     private List<Accommodation> accommodationList;
     private AccommodationDao acDao;
@@ -54,7 +54,6 @@ public class ViewAccommodationsController {
             currentSearchParams=params;
             JsonPageResponse<Accommodation> jsonPageResponse=acDao.getAccommodationList(params);
             accommodationList=jsonPageResponse.getContent();
-            /*TODO: check if list is null*/
             pageNumber=jsonPageResponse.getPage();
             totalPageNumber=jsonPageResponse.getTotalPages();
             totalElementNumber=jsonPageResponse.getTotalElements();
@@ -135,7 +134,7 @@ public class ViewAccommodationsController {
         MainFragmentDirections.ActionNavHomeToNavAccommodationList action;
 
         if (!getSelectedCity(context).equals(context.getString(R.string.city_select))) {
-            action = MainFragmentDirections.actionNavHomeToNavAccommodationList(category);
+            action = MainFragmentDirections.actionNavHomeToNavAccommodationList(category,getSelectedCity(context));
             Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(action);
         }
         else {

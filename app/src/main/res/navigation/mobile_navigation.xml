@@ -62,6 +62,9 @@
         <argument
             android:name="accommodation_category"
             app:argType="string" />
+        <argument
+            android:name="city"
+            app:argType="string" />
 
 
         <action
