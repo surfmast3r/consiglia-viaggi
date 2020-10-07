@@ -54,7 +54,7 @@ public class MainFragment extends Fragment {
 
     private void bindViews() {
 
-        mainViewModel.getCity().observe(this, new Observer<String>() {
+        mainViewModel.getCity().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 citySelectButton.setText(s);

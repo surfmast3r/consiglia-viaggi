@@ -172,36 +172,37 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
 
         PredictionHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             area = itemView.findViewById(R.id.place_area);
             address = itemView.findViewById(R.id.place_address);
             mRow = itemView.findViewById(R.id.place_item_view);
-            itemView.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
             PlaceAutocomplete item = mResultList.get(getAdapterPosition());
-            if (v.getId() == R.id.place_item_view) {
+            //if (v.getId() == R.id.place_item_view) {
 
-                String placeId = String.valueOf(item.placeId);
+            String placeId = String.valueOf(item.placeId);
 
-                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
-                FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
-                placesClient.fetchPlace(request).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
-                    @Override
-                    public void onSuccess(FetchPlaceResponse response) {
-                        Place place = response.getPlace();
-                        clickListener.click(place);
+            List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
+            FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
+            placesClient.fetchPlace(request).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
+                @Override
+                public void onSuccess(FetchPlaceResponse response) {
+                    Place place = response.getPlace();
+                    clickListener.click(place);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    if (exception instanceof ApiException) {
+                        Toast.makeText(mContext, exception.getMessage() + "", Toast.LENGTH_SHORT).show();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        if (exception instanceof ApiException) {
-                            Toast.makeText(mContext, exception.getMessage() + "", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
+                }
+            });
+           // }
         }
     }
 

@@ -70,7 +70,7 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
         /*google places autocomplete*/
         // Get a reference to the AutoCompleteTextView in the layout
         cityAutoCompleteTextView = root.findViewById(R.id.autocomplete_city);
-        recyclerView = (RecyclerView) root.findViewById(R.id.places_recycler_view);
+        recyclerView = root.findViewById(R.id.places_recycler_view);
         ((EditText) root.findViewById(R.id.place_search)).addTextChangedListener(filterTextWatcher);
         mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(requireContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));

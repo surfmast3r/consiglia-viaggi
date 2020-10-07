@@ -54,6 +54,7 @@ public class ViewAccommodationsController {
             currentSearchParams=params;
             JsonPageResponse<Accommodation> jsonPageResponse=acDao.getAccommodationList(params);
             accommodationList=jsonPageResponse.getContent();
+            /*TODO: check if list is null*/
             pageNumber=jsonPageResponse.getPage();
             totalPageNumber=jsonPageResponse.getTotalPages();
             totalElementNumber=jsonPageResponse.getTotalElements();

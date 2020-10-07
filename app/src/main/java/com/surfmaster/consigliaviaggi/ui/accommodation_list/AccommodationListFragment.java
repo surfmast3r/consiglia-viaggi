@@ -75,7 +75,7 @@ public class AccommodationListFragment extends Fragment{
         if(getArguments()!=null) {
             category = AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
             currentSearchParams= new SearchParamsAccommodation.Builder()
-                    .setCurrentCategory("")
+                    .setCurrentCategory(category)
                     .setCurrentSearchString("Napoli")
                     .create();
         }
@@ -94,7 +94,7 @@ public class AccommodationListFragment extends Fragment{
         mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
 
         categoryTextView = root.findViewById(R.id.category_text_view);
-        accommodationFiltersViewModel.getCategory().observe(this, new Observer<Category>() {
+        accommodationFiltersViewModel.getCategory().observe(getViewLifecycleOwner(), new Observer<Category>() {
             @Override
             public void onChanged(@Nullable Category category) {
                // if(!category.getCategoryName().equals(currentSearchParams.getCurrentCategory())) {
@@ -139,7 +139,7 @@ public class AccommodationListFragment extends Fragment{
                 }
             }
         });
-        accommodationListViewModel.getList().observe(this, new Observer<List>() {
+        accommodationListViewModel.getList().observe(getViewLifecycleOwner(), new Observer<List>() {
 
                     @Override
                     public void onChanged(@Nullable List s) {
@@ -159,7 +159,7 @@ public class AccommodationListFragment extends Fragment{
                 }
         );
 
-        accommodationFiltersViewModel.getCurrentSearchParams().observe(this, new Observer<SearchParamsAccommodation>() {
+        accommodationFiltersViewModel.getCurrentSearchParams().observe(getViewLifecycleOwner(), new Observer<SearchParamsAccommodation>() {
             @Override
             public void onChanged(SearchParamsAccommodation searchParamsAccommodation) {
                 updateAccommodationList( searchParamsAccommodation);
