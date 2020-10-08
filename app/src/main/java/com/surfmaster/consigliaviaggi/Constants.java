@@ -16,6 +16,10 @@ public final class Constants  {
     public static final int DEFAULT_ORDER = 0;
     public static final int BEST_RATING_ORDER = 1;
     public static final int WORST_RATING_ORDER = 2;
+    public static final String ASC = "ASC";
+    public static final String DESC = "DESC";
+    public static final String ID = "id";
+    public static final String RATING = "rating";
 
     /*JSON URLs*/
     public static final String SERVER_URL="http://10.0.2.2:5000/";

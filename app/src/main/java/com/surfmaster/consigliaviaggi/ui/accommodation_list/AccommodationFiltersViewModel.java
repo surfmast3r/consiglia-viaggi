@@ -21,6 +21,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
     private MutableLiveData<Float> mMaxRating;
     private ArrayList<Category> categoryArrayList;
     private MutableLiveData<SearchParamsAccommodation> mCurrentSearchParams;
+    private String orderBy;
 
     public AccommodationFiltersViewModel() {
 
@@ -35,10 +36,10 @@ public class AccommodationFiltersViewModel extends ViewModel {
         mSortParam=new MutableLiveData<>();
         mCategory=new MutableLiveData<>();
         mSubCategory=new MutableLiveData<>();
-        mSortParam.setValue(Constants.DEFAULT_ORDER);
 
+        mSortParam.setValue(Constants.DEFAULT_ORDER);
+        orderBy=Constants.ID;
         mText.setValue("This is accommodation filter fragment");
-        //searchParamsAccommodation= new SearchParamsAccommodation.Builder().create();
     }
 
     public LiveData<String> getText() {
@@ -64,16 +65,18 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     public void setSortParam(Integer sortParam) {
         mSortParam.setValue(sortParam);
-        //searchParamsAccommodation.setDirection(1);
+        if (sortParam==Constants.DEFAULT_ORDER)
+            orderBy=Constants.ID;
+        else
+            orderBy=Constants.RATING;
     }
 
     public void setCategory(Category category) {
         mCategory.setValue(category);
-        //searchParamsAccommodation.setCurrentCategory(category.getCategoryName());
     }
     public void setSubCategory(Category newSubCategory) {
         mSubCategory.setValue(newSubCategory);
-        //searchParamsAccommodation.setCurrentSubCategory(newSubCategory.getCategoryName());
+
     }
 
     /*pensare a qualcosa di meglio*/
@@ -83,8 +86,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
             Category subCat = cat.getSubcategoryList().get(0);
             mCategory.setValue(cat);
             mSubCategory.setValue(subCat);
-            //searchParamsAccommodation.setCurrentCategory(cat.getCategoryName());
-            //searchParamsAccommodation.setCurrentSubCategory(subCat.getCategoryName());
+
         }
 
     }
@@ -120,7 +122,22 @@ public class AccommodationFiltersViewModel extends ViewModel {
                 .setDirection(mSortParam.getValue().toString())
                 .setMinRating(mMinRating.getValue())
                 .setMaxRating(mMaxRating.getValue())
+                .setOrderBy(orderBy)
+                .setDirection(getDirection(mSortParam.getValue()))
                 .create();
         mCurrentSearchParams.setValue(searchParamsAccommodation);
+    }
+
+    private String getDirection(int order) {
+        String direction= Constants.DESC;;
+        switch (order) {
+            case Constants.BEST_RATING_ORDER:
+                direction= Constants.DESC;
+                break;
+            case Constants.WORST_RATING_ORDER:
+                direction= Constants.ASC;
+                break;
+        }
+        return direction;
     }
 }

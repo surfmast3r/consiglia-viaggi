@@ -271,13 +271,15 @@ public class FiltersFragment extends DialogFragment{
         }
         if(ratingChanged){
             applyFlag=true;
-            //accommodationFiltersViewModel.setSortParam(currentSortOrder);
+
             accommodationFiltersViewModel.setMinRating(minRating);
             accommodationFiltersViewModel.setMaxRating(maxRating);
         }
-        if(orderChanged)
+        if(orderChanged){
             applyFlag=true;
             accommodationFiltersViewModel.setSortParam(currentSortOrder);
+        }
+
 
         if(applyFlag) {
             accommodationFiltersViewModel.applySearchParams();

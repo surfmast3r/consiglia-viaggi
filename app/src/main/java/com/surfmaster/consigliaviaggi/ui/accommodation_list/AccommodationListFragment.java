@@ -35,13 +35,9 @@ public class AccommodationListFragment extends Fragment{
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private RecyclerView rv;
     private TextView categoryTextView;
-    private Integer sortOrder;
-    private float minRating;
-    private float maxRating;
     private String category;
     private String city;
     private SearchParamsAccommodation currentSearchParams;
-    private String currentCategory;
     private ShimmerFrameLayout mShimmerViewContainer;
     private AccommodationRecyclerViewAdapter adapter;
     //endless scroll
@@ -71,8 +67,6 @@ public class AccommodationListFragment extends Fragment{
         accommodationFiltersViewModel =
                 ViewModelProviders.of(requireActivity()).get(AccommodationFiltersViewModel.class);
 
-        currentCategory="";
-
         if(getArguments()!=null) {
             category = AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
             city = AccommodationListFragmentArgs.fromBundle(getArguments()).getCity();
@@ -99,13 +93,9 @@ public class AccommodationListFragment extends Fragment{
         accommodationFiltersViewModel.getCategory().observe(getViewLifecycleOwner(), new Observer<Category>() {
             @Override
             public void onChanged(@Nullable Category category) {
-               // if(!category.getCategoryName().equals(currentSearchParams.getCurrentCategory())) {
-                    categoryTextView.setText(category.getCategoryLabel());
-                    //currentSearchParams.setCurrentCategory(category.getCategoryName());
-                    //updateAccommodationList(currentSearchParams);
-                    //currentCategory=category.getCategoryName();
 
-                //}
+                categoryTextView.setText(category.getCategoryLabel());
+
             }
         });
 
@@ -168,64 +158,23 @@ public class AccommodationListFragment extends Fragment{
             }
         });
 
-        /*
-        accommodationFiltersViewModel.getSortParam().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer s) {
-                    sortAccommodationList(s);
-            }
-        });
-
-        accommodationFiltersViewModel.getMinRating().observe(this, new Observer<Float>() {
-            @Override
-            public void onChanged(Float min) {
-                if(!min.equals(minRating)) {
-                    minRating=min;
-                    filterAccommodationList(minRating,maxRating);
-                }
-
-            }
-        });
-        accommodationFiltersViewModel.getMaxRating().observe(this, new Observer<Float>() {
-            @Override
-            public void onChanged(Float max) {
-                if(!max.equals(maxRating)) {
-                    maxRating = max;
-                    filterAccommodationList(minRating, maxRating);
-                }
-            }
-        });
-
-         */
 
     }
 
-    private void filterAccommodationList(float minRating, float maxRating) {
-        accommodationListViewModel.filterAccommodationList(minRating,maxRating);
-    }
-
-    private void sortAccommodationList(Integer order) {
-        if(!order.equals(sortOrder)) {
-            accommodationListViewModel.orderAccommodationList(order);
-            sortOrder=order;
-        }
-    }
 
     private void updateAccommodationList(SearchParamsAccommodation searchParams) {
         if (adapter!=null)
             adapter.clearList();
-        sortOrder=Constants.DEFAULT_ORDER;
-        minRating=Constants.DEFAULT_MIN_RATING;
-        maxRating=Constants.DEFAULT_MAX_RATING;
+
         startShimmerAnimation();
         accommodationListViewModel.setAccommodationList(searchParams);
     }
 
 
     private void initFilters() {
-        sortOrder=Constants.DEFAULT_ORDER;
-        minRating=Constants.DEFAULT_MIN_RATING;
-        maxRating=Constants.DEFAULT_MAX_RATING;
+        //sortOrder=Constants.DEFAULT_ORDER;
+        //minRating=Constants.DEFAULT_MIN_RATING;
+        //maxRating=Constants.DEFAULT_MAX_RATING;
         accommodationFiltersViewModel.setCategory(category);
 
         //accommodationFiltersViewModel.setMinRating(minRating);
