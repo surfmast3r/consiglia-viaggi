@@ -8,6 +8,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -15,6 +17,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.surfmaster.consigliaviaggi.controllers.AuthenticationController;
+import com.surfmaster.consigliaviaggi.models.User;
+import com.surfmaster.consigliaviaggi.ui.account.LoginViewModel;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -22,20 +27,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
+    private LoginViewModel loginViewModel;
+    private TextView userTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+
+        loginViewModel.tryLogin(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        userTextView= navigationView.getHeaderView(0).findViewById(R.id.usernameTextView);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -56,6 +69,16 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
                 Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_tools);
+            }
+        });
+
+        loginViewModel.getLoggedIn().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean logged) {
+                if(logged){
+
+                    userTextView.setText("Benvenuto "+ loginViewModel.getUserName(getApplicationContext()));
+                }
             }
         });
     }

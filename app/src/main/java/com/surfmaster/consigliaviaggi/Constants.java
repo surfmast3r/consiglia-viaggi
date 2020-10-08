@@ -24,6 +24,7 @@ public final class Constants  {
     /*JSON URLs*/
     public static final String SERVER_URL="http://10.0.2.2:5000/";
     public static final String LOGIN_URL = SERVER_URL+"authenticate";
+    public static final String REGISTER = SERVER_URL+"register";
     public static final String PAGE_PARAM ="page=";
     //Accommodation
     public static final String GET_ACCOMMODATION_LIST_URL = SERVER_URL+"accommodation";
@@ -44,6 +45,12 @@ public final class Constants  {
     public static final String DIRECTION_PARAM ="direction=" ;
     public static final String CREATE_REVIEW_URL = SERVER_URL+"/review/create";
 
+    public static final String PREFERENCES="SharedPreferences";
+    public static final String LATITUDE="currentLat",LONGITUDE="currentLong";
+    public static final String CITY="SelectedCity";
+    public static final String USER = "USER" ;
+    public static final String PWD = "PWD";
+    public static final String TOKEN ="TOKEN" ;
 
     private Constants(){
         //this prevents even the native class from

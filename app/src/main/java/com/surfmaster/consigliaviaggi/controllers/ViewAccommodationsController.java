@@ -29,9 +29,6 @@ import androidx.navigation.Navigation;
 
 public class ViewAccommodationsController {
 
-    private static final String LATITUDE="currentLat",LONGITUDE="currentLong";
-    private static final String CITY="SelectedCity";
-    private static final String PREFERENCES="SharedPreferences";
     private int pageNumber;
     private int totalPageNumber;
     private int totalElementNumber;
@@ -102,29 +99,29 @@ public class ViewAccommodationsController {
 
     public String getSelectedCity(Context context) {
 
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES, 0);
-        if (pref.contains(CITY)) {
-            return pref.getString(CITY,"");
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
+        if (pref.contains(Constants.CITY)) {
+            return pref.getString(Constants.CITY,"");
         }
         else
         return context.getString(R.string.city_select);
     }
 
     public void updateSelectedCity(Context context, String city, Double lat, Double lon) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES, 0); // 0 - for private mode
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString(CITY,city);
-        editor.putLong(LATITUDE, Double.doubleToRawLongBits(lat));
-        editor.putLong(LONGITUDE, Double.doubleToRawLongBits(lon));
+        editor.putString(Constants.CITY,city);
+        editor.putLong(Constants.LATITUDE, Double.doubleToRawLongBits(lat));
+        editor.putLong(Constants.LONGITUDE, Double.doubleToRawLongBits(lon));
         editor.apply();
     }
 
     public String resetSelectedCity(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES, 0); // 0 - for private mode
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
-        editor.remove(CITY);
-        editor.remove(LATITUDE);
-        editor.remove(LONGITUDE);
+        editor.remove(Constants.CITY);
+        editor.remove(Constants.LATITUDE);
+        editor.remove(Constants.LONGITUDE);
         editor.apply();
         return context.getString(R.string.city_select);
     }

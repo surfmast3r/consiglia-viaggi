@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.surfmaster.consigliaviaggi.CategoryEnum;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
+import com.surfmaster.consigliaviaggi.ui.account.LoginViewModel;
 
 public class MainFragment extends Fragment {
 
@@ -34,6 +35,7 @@ public class MainFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         viewAccommodationsController=new ViewAccommodationsController();
+
 
         mainViewModel =
                 ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
