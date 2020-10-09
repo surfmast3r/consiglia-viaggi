@@ -1,11 +1,8 @@
 package com.surfmaster.consigliaviaggi;
 
 import android.os.Bundle;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
@@ -15,24 +12,17 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.navigation.NavigationView;
-import com.surfmaster.consigliaviaggi.controllers.AuthenticationController;
-import com.surfmaster.consigliaviaggi.models.User;
 import com.surfmaster.consigliaviaggi.ui.account.LoginViewModel;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
-
     private LoginViewModel loginViewModel;
     private TextView userTextView;
 
@@ -41,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         super.onCreate(savedInstanceState);
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel.tryLogin();
 
-        loginViewModel.tryLogin(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             public void onChanged(Boolean logged) {
                 if(logged){
 
-                    userTextView.setText("Benvenuto "+ loginViewModel.getUserName(getApplicationContext()));
+                    userTextView.setText("Benvenuto "+ loginViewModel.getUserName());
                 }
             }
         });

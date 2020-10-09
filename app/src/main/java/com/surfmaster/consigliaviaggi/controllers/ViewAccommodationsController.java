@@ -35,15 +35,12 @@ public class ViewAccommodationsController {
     private SearchParamsAccommodation currentSearchParams;
     private List<Accommodation> accommodationList;
     private AccommodationDao acDao;
+    private Context context;
 
-    public ViewAccommodationsController(){
+    public ViewAccommodationsController(Context context){
+
+        this.context=context;
         acDao= new AccommodationDaoJSON();
-    }
-
-    public List<Accommodation> getAccommodationList(String city){
-        accommodationList=acDao.getAccommodationList(city);
-        return accommodationList;
-
     }
 
     public List<Accommodation> getAccommodationList(SearchParamsAccommodation params){
@@ -84,20 +81,7 @@ public class ViewAccommodationsController {
         return accommodationList;
     }
 
-    public boolean cityIsValid (Context context, String cityName){
-        List<String> cities = Arrays.asList(context.getResources().getStringArray(R.array.cities_array));
-
-        //some logic here returns true or false based on if the text is validated
-        for(int i = 0; i < cities.size(); i++) {
-            String city = cities.get(i);
-            if(city.equals(cityName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String getSelectedCity(Context context) {
+    public String getSelectedCity() {
 
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
         if (pref.contains(Constants.CITY)) {
@@ -107,7 +91,7 @@ public class ViewAccommodationsController {
         return context.getString(R.string.city_select);
     }
 
-    public void updateSelectedCity(Context context, String city, Double lat, Double lon) {
+    public void updateSelectedCity(String city, Double lat, Double lon) {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Constants.CITY,city);
@@ -116,7 +100,7 @@ public class ViewAccommodationsController {
         editor.apply();
     }
 
-    public String resetSelectedCity(Context context) {
+    public String resetSelectedCity() {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         editor.remove(Constants.CITY);
@@ -126,50 +110,30 @@ public class ViewAccommodationsController {
         return context.getString(R.string.city_select);
     }
 
-    public void navigateToAccommodationListFragment(Context context, String category) {
+    public void navigateToAccommodationListFragment( String category) {
 
         MainFragmentDirections.ActionNavHomeToNavAccommodationList action;
 
-        if (!getSelectedCity(context).equals(context.getString(R.string.city_select))) {
-            action = MainFragmentDirections.actionNavHomeToNavAccommodationList(category,getSelectedCity(context));
+        if (!getSelectedCity().equals(context.getString(R.string.city_select))) {
+            action = MainFragmentDirections.actionNavHomeToNavAccommodationList(category,getSelectedCity());
             Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(action);
         }
         else {
-            navigateToSelectCityFragment(context);
+            navigateToSelectCityFragment();
         }
     }
 
-    public void navigateToSelectCityFragment(Context context) {
+    public void navigateToSelectCityFragment() {
         AppCompatActivity activity=(AppCompatActivity)context;
         FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         DialogFragment newFragment = SelectCityFragment.newInstance();
         newFragment.show(ft, "dialog");
     }
 
-    public void navigateToAccommodationMapFragment(Context context) {
+    public void navigateToAccommodationMapFragment() {
         Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(MainFragmentDirections.actionNavHomeToNavMap());
 
     }
 
-    public List<Accommodation> orderAccommodationListByRating(List<Accommodation> accommodationList, int order) {
-        if(order== Constants.ASCENDING)
-            Collections.sort(accommodationList);
-        else if (order == Constants.DESCENDING)
-            Collections.sort(accommodationList,Collections.reverseOrder());
-        return accommodationList;
-    }
 
-    public List<Accommodation> copyList(List<Accommodation> acList) {
-        return new ArrayList<>(acList);
-    }
-
-    public List<Accommodation> filterAccommodationList(List<Accommodation> accommodationList, float minRating, float maxRating) {
-
-        List<Accommodation> filteredList = new ArrayList<>();
-        for(Accommodation accommodation : accommodationList){
-            if(accommodation.getRating()>minRating&&accommodation.getRating()<maxRating)
-                filteredList.add(accommodation);
-        }
-        return filteredList;
-    }
 }

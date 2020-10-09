@@ -19,8 +19,13 @@ import java.nio.charset.StandardCharsets;
 
 public class AuthenticationController {
 
+    private Context context;
 
-    public Boolean authenticate(Context context,String user, String pwd)  {
+    public AuthenticationController(Context context){
+        this.context=context;
+    }
+
+    public Boolean authenticate(String user, String pwd)  {
         System.out.println("User: "+user+" pwd: "+pwd);
         BufferedReader jsonResponse = null;
         try {
@@ -33,7 +38,7 @@ public class AuthenticationController {
             System.out.print(token);
             if (token != null) {
 
-                saveUser(context,user,pwd,token);
+                saveUser(user,pwd,token);
                 return true;
 
             }
@@ -72,7 +77,7 @@ public class AuthenticationController {
         return jsonResponse.get("token").getAsString();
     }
 
-    public void saveUser(Context context, String user, String pwd, String token) {
+    public void saveUser(String user, String pwd, String token) {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Constants.USER,user);
@@ -81,24 +86,24 @@ public class AuthenticationController {
         editor.apply();
     }
 
-    public String getUserName(Context context){
+    public String getUserName(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
         String userName=pref.getString(Constants.USER,"");
 
         return userName;
     }
-    public String getUserPwd(Context context){
+    public String getUserPwd(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
         String pwd=pref.getString(Constants.PWD,"");
 
         return pwd;
     }
 
-    public boolean tryLogin(Context context){
+    public boolean tryLogin(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
         String userName=pref.getString(Constants.USER,"");
         String pwd=pref.getString(Constants.PWD,"");
-        return authenticate(context,userName,pwd);
+        return authenticate(userName,pwd);
     }
 
 }

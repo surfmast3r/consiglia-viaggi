@@ -108,7 +108,7 @@
 
     <fragment
         android:id="@+id/nav_signup"
-        android:name="com.surfmaster.consigliaviaggi.ui.account.SignupFragment"
+        android:name="com.surfmaster.consigliaviaggi.ui.account.RegisterFragment"
         android:label="@string/menu_signup"
         tools:layout="@layout/fragment_signup" />
 

@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.surfmaster.consigliaviaggi.CategoryEnum;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
-import com.surfmaster.consigliaviaggi.ui.account.LoginViewModel;
 
 public class MainFragment extends Fragment {
 
@@ -34,14 +33,14 @@ public class MainFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        viewAccommodationsController=new ViewAccommodationsController();
+        viewAccommodationsController=new ViewAccommodationsController(requireContext());
 
 
         mainViewModel =
                 ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mainViewModel.setCity(viewAccommodationsController.getSelectedCity(requireContext()));
+        mainViewModel.setCity(viewAccommodationsController.getSelectedCity());
 
         mapViewButton=root.findViewById(R.id.explore_map_button);
         hotelButton = root.findViewById(R.id.hotel_button);
@@ -81,7 +80,7 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        viewAccommodationsController.navigateToSelectCityFragment(activity);
+                        viewAccommodationsController.navigateToSelectCityFragment();
                     }
                 });
                 break;
@@ -90,7 +89,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity, CategoryEnum.HOTEL.name());
+                        viewAccommodationsController.navigateToAccommodationListFragment( CategoryEnum.HOTEL.name());
                     }
                 });
                 break;
@@ -98,7 +97,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity, CategoryEnum.RESTAURANT.name());
+                        viewAccommodationsController.navigateToAccommodationListFragment( CategoryEnum.RESTAURANT.name());
                     }
                 });
                 break;
@@ -106,7 +105,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationListFragment(activity, CategoryEnum.ATTRACTION.name());
+                        viewAccommodationsController.navigateToAccommodationListFragment( CategoryEnum.ATTRACTION.name());
                     }
                 });
                 break;
@@ -114,7 +113,7 @@ public class MainFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        viewAccommodationsController.navigateToAccommodationMapFragment(activity);
+                        viewAccommodationsController.navigateToAccommodationMapFragment();
                     }
                 });
                 break;

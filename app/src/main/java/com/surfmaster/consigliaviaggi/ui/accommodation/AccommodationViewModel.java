@@ -1,5 +1,8 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation;
 
+import android.app.Application;
+import android.content.Context;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
@@ -13,11 +16,13 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class AccommodationViewModel extends ViewModel {
+public class AccommodationViewModel extends AndroidViewModel {
+
+    private Context context;
 
     private static final int NUM_REVIEW=3;
     private MutableLiveData<String> mText;
@@ -34,8 +39,10 @@ public class AccommodationViewModel extends ViewModel {
     private MutableLiveData<List<Review>> mReviewList;
     private MutableLiveData<List<Review>> mReviewSubList;
 
-    public AccommodationViewModel() {
+    public AccommodationViewModel(Application application) {
+        super(application);
 
+        context=application;
         mReviewList=new MutableLiveData<>();
         mReviewSubList=new MutableLiveData<>();
         mAccommodationId= new MutableLiveData<>();
@@ -49,7 +56,7 @@ public class AccommodationViewModel extends ViewModel {
         mAccommodationImage = new MutableLiveData<>();
         mText.setValue("This is Accommodation fragment");
 
-        viewAccommodationsController = new ViewAccommodationsController();
+        viewAccommodationsController = new ViewAccommodationsController(application);
         viewReviewController = new ViewReviewController();
     }
 

@@ -1,5 +1,9 @@
 package com.surfmaster.consigliaviaggi.controllers;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -17,10 +21,20 @@ import java.nio.charset.StandardCharsets;
 
 public class RegistrationController {
 
-    public User createUser(User user) throws IOException, DaoException {
+    private Context context;
+    public RegistrationController(Context application) {
+        context=application;
+    }
 
-        return parseUser(createUserJSON(user));
+    public boolean registerUser(User user)  {
+       JsonObject userJson = null;
+        try {
+            userJson=createUserJSON(user);
+        } catch (DaoException e) {
+            return false;
+        }
 
+        return true;
     }
 
     private User parseUser(JsonObject userJSON) {
@@ -28,26 +42,35 @@ public class RegistrationController {
         return gson.fromJson(userJSON,User.class);
     }
 
-    private JsonObject createUserJSON(User user) throws IOException, DaoException {
+    private JsonObject createUserJSON(User user) throws  DaoException {
+        int responseCode;
+        BufferedReader jsonResponse;
         Gson gson = new Gson();
         JsonObject userJson = JsonParser.parseString(gson.toJson(user)).getAsJsonObject();
-        HttpURLConnection connection = createConnection(Constants.REGISTER, "POST");
-        int responseCode;
 
-        OutputStream os = connection.getOutputStream();
+        System.out.println(userJson);
+
         byte[] input = userJson.toString().getBytes(StandardCharsets.UTF_8);
-        os.write(input, 0, input.length);
-
-        responseCode=connection.getResponseCode();
-
-        BufferedReader jsonResponse;
-        if (responseCode== HttpURLConnection.HTTP_CREATED) {
-            jsonResponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        }
-
-        else{
+        try {
+            HttpURLConnection connection = createConnection(Constants.REGISTER, "POST");
+            OutputStream os = connection.getOutputStream();
+            os.write(input, 0, input.length);
+            responseCode=connection.getResponseCode();
+            if (responseCode== HttpURLConnection.HTTP_OK) {
+                jsonResponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            }
+            else if(responseCode== HttpURLConnection.HTTP_INTERNAL_ERROR){
+                throw  new DaoException(DaoException.FAIL_TO_INSERT,"Username già in uso");
+            }
+            else{
+                throw  new DaoException(DaoException.ERROR,"Errore di rete");
+            }
+        } catch (IOException e) {
             throw  new DaoException(DaoException.ERROR,"Errore di rete");
         }
+
+
+
         return JsonParser.parseReader(jsonResponse).getAsJsonObject();
 
     }

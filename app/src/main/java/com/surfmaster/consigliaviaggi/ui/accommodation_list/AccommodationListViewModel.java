@@ -1,5 +1,6 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
+import android.app.Application;
 import android.util.Log;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
@@ -10,11 +11,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class AccommodationListViewModel extends ViewModel {
+public class AccommodationListViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
     private List<Accommodation> mAccommodationList;
@@ -22,8 +24,9 @@ public class AccommodationListViewModel extends ViewModel {
     private MutableLiveData<List<Accommodation>> mFilteredAccommodationList;
     private SearchParamsAccommodation currentSearchParams;
 
-    public AccommodationListViewModel() {
-        viewAccommodationsController =new ViewAccommodationsController();
+    public AccommodationListViewModel(Application application) {
+        super(application);
+        viewAccommodationsController =new ViewAccommodationsController(application);
         mFilteredAccommodationList=new MutableLiveData<>();
         mText = new MutableLiveData<>();
         mAccommodationList= new ArrayList<>();
@@ -58,8 +61,7 @@ public class AccommodationListViewModel extends ViewModel {
                     public void run() {
 
                         List<Accommodation> acList = viewAccommodationsController.getAccommodationList(currentSearchParams);
-
-                        mAccommodationList=viewAccommodationsController.copyList(acList);
+                        mAccommodationList=new ArrayList<>(acList);
                         mFilteredAccommodationList.postValue(acList);
                     }
                 },3000);

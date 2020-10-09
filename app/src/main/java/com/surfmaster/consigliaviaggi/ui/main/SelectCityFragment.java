@@ -54,7 +54,7 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        viewAccommodationsController=new ViewAccommodationsController();
+        viewAccommodationsController=new ViewAccommodationsController(requireContext());
 
         mainViewModel =
                 ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
@@ -81,12 +81,6 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
         mAutoCompleteAdapter.notifyDataSetChanged();
         /*google places autocomplete end*/
 
-        // Get the string array
-        //String[] cities = getResources().getStringArray(R.array.cities_array);
-        // Create the adapter and set it to the AutoCompleteTextView
-        //ArrayAdapter<String> adapter =
-        //        new ArrayAdapter<>(root.getContext(), android.R.layout.simple_list_item_1, cities);
-        //cityAutoCompleteTextView.setAdapter(adapter);
         cityAutoCompleteTextView.setHint(mainViewModel.getCity().getValue());
 
         final TextView textView = root.findViewById(R.id.select_city_fragment_text);
@@ -131,20 +125,18 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
                 break;
         }
 
-
-
     }
 
     private void resetCityField() {
         //viewAccommodationsController.resetSelectedCity(requireContext());
-        mainViewModel.setCity(viewAccommodationsController.resetSelectedCity(requireContext()));
+        mainViewModel.setCity(viewAccommodationsController.resetSelectedCity());
         cityAutoCompleteTextView.setHint(mainViewModel.getCity().getValue());
     }
 
 
     private void updateCityField(){
         mainViewModel.setCity(cityAutoCompleteTextView.getText().toString());
-        viewAccommodationsController.updateSelectedCity(requireContext(),cityAutoCompleteTextView.getText().toString(),40.124124,14.124123);
+        viewAccommodationsController.updateSelectedCity(cityAutoCompleteTextView.getText().toString(),latitude,longitude);
 
     }
 

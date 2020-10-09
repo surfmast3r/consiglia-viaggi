@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,9 @@ public class LoginFragment extends Fragment {
     private TextView createAccountTextView;
     private EditText userEditText;
     private EditText pwdEditText;
+    private LinearLayout loginForm,accountPage;
     private AppCompatButton loginButton;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -32,24 +35,39 @@ public class LoginFragment extends Fragment {
                 ViewModelProviders.of(requireActivity()).get(LoginViewModel.class);
         View root = inflater.inflate(R.layout.fragment_login, container, false);
 
+        loginForm=root.findViewById(R.id.login_form);
+        accountPage=root.findViewById(R.id.account_page);
+
         userEditText = root.findViewById(R.id.input_username);
         pwdEditText = root.findViewById(R.id.input_password);
         loginButton = root.findViewById(R.id.btn_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginViewModel.loginButtonClickAction(requireContext(),userEditText.getText().toString(),pwdEditText.getText().toString());
+                loginViewModel.loginButtonClickAction(userEditText.getText().toString(),pwdEditText.getText().toString());
 
             }
         });
 
         loginViewModel.getLoggedIn().observe(getViewLifecycleOwner(),new Observer<Boolean>() {
+            boolean init=true;
             @Override
             public void onChanged(Boolean result) {
-                if(result)
-                    Toast.makeText(getContext(),"Logged in",Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+                //if(!init) {
+                    if (result) {
+                        loginForm.setVisibility(View.GONE);
+                        accountPage.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "Logged in", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        loginForm.setVisibility(View.VISIBLE);
+                        accountPage.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                    }
+
+                //}
+                //init=false;
             }
         });
         enableSignupLink(root);
