@@ -1,5 +1,7 @@
 package com.surfmaster.consigliaviaggi.ui.review;
 
+import android.app.Application;
+
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Review;
@@ -11,11 +13,12 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ReviewViewModel extends ViewModel {
+public class ReviewViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
     private List<Review> mReviewList;
@@ -23,8 +26,8 @@ public class ReviewViewModel extends ViewModel {
     private ViewReviewController viewReviewController;
     private int currentOrder;
 
-    public ReviewViewModel() {
-
+    public ReviewViewModel(Application application) {
+        super(application);
         viewReviewController = new ViewReviewController();
         mText = new MutableLiveData<>();
         mReviewList=new ArrayList<>();

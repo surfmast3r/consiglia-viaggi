@@ -1,9 +1,13 @@
 package com.surfmaster.consigliaviaggi.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -31,7 +35,8 @@ public class AuthenticationController {
         try {
             jsonResponse = getJsonResponseFromLoginUrl(user,pwd);
         } catch (IOException e) {
-            Toast.makeText(context,"Server error",Toast.LENGTH_SHORT).show();
+            postToastMessage("Login Server error");
+            return false;
         }
         if(jsonResponse!=null) {
             String token = getTokenFromJsonResponse(jsonResponse);
@@ -39,10 +44,12 @@ public class AuthenticationController {
             if (token != null) {
 
                 saveUser(user,pwd,token);
+                postToastMessage("Logged in");
                 return true;
 
             }
         }
+        postToastMessage("Logged error");
         return false;
     }
 
@@ -103,7 +110,30 @@ public class AuthenticationController {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
         String userName=pref.getString(Constants.USER,"");
         String pwd=pref.getString(Constants.PWD,"");
-        return authenticate(userName,pwd);
+        if(!(userName.isEmpty()||pwd.isEmpty()))
+            return authenticate(userName,pwd);
+        else
+            return false;
     }
 
+    public void postToastMessage(final String message) {
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void logout() {
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove(Constants.USER);
+        editor.remove(Constants.PWD );
+        editor.remove(Constants.TOKEN);
+        editor.apply();
+    }
 }

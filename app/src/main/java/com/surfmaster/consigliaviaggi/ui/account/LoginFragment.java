@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.surfmaster.consigliaviaggi.R;
 
@@ -26,7 +25,7 @@ public class LoginFragment extends Fragment {
     private EditText userEditText;
     private EditText pwdEditText;
     private LinearLayout loginForm,accountPage;
-    private AppCompatButton loginButton;
+    private AppCompatButton loginButton,logoutButton;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,7 +39,8 @@ public class LoginFragment extends Fragment {
 
         userEditText = root.findViewById(R.id.input_username);
         pwdEditText = root.findViewById(R.id.input_password);
-        loginButton = root.findViewById(R.id.btn_login);
+        logoutButton=root.findViewById(R.id.logoutButton);
+        loginButton = root.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,6 +48,15 @@ public class LoginFragment extends Fragment {
 
             }
         });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginViewModel.logoutButtonClickAction();
+            }
+        });
+
+
 
         loginViewModel.getLoggedIn().observe(getViewLifecycleOwner(),new Observer<Boolean>() {
             boolean init=true;
@@ -57,13 +66,14 @@ public class LoginFragment extends Fragment {
                     if (result) {
                         loginForm.setVisibility(View.GONE);
                         accountPage.setVisibility(View.VISIBLE);
-                        Toast.makeText(getContext(), "Logged in", Toast.LENGTH_SHORT).show();
+
+                        //TODO:chiamata al server per avere i dati dell'utente
                     }
                     else
                     {
                         loginForm.setVisibility(View.VISIBLE);
                         accountPage.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+
                     }
 
                 //}

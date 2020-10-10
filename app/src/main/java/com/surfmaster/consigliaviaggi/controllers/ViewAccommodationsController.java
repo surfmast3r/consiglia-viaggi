@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.Constants;
@@ -52,7 +55,8 @@ public class ViewAccommodationsController {
             totalPageNumber=jsonPageResponse.getTotalPages();
             totalElementNumber=jsonPageResponse.getTotalElements();
         } catch (DaoException e) {
-            e.printStackTrace();
+            postToastMessage(e.getErrorMessage());
+            return null;
         }
         return accommodationList;
 
@@ -70,7 +74,8 @@ public class ViewAccommodationsController {
         try {
             accommodation=acDao.getAccommodationById(id);
         } catch (DaoException e) {
-            e.printStackTrace();
+            postToastMessage(e.getErrorMessage());
+            return null;
         }
         return accommodation;
 
@@ -133,6 +138,18 @@ public class ViewAccommodationsController {
     public void navigateToAccommodationMapFragment() {
         Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(MainFragmentDirections.actionNavHomeToNavMap());
 
+    }
+
+    public void postToastMessage(final String message) {
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 

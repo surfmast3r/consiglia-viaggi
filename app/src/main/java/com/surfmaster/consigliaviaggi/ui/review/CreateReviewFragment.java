@@ -61,6 +61,7 @@ public class CreateReviewFragment extends Fragment {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with publish review action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                //reviewViewModel.postReview();
 
             }
         };

@@ -1,6 +1,8 @@
 package com.surfmaster.consigliaviaggi.controllers;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,9 +33,10 @@ public class RegistrationController {
         try {
             userJson=createUserJSON(user);
         } catch (DaoException e) {
+            postToastMessage(e.getErrorMessage());
             return false;
         }
-
+        postToastMessage("Registrazione Effettuata");
         return true;
     }
 
@@ -83,5 +86,17 @@ public class RegistrationController {
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type","application/json");
         return connection;
+    }
+
+    public void postToastMessage(final String message) {
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

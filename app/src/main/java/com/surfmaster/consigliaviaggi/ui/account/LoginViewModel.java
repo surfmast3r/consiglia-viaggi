@@ -48,4 +48,16 @@ public class LoginViewModel extends AndroidViewModel {
         });
 
     }
+
+    public void logoutButtonClickAction() {
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                authenticationController.logout();
+                loggedIn.postValue(false);
+            }
+        });
+
+    }
 }

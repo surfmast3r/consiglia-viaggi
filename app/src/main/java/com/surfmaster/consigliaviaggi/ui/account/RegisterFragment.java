@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.User;
-import com.surfmaster.consigliaviaggi.ui.map.BottomSheetFragment;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
@@ -42,7 +40,7 @@ public class RegisterFragment extends Fragment {
         emailEditText = root.findViewById(R.id.emailEditText);
         pwdEditText = root.findViewById(R.id.pwdEditText);
         reEnterPwdEditText = root.findViewById(R.id.reEnterPwdEditText);
-        registerButton = root.findViewById(R.id.signupButton);
+        registerButton = root.findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,25 +52,26 @@ public class RegisterFragment extends Fragment {
                             .setEmail(emailEditText.getText().toString())
                             .setPwd(pwdEditText.getText().toString())
                             .create());
-                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigateUp();
+
                 }
 
             }
         });
 
         registerViewModel.getResponse().observe(getViewLifecycleOwner(),new Observer<Boolean>() {
-            boolean init=true;
+
             @Override
             public void onChanged(Boolean response) {
-                if(!init) {
-                    if (response)
-                        Toast.makeText(getContext(), "Registrazione effettuata", Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(getContext(), "Registrazione fallita", Toast.LENGTH_SHORT).show();
-                }
-                init=false;
+
+                    if (response) {
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigateUp();
+                        registerViewModel.getResponse().setValue(false);
+                    }
+
+
             }
         });
+
         enableLoginLink(root);
 
         return root;

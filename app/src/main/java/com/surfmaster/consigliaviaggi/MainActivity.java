@@ -2,6 +2,8 @@ package com.surfmaster.consigliaviaggi;
 
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     private AppBarConfiguration mAppBarConfiguration;
     private LoginViewModel loginViewModel;
     private TextView userTextView;
+    private MenuItem loginMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         userTextView= navigationView.getHeaderView(0).findViewById(R.id.usernameTextView);
+        loginMenuItem= navigationView.getMenu().findItem(R.id.nav_login);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -66,8 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             @Override
             public void onChanged(Boolean logged) {
                 if(logged){
-
-                    userTextView.setText("Benvenuto "+ loginViewModel.getUserName());
+                    userTextView.setText("Benvenuto "+loginViewModel.getUserName());
+                    loginMenuItem.setTitle("My Account");
+                }else{
+                    userTextView.setText(R.string.no_access);
+                    loginMenuItem.setTitle(R.string.menu_login);
                 }
             }
         });
