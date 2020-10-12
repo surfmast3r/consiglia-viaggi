@@ -7,12 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
-import com.surfmaster.consigliaviaggi.models.Review;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,7 +19,7 @@ public class AccommodationViewModel extends AndroidViewModel {
 
     private Context context;
 
-    private static final int NUM_REVIEW=3;
+
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mAccommodationName;
     private MutableLiveData<String> mAccommodationDescription;
@@ -36,15 +31,11 @@ public class AccommodationViewModel extends AndroidViewModel {
     private MutableLiveData<Float> mAccommodationRating;
     private ViewAccommodationsController viewAccommodationsController;
     private ViewReviewController viewReviewController;
-    private MutableLiveData<List<Review>> mReviewList;
-    private MutableLiveData<List<Review>> mReviewSubList;
 
     public AccommodationViewModel(Application application) {
         super(application);
 
         context=application;
-        mReviewList=new MutableLiveData<>();
-        mReviewSubList=new MutableLiveData<>();
         mAccommodationId= new MutableLiveData<>();
         mAccommodationRating= new MutableLiveData<>();
         mAccommodationLatLng= new MutableLiveData<>();
@@ -92,14 +83,6 @@ public class AccommodationViewModel extends AndroidViewModel {
         return mAccommodationRating;
     }
 
-    public MutableLiveData<List<Review>> getReviewList(){
-        return mReviewList;
-    }
-
-    public MutableLiveData<List<Review>> getReviewSubList(){
-        return mReviewSubList;
-    }
-
     public void setAccommodation(final int accommodationId) {
         final int id=accommodationId;
         ExecutorService service =  Executors.newSingleThreadExecutor();
@@ -107,34 +90,15 @@ public class AccommodationViewModel extends AndroidViewModel {
             @Override
             public void run() {
 
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-
-                        List<Review>  reviewList= viewReviewController.getReviewList(id);
-                        reviewList=viewReviewController.orderReviewListByDate(reviewList);
-                        List<Review>  reviewSubList = new ArrayList<>();
-                        if(reviewList.size()>NUM_REVIEW){
-                            reviewSubList.addAll(reviewList.subList(0,NUM_REVIEW));
-                        }else{
-                            reviewSubList.addAll(reviewList);
-                        }
-
-
-                        Accommodation ac = viewAccommodationsController.getAccommodationById(id);
-                        mAccommodationId.postValue(ac.getId());
-                        mAccommodationRating.postValue(ac.getRating());
-                        mAccommodation.postValue(ac);
-                        mAccommodationName.postValue(ac.getName());
-                        mAccommodationImage.postValue(ac.getImages().get(0));
-                        mAccommodationLatLng.postValue(new LatLng(ac.getLatitude(),ac.getLongitude()));
-                        mAccommodationDescription.postValue(ac.getDescription());
-                        mAccommodationCategory.postValue(ac.getSubcategory().toString());
-                        mReviewSubList.postValue(reviewSubList);
-                        mReviewList.postValue(reviewList);
-                    }
-                },3000);
+                Accommodation ac = viewAccommodationsController.getAccommodationById(id);
+                mAccommodationId.postValue(ac.getId());
+                mAccommodationRating.postValue(ac.getRating());
+                mAccommodation.postValue(ac);
+                mAccommodationName.postValue(ac.getName());
+                mAccommodationImage.postValue(ac.getImages().get(0));
+                mAccommodationLatLng.postValue(new LatLng(ac.getLatitude(),ac.getLongitude()));
+                mAccommodationDescription.postValue(ac.getDescription());
+                mAccommodationCategory.postValue(ac.getSubcategory().toString());
 
             }
         });

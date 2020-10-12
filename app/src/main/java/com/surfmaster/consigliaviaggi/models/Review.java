@@ -8,44 +8,24 @@ import java.util.Date;
 
 public class Review implements Comparable{
 
+    private Integer idUser;
     private String author;
-    private String reviewText;
-    private float rating;
-    private String data;
-    private int accommodationId;
+    private String content;
     private String accommodationName;
+    private float rating;
+    private final String data;
+    private int idAccommodation;
 
     public Review(Builder builder) {
         this.author=builder.author;
-        this.reviewText=builder.reviewText;
+        this.content =builder.reviewText;
         this.rating=builder.rating;
         this.data= builder.data;
-        this.accommodationId=builder.accommodationId;
+        this.idAccommodation =builder.accommodationId;
+        this.idUser =builder.userId;
         this.accommodationName=builder.accommodationName;
-    }
 
-    public String getAuthor() {
-        return author;
-    }
 
-    public String getReviewText() {
-        return reviewText;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public int getAccommodationId() {
-        return accommodationId;
-    }
-
-    public String getAccommodationName() {
-        return accommodationName;
     }
 
     @Override
@@ -61,15 +41,22 @@ public class Review implements Comparable{
         return 0;
     }
 
+    public static class ReviewRatingComparator implements Comparator<Review> {
+        @Override
+        public int compare(Review review1, Review review2) {
+            return Float.compare(review1.getRating(), review2.getRating());
+        }
+    }
 
     public static class Builder {
 
+        private String accommodationName;
+        private Integer userId;
         private String data;
         private String author;
         private String reviewText;
         private float rating;
         private int accommodationId;
-        private String accommodationName;
 
         public Builder setReviewText(String reviewText) {
             this.reviewText = reviewText;
@@ -90,13 +77,18 @@ public class Review implements Comparable{
             return this;
         }
 
+        public Builder setAccommodationName(String accommodationName) {
+            this.accommodationName = accommodationName;
+            return this;
+        }
+
         public Builder setAccommodationId(int accommodationId) {
             this.accommodationId = accommodationId;
             return this;
         }
 
-        public Builder setAccommodationName(String accommodationName) {
-            this.accommodationName = accommodationName;
+        public Builder setUserId(int userId) {
+            this.userId = userId;
             return this;
         }
 
@@ -105,10 +97,56 @@ public class Review implements Comparable{
         }
     }
 
-    public static class ReviewRatingComparator implements Comparator<Review> {
-        @Override
-        public int compare(Review review1, Review review2) {
-            return Float.compare(review1.getRating(), review2.getRating());
-        }
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public String getAccommodationName() {
+        return accommodationName;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public int getIdAccommodation() {
+        return idAccommodation;
+    }
+
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public void setIdAccommodation(int idAccommodation) {
+        this.idAccommodation = idAccommodation;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
+    }
+
+    public void setAccommodationName(String accommodationName) {
+        this.accommodationName = accommodationName;
     }
 }

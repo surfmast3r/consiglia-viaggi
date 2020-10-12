@@ -1,5 +1,7 @@
 package com.surfmaster.consigliaviaggi.models.DAO;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -24,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ReviewDaoJSON implements ReviewDao{
+    private String token;
     @Override
     public List<Review> getReviewList(int accommodationId) throws DaoException {
         return getReviewListJSONParsing(accommodationId).getContent();
@@ -35,9 +38,10 @@ public class ReviewDaoJSON implements ReviewDao{
     }
 
     @Override
-    public Review postReview(Review review) throws  DaoException {
+    public Review postReview(Review review, String token) throws  DaoException {
+        this.token=token;
         JsonObject jsonReview=encodeReview(review);
-        Review newReview= null;
+        Review newReview;
         try {
             newReview = parseReview(createReviewJSON(jsonReview));
         } catch (IOException e) {
@@ -46,10 +50,10 @@ public class ReviewDaoJSON implements ReviewDao{
         return newReview;
     }
 
-    private JsonObject createReviewJSON(JsonObject accommodationJson) throws IOException,DaoException {
+    private JsonObject createReviewJSON(JsonObject reviewJson) throws IOException,DaoException {
         int responseCode;
         HttpURLConnection connection = createAuthenticatedConnection(Constants.CREATE_REVIEW_URL, "POST");
-        writeOutputStream(connection, accommodationJson.toString());
+        writeOutputStream(connection, reviewJson.toString());
         responseCode = connection.getResponseCode();
 
         BufferedReader jsonResponse;
@@ -156,7 +160,6 @@ public class ReviewDaoJSON implements ReviewDao{
     // Authenticate for Create/Delete/Edit methods
     private HttpURLConnection createAuthenticatedConnection(String urlString,String requestMethod) throws IOException {
         //TO DO: Autenticazione
-        String token="";
         URL url = new URL(urlString);
         HttpURLConnection connection;
         connection = (HttpURLConnection) url.openConnection();
@@ -164,6 +167,7 @@ public class ReviewDaoJSON implements ReviewDao{
         connection.setDoOutput(true);
         connection.setRequestProperty("Authorization","Bearer "+token);
         connection.setRequestProperty("Content-Type","application/json");
+        Log.i("Query create review",connection.toString());
         return connection;
     }
     private void writeOutputStream(HttpURLConnection connection,String stream) throws IOException {

@@ -11,6 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
+import com.surfmaster.consigliaviaggi.ui.review.ReviewViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,20 +26,24 @@ public class ViewAccommodationActivity extends AppCompatActivity {
 
 
     private AccommodationViewModel accommodationViewModel;
+    private ReviewViewModel reviewViewModel;
     private int accommodationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        accommodationViewModel =
-                ViewModelProviders.of(this).get(AccommodationViewModel.class);
+        reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+        accommodationViewModel = ViewModelProviders.of(this).get(AccommodationViewModel.class);
 
         setContentView(R.layout.activity_view_accommodation);
 
 
         accommodationId = ViewAccommodationActivityArgs.fromBundle(getIntent().getExtras()).getAccommodationId();
         accommodationViewModel.setAccommodation(accommodationId);
+
+        //Set Accommodation Id into ReviewViewModel
+        reviewViewModel.setAccommodationId(accommodationId);
 
 
 

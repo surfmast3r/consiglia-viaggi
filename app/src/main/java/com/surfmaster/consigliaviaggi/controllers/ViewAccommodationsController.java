@@ -97,12 +97,14 @@ public class ViewAccommodationsController {
     }
 
     public void updateSelectedCity(String city, Double lat, Double lon) {
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(Constants.CITY,city);
-        editor.putLong(Constants.LATITUDE, Double.doubleToRawLongBits(lat));
-        editor.putLong(Constants.LONGITUDE, Double.doubleToRawLongBits(lon));
-        editor.apply();
+        if(lat!=null&&lon!=null) {
+            SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString(Constants.CITY, city);
+            editor.putLong(Constants.LATITUDE, Double.doubleToRawLongBits(lat));
+            editor.putLong(Constants.LONGITUDE, Double.doubleToRawLongBits(lon));
+            editor.apply();
+        }
     }
 
     public String resetSelectedCity() {

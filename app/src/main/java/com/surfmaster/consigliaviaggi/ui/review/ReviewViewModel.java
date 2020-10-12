@@ -3,6 +3,7 @@ package com.surfmaster.consigliaviaggi.ui.review;
 import android.app.Application;
 
 import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.controllers.CreateReviewController;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Review;
 
@@ -16,15 +17,17 @@ import java.util.concurrent.Executors;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 public class ReviewViewModel extends AndroidViewModel {
 
+    private Integer accommodationId;
     private MutableLiveData<String> mText;
     private List<Review> mReviewList;
     private MutableLiveData<List<Review>> mFilteredReviewList;
+    private MutableLiveData<List<Review>> mReviewSublist;
     private ViewReviewController viewReviewController;
     private int currentOrder;
+    private CreateReviewController createReviewController;
 
     public ReviewViewModel(Application application) {
         super(application);
@@ -32,8 +35,11 @@ public class ReviewViewModel extends AndroidViewModel {
         mText = new MutableLiveData<>();
         mReviewList=new ArrayList<>();
         mFilteredReviewList=new MutableLiveData<>();
+        mReviewSublist=new MutableLiveData();
         currentOrder=Constants.DEFAULT_ORDER;
         mText.setValue("This is review list fragment");
+
+        createReviewController=new CreateReviewController(application);
     }
 
     public LiveData<String> getText() {
@@ -42,6 +48,10 @@ public class ReviewViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<Review>> getFilteredReviewList(){
         return mFilteredReviewList;
+    }
+
+    public MutableLiveData<List<Review>> getReviewSublist() {
+        return mReviewSublist;
     }
 
     public void setReviewList(final int accommodationId){
@@ -68,6 +78,30 @@ public class ReviewViewModel extends AndroidViewModel {
 
     }
 
+    public void setReviewSubList(final int accommodationId){
+
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+
+                List<Review>  reviewList= viewReviewController.getReviewList(accommodationId);
+                reviewList=viewReviewController.orderReviewListByDate(reviewList);
+                List<Review>  reviewSubList = new ArrayList<>();
+                if(reviewList.size()>Constants.NUM_REVIEW){
+                    reviewSubList.addAll(reviewList.subList(0,Constants.NUM_REVIEW));
+                }else{
+                    reviewSubList.addAll(reviewList);
+                }
+                mReviewSublist.postValue(reviewSubList);
+                //mReviewList.postValue(reviewList);
+            }
+        });
+
+    }
+
+
+
     public void orderReviewList(int order){
         currentOrder=order;
         switch (order) {
@@ -90,6 +124,32 @@ public class ReviewViewModel extends AndroidViewModel {
             mFilteredReviewList.setValue(viewReviewController.filterReviewList(unfilteredList,minRating,maxRating));
             orderReviewList(currentOrder);
         }
+
+    }
+
+    public Integer getAccommodationId() {
+        return accommodationId;
+    }
+
+    public void setAccommodationId(Integer accommodationId) {
+        this.accommodationId = accommodationId;
+    }
+
+    public void postReview(final float rating, final String reviewText) {
+
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+
+                createReviewController.createReview(new Review.Builder()
+                        .setReviewText(reviewText)
+                        .setAccommodationId(accommodationId)
+                        .setRating(rating)
+                        .build());
+
+            }
+        });
 
     }
 }

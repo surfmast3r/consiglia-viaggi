@@ -1,6 +1,5 @@
 package com.surfmaster.consigliaviaggi;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +7,12 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.models.Review;
-import com.surfmaster.consigliaviaggi.ui.accommodation_list.AccommodationListFragmentDirections;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecyclerViewAdapter.ReviewViewHolder> {
@@ -67,7 +63,7 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
     public void onBindViewHolder(@NonNull ReviewViewHolder reviewViewHolder, final int position) {
 
         reviewViewHolder.reviewAuthorTextView.setText(reviews.get(position).getAuthor());
-        reviewViewHolder.reviewTextView.setText(reviews.get(position).getReviewText());
+        reviewViewHolder.reviewTextView.setText(reviews.get(position).getContent());
         reviewViewHolder.reviewRatingBar.setRating(reviews.get(position).getRating());
         reviewViewHolder.reviewDateTextView.setText(reviews.get(position).getData());
 

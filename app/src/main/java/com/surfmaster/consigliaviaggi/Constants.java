@@ -43,7 +43,8 @@ public final class Constants  {
     public static final String MIN_RATING ="minRating=" ;
     public static final String MAX_RATING ="maxRating=" ;
     public static final String DIRECTION_PARAM ="direction=" ;
-    public static final String CREATE_REVIEW_URL = SERVER_URL+"/review/create";
+    public static final String CREATE_REVIEW_URL = SERVER_URL+"review/create";
+    public static final int NUM_REVIEW=3;
 
     public static final String PREFERENCES="SharedPreferences";
     public static final String LATITUDE="currentLat",LONGITUDE="currentLong";

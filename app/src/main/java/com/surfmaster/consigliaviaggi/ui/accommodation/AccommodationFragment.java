@@ -39,12 +39,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
+import com.surfmaster.consigliaviaggi.ui.review.ReviewViewModel;
 
 import java.util.List;
 
 public class AccommodationFragment extends Fragment implements OnMapReadyCallback {
 
     private AccommodationViewModel accommodationViewModel;
+    private ReviewViewModel reviewViewModel;
     private SupportMapFragment mapFragment;
     private RecyclerView reviewsRecyclerView;
     private AppCompatButton readAllButton;
@@ -60,6 +62,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        reviewViewModel = ViewModelProviders.of(requireActivity()).get(ReviewViewModel.class);
         accommodationViewModel =
                 ViewModelProviders.of(requireActivity()).get(AccommodationViewModel.class);
         View root = inflater.inflate(R.layout.fragment_accommodation_detail, container, false);
@@ -95,7 +98,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
 
     private void bindViews(View root){
         final TextView nametextView = root.findViewById(R.id.accommodation_name);
-        accommodationViewModel.getAccommodationName().observe(this, new Observer<String>() {
+        accommodationViewModel.getAccommodationName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 nametextView.setText(s);
@@ -105,7 +108,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
 
         final ImageView accommodationImage = root.findViewById(R.id.collapsing_ac_image);
 
-        accommodationViewModel.getAccommodationImage().observe(this, new Observer<String>() {
+        accommodationViewModel.getAccommodationImage().observe(getViewLifecycleOwner(), new Observer<String>() {
 
             @Override
             public void onChanged(@Nullable String s) {
@@ -123,7 +126,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
         });
 
         final TextView descriptionTextView = root.findViewById(R.id.accommodation_description);
-        accommodationViewModel.getAccommodationDescription().observe(this,new Observer<String>(){
+        accommodationViewModel.getAccommodationDescription().observe(getViewLifecycleOwner(),new Observer<String>(){
             @Override
             public void onChanged(@Nullable String s) {
                 descriptionTextView.setText(s);
@@ -131,7 +134,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
         });
 
         final TextView categoryTextView = root.findViewById(R.id.category);
-        accommodationViewModel.getAccommodationCategory().observe(this,new Observer<String>(){
+        accommodationViewModel.getAccommodationCategory().observe(getViewLifecycleOwner(),new Observer<String>(){
             @Override
             public void onChanged(@Nullable String s) {
                 categoryTextView.setText(s);
@@ -139,7 +142,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
         });
 
         final RatingBar accommodationRatingBar = root.findViewById(R.id.accommodation_rating);
-        accommodationViewModel.getAccommodationRating().observe(this,new Observer<Float>(){
+        accommodationViewModel.getAccommodationRating().observe(getViewLifecycleOwner(),new Observer<Float>(){
             @Override
             public void onChanged(@Nullable Float s) {
                 accommodationRatingBar.setRating(s);
@@ -151,7 +154,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         reviewsRecyclerView.setLayoutManager(layoutManager);
 
-        accommodationViewModel.getReviewSubList().observe(this, new Observer<List>() {
+        reviewViewModel.getReviewSublist().observe(getViewLifecycleOwner(), new Observer<List>() {
 
             ReviewsRecyclerViewAdapter adapter;
                     @Override
@@ -168,9 +171,11 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
         );
 
         readAllButton=root.findViewById(R.id.read_all_button);
-        accommodationViewModel.getAccommodationId().observe(this, new Observer<Integer>() {
+        accommodationViewModel.getAccommodationId().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer id) {
+
+                reviewViewModel.setReviewSubList(id);
                 final int accommodationId =id;
                 readAllButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -201,13 +206,6 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
         mShimmerViewContainer.stopShimmer();
         mShimmerViewContainer.setVisibility(View.GONE);
         accommodationDetailLayout.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        //MenuItem menuItem = menu.findItem(R.id.action_settings);
-        //menuItem.setVisible(false);
     }
 
 

@@ -18,11 +18,14 @@ import com.google.android.libraries.places.api.model.Place;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -104,6 +107,7 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
                     public void onClick(View view) {
 
                         updateCityField();
+                        dismiss();
                     }
                 });
                 break;
@@ -135,8 +139,10 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
 
 
     private void updateCityField(){
-        mainViewModel.setCity(cityAutoCompleteTextView.getText().toString());
-        viewAccommodationsController.updateSelectedCity(cityAutoCompleteTextView.getText().toString(),latitude,longitude);
+        if(latitude!=null&&longitude!=null) {
+            mainViewModel.setCity(cityAutoCompleteTextView.getText().toString());
+            viewAccommodationsController.updateSelectedCity(cityAutoCompleteTextView.getText().toString(), latitude, longitude);
+        }
 
     }
 
@@ -166,7 +172,7 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
     @Override
     public void click(Place place, String placeName) {
         cityAutoCompleteTextView.setText(placeName);
-        latitude=place.getLatLng().latitude;
+        latitude= Objects.requireNonNull(place.getLatLng()).latitude;
         longitude=place.getLatLng().longitude;
         Toast.makeText(requireContext(), place.getName()+", "+place.getLatLng().latitude+place.getLatLng().longitude, Toast.LENGTH_SHORT).show();
     }

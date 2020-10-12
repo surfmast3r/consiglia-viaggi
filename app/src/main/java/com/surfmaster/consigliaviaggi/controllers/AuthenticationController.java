@@ -39,11 +39,15 @@ public class AuthenticationController {
             return false;
         }
         if(jsonResponse!=null) {
-            String token = getTokenFromJsonResponse(jsonResponse);
+
+            JsonElement jsonTree  = JsonParser.parseReader(jsonResponse);
+            JsonObject jsonResponseObject = jsonTree.getAsJsonObject();
+            String token = jsonResponseObject.get("token").getAsString();
+            Integer id = jsonResponseObject.get("userId").getAsInt();
             System.out.print(token);
             if (token != null) {
 
-                saveUser(user,pwd,token);
+                saveUser(id,user,pwd,token);
                 postToastMessage("Logged in");
                 return true;
 
@@ -83,21 +87,39 @@ public class AuthenticationController {
         JsonObject jsonResponse = jsonTree.getAsJsonObject();
         return jsonResponse.get("token").getAsString();
     }
+    private Integer getIdFromJsonResponse(BufferedReader reader){
+        JsonElement jsonTree  = JsonParser.parseReader(reader);
+        JsonObject jsonResponse = jsonTree.getAsJsonObject();
+        return jsonResponse.get("userId").getAsInt();
+    }
 
-    public void saveUser(String user, String pwd, String token) {
+    public void saveUser(Integer id, String user, String pwd, String token) {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(Constants.ID,id);
         editor.putString(Constants.USER,user);
         editor.putString(Constants.PWD, pwd);
         editor.putString(Constants.TOKEN, token);
         editor.apply();
     }
 
+    public Integer getUserId(){
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
+        Integer userId=pref.getInt(Constants.ID,-1);
+
+        return userId;
+    }
     public String getUserName(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
         String userName=pref.getString(Constants.USER,"");
 
         return userName;
+    }
+    public String getToken(){
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
+        String token=pref.getString(Constants.TOKEN,"");
+
+        return token;
     }
     public String getUserPwd(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
