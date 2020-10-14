@@ -49,29 +49,22 @@ public class AccommodationListViewModel extends AndroidViewModel {
             mAccommodationList.clear();
         // do async operation to fetch data
         currentSearchParams= searchParams;
-        //final String currentCity=city;
+
         ExecutorService service =  Executors.newSingleThreadExecutor();
         service.submit(new Runnable() {
             @Override
             public void run() {
 
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-
-                        List<Accommodation> acList = viewAccommodationsController.getAccommodationList(currentSearchParams);
-                        mAccommodationList=new ArrayList<>(acList);
-                        mFilteredAccommodationList.postValue(acList);
-                    }
-                },3000);
+                List<Accommodation> acList = viewAccommodationsController.getAccommodationList(currentSearchParams);
+                mAccommodationList=new ArrayList<>(acList);
+                mFilteredAccommodationList.postValue(acList);
 
             }
         });
     }
 
     public void loadMore(){
-        Log.i("Recyler Endless scroll", "Load More");
+        Log.i("Recycler Endless scroll", "Load More");
         ExecutorService service =  Executors.newSingleThreadExecutor();
         service.submit(new Runnable() {
             @Override

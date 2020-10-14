@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
 import com.surfmaster.consigliaviaggi.ui.review.ReviewViewModel;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -86,6 +87,5 @@ public class ViewAccommodationActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
     }
-
 
 }

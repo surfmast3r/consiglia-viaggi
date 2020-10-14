@@ -1,5 +1,6 @@
 package com.surfmaster.consigliaviaggi.ui.review;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,13 @@ import com.surfmaster.consigliaviaggi.models.Review;
 import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -53,7 +56,17 @@ public class CreateReviewFragment extends Fragment {
         reviewEditText = root.findViewById(R.id.review_text);
 
         publishButton.setOnClickListener(createPublishButtonClickListener());
+
+        reviewViewModel.getPostReviewResponse().observe(getViewLifecycleOwner(),new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean response) {
+                if(response){
+                    buildAlert("la recensione saraà pubblicata in seguito all'approvazione").show();
+                }
+            }
+        });
     }
+
 
     private View.OnClickListener createPublishButtonClickListener() {
         return new View.OnClickListener() {
@@ -74,4 +87,24 @@ public class CreateReviewFragment extends Fragment {
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(((AppCompatActivity)getActivity()), navController,appBarConfiguration);
     }
+
+    private AlertDialog buildAlert(String s) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setMessage(s)
+                .setTitle(R.string.review_info_alert);
+
+
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigateUp();
+            }
+        });
+
+
+        return builder.create();
+
+
+    }
+
 }

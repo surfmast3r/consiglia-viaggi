@@ -20,7 +20,8 @@ public class DaoException extends Exception {
         return errorCode;
     }
 
-    public String getErrorMessage() {
+    @Override
+    public String getMessage() {
         return errorMessage;
     }
 }

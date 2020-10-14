@@ -20,16 +20,17 @@ public class CreateReviewController {
         reviewDao=new ReviewDaoJSON();
     }
 
-    public Review createReview(Review review){
+    public Boolean createReview(Review review){
         AuthenticationController authenticationController=new AuthenticationController(context);
         review.setIdUser(authenticationController.getUserId());
-        Review newReview = null;
+
         try {
-            newReview=reviewDao.postReview(review,authenticationController.getToken());
+            return reviewDao.postReview(review,authenticationController.getToken());
         } catch (DaoException e) {
             postToastMessage(e.getMessage());
+            return false;
         }
-        return newReview;
+
     }
 
     public void postToastMessage(final String message) {

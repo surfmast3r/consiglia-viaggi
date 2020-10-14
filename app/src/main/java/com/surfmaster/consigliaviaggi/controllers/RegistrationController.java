@@ -32,7 +32,7 @@ public class RegistrationController {
         try {
             userJson=createUserJSON(user);
         } catch (DaoException e) {
-            postToastMessage(e.getErrorMessage());
+            postToastMessage(e.getMessage());
             return false;
         }
         postToastMessage("Registrazione Effettuata");

@@ -1,6 +1,7 @@
 package com.surfmaster.consigliaviaggi.ui.review;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.CreateReviewController;
@@ -25,6 +26,7 @@ public class ReviewViewModel extends AndroidViewModel {
     private List<Review> mReviewList;
     private MutableLiveData<List<Review>> mFilteredReviewList;
     private MutableLiveData<List<Review>> mReviewSublist;
+    private MutableLiveData<Boolean> postReviewResponse;
     private ViewReviewController viewReviewController;
     private int currentOrder;
     private CreateReviewController createReviewController;
@@ -37,6 +39,7 @@ public class ReviewViewModel extends AndroidViewModel {
         mFilteredReviewList=new MutableLiveData<>();
         mReviewSublist=new MutableLiveData();
         currentOrder=Constants.DEFAULT_ORDER;
+        postReviewResponse=new MutableLiveData<>(false);
         mText.setValue("This is review list fragment");
 
         createReviewController=new CreateReviewController(application);
@@ -142,14 +145,22 @@ public class ReviewViewModel extends AndroidViewModel {
             @Override
             public void run() {
 
-                createReviewController.createReview(new Review.Builder()
+                if(createReviewController.createReview(new Review.Builder()
                         .setReviewText(reviewText)
                         .setAccommodationId(accommodationId)
                         .setRating(rating)
-                        .build());
+                        .build())){
+                        postReviewResponse.postValue(true);
+                }else{
+                    Log.i("ReviewResponse","false");
+                }
 
             }
         });
 
+    }
+
+    public MutableLiveData<Boolean> getPostReviewResponse() {
+        return postReviewResponse;
     }
 }

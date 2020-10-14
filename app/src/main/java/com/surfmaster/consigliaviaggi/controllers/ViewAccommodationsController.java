@@ -55,7 +55,7 @@ public class ViewAccommodationsController {
             totalPageNumber=jsonPageResponse.getTotalPages();
             totalElementNumber=jsonPageResponse.getTotalElements();
         } catch (DaoException e) {
-            postToastMessage(e.getErrorMessage());
+            postToastMessage(e.getMessage());
             return null;
         }
         return accommodationList;
@@ -74,7 +74,7 @@ public class ViewAccommodationsController {
         try {
             accommodation=acDao.getAccommodationById(id);
         } catch (DaoException e) {
-            postToastMessage(e.getErrorMessage());
+            postToastMessage(e.getMessage());
             return null;
         }
         return accommodation;

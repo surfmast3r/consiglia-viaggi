@@ -38,38 +38,39 @@ public class ReviewDaoJSON implements ReviewDao{
     }
 
     @Override
-    public Review postReview(Review review, String token) throws  DaoException {
+    public Boolean postReview(Review review, String token) throws  DaoException {
         this.token=token;
         JsonObject jsonReview=encodeReview(review);
-        Review newReview;
         try {
-            newReview = parseReview(createReviewJSON(jsonReview));
+            return createReviewJSON(jsonReview);
         } catch (IOException e) {
             throw new DaoException(DaoException.ERROR, "Errore di rete");
         }
-        return newReview;
     }
 
-    private JsonObject createReviewJSON(JsonObject reviewJson) throws IOException,DaoException {
+    private Boolean createReviewJSON(JsonObject reviewJson) throws IOException,DaoException {
         int responseCode;
         HttpURLConnection connection = createAuthenticatedConnection(Constants.CREATE_REVIEW_URL, "POST");
         writeOutputStream(connection, reviewJson.toString());
         responseCode = connection.getResponseCode();
 
-        BufferedReader jsonResponse;
         if (responseCode == HttpURLConnection.HTTP_CREATED) {
-            jsonResponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        } else if (responseCode == 401) {
+            return true;
+
+        } else if(responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR){
+            return false;
+
+        }else if (responseCode == 401) {
             throw new DaoException(DaoException.FORBIDDEN_ACCESS, "Non autorizzato");
         } else {
             throw new DaoException(DaoException.ERROR, "Errore di rete");
         }
-        return JsonParser.parseReader(jsonResponse).getAsJsonObject();
     }
 
     private JsonPageResponse<Review> getReviewListJSONParsing(int accommodationId) throws DaoException {
         String urlString= Constants.GET_REVIEW_LIST_URL+"?";
         urlString+=Constants.ACCOMMODATION_ID_PARAM+accommodationId;
+        urlString+="&"+Constants.STATUS_PARAM+"APPROVED";
         System.out.println(urlString);
 
         BufferedReader bufferedReader;
@@ -104,7 +105,7 @@ public class ReviewDaoJSON implements ReviewDao{
     }
 
     private Review parseReview(JsonObject reviewJson) throws DaoException {
-        int id = reviewJson.get("id").getAsInt();
+
         int accommodationId = reviewJson.get("accommodationId").getAsInt();
         String accommodationName = reviewJson.get("accommodationName").getAsString();
         String name = reviewJson.get("nome").getAsString();
@@ -149,7 +150,7 @@ public class ReviewDaoJSON implements ReviewDao{
     private String formatDate(String creationDate) throws DaoException {
         Date date = null;
         try {
-            date = new SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss.SSS").parse(creationDate);
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(creationDate);
         } catch (ParseException e) {
             throw new DaoException(DaoException.ERROR, e.getMessage());
         }
