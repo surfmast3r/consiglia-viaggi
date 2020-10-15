@@ -49,6 +49,7 @@
     <string name="name">Nome</string>
     <string name="review_info_alert">Recensione</string>
     <string name="ok">ok</string>
+    <string name="redo_search_button">Search this zone</string>
 
 
     <string-array name="cities_array">

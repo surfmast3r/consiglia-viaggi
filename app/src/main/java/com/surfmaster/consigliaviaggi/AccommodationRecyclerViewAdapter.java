@@ -2,7 +2,6 @@ package com.surfmaster.consigliaviaggi;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
-import com.surfmaster.consigliaviaggi.models.Location;
 import com.surfmaster.consigliaviaggi.ui.accommodation_list.AccommodationListFragmentDirections;
 
 import java.util.List;
@@ -24,7 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<AccommodationRecyclerViewAdapter.AccommodationViewHolder> {
+public class  AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<AccommodationRecyclerViewAdapter.AccommodationViewHolder> {
 
     private List<Accommodation> accommodations;
     private Context context;

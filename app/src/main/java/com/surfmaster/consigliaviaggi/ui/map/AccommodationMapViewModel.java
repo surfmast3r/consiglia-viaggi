@@ -45,15 +45,8 @@ public class AccommodationMapViewModel extends AndroidViewModel {
             @Override
             public void run() {
 
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        List acList = viewAccommodationsController.getAccommodationList(latLng);
-                        mAccommodationList.postValue(acList);
-                    }
-                },3000);
-
+                List acList = viewAccommodationsController.getAccommodationList(latLng);
+                mAccommodationList.postValue(acList);
 
             }
         });

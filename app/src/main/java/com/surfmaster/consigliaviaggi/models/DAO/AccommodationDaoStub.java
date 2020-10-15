@@ -10,6 +10,7 @@ import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class AccommodationDaoStub implements AccommodationDao {
     private ArrayList<Accommodation> accommodationList;
@@ -28,7 +29,7 @@ public class AccommodationDaoStub implements AccommodationDao {
     }
 
     @Override
-    public ArrayList<Accommodation> getAccommodationList(LatLng latLng) {
+    public List<Accommodation> getAccommodationList(LatLng latLng) {
         accommodationList.clear();
         LatLng  mDefaultLocation = new LatLng(45.463619, 9.188120);
         if (latLng.equals(mDefaultLocation))

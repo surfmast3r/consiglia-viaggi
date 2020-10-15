@@ -56,7 +56,8 @@ public class AccommodationListViewModel extends AndroidViewModel {
             public void run() {
 
                 List<Accommodation> acList = viewAccommodationsController.getAccommodationList(currentSearchParams);
-                mAccommodationList=new ArrayList<>(acList);
+                if(acList!=null)
+                    mAccommodationList=new ArrayList<>(acList);
                 mFilteredAccommodationList.postValue(acList);
 
             }

@@ -12,6 +12,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -40,12 +42,15 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        title=args.getString("title");
-        address=args.getString("address");
-        rating=args.getFloat("rating");
-        id=args.getInt("id");
-        category=args.getString("category");
-        logo=args.getString("logo");
+        if(args!=null) {
+            title = args.getString("title");
+            address = args.getString("address");
+            rating = args.getFloat("rating");
+            id = args.getInt("id");
+            category = args.getString("category");
+            logo = args.getString("logo");
+        }
+
     }
 
     @Nullable
@@ -69,11 +74,16 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         addressTextView.setText(address);
         categoryTextView.setText(category);
         ratingBar.setRating(rating);
-        Picasso.get().load(logo)
-                .placeholder(getContext().getResources().getDrawable(R.drawable.placeholder))
-                .error(getContext().getResources()
-                        .getDrawable(R.drawable.placeholder)).
-                into(logoImageView);
+        if (logo.isEmpty()) {
+            logoImageView.setImageResource(R.drawable.placeholder);
+        } else{
+            Picasso.get().load(logo)
+                    .placeholder(requireContext().getResources().getDrawable(R.drawable.placeholder))
+                    .error(requireContext().getResources()
+                            .getDrawable(R.drawable.placeholder)).
+                    into(logoImageView);
+        }
+
 
         detailButton.setOnClickListener(new View.OnClickListener() {
             @Override

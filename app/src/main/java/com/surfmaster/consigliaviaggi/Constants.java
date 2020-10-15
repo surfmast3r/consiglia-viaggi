@@ -20,6 +20,7 @@ public final class Constants  {
     public static final String DESC = "DESC";
     public static final String ID = "id";
     public static final String RATING = "rating";
+    public static final int CONNECTION_TIMEOUT=10000;
 
     /*JSON URLs*/
     public static final String SERVER_URL="http://10.0.2.2:5000/";
@@ -28,6 +29,8 @@ public final class Constants  {
     public static final String PAGE_PARAM ="page=";
     //Accommodation
     public static final String GET_ACCOMMODATION_LIST_URL = SERVER_URL+"accommodation";
+    public static final String GET_ACCOMMODATION_LIST_LOCATION_URL = SERVER_URL+"accommodation_location";
+    public static final String LATITUDE_PARAM ="latitude=", LONGITUDE_PARAM ="longitude=";
     public static final String QUERY_PARAM ="query=";
     public static final String CATEGORY_PARAM ="category=";
     public static final String SUBCATEGORY_PARAM ="subCategory=";
@@ -46,9 +49,10 @@ public final class Constants  {
     public static final String CREATE_REVIEW_URL = SERVER_URL+"review/create";
     public static final int NUM_REVIEW=3;
 
+    //Shared preferences
     public static final String PREFERENCES="SharedPreferences";
-    public static final String LATITUDE="currentLat",LONGITUDE="currentLong";
-    public static final String CITY="SelectedCity";
+    public static final String PREF_LATITUDE ="currentLat", PREF_LONGITUDE ="currentLong";
+    public static final String PREF_CITY ="SelectedCity";
     public static final String USER = "USER" ;
     public static final String PWD = "PWD";
     public static final String TOKEN ="TOKEN" ;

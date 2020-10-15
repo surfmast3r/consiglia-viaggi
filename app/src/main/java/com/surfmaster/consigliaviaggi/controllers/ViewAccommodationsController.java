@@ -21,9 +21,6 @@ import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 import com.surfmaster.consigliaviaggi.ui.main.MainFragmentDirections;
 import com.surfmaster.consigliaviaggi.ui.main.SelectCityFragment;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.fragment.app.DialogFragment;
@@ -82,15 +79,19 @@ public class ViewAccommodationsController {
     }
 
     public List<Accommodation> getAccommodationList(LatLng latLng){
-        accommodationList  =  acDao.getAccommodationList(latLng);
+        try {
+            accommodationList  =  acDao.getAccommodationList(latLng);
+        } catch (DaoException e) {
+            postToastMessage(e.getMessage());
+        }
         return accommodationList;
     }
 
     public String getSelectedCity() {
 
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        if (pref.contains(Constants.CITY)) {
-            return pref.getString(Constants.CITY,"");
+        if (pref.contains(Constants.PREF_CITY)) {
+            return pref.getString(Constants.PREF_CITY,"");
         }
         else
         return context.getString(R.string.city_select);
@@ -100,9 +101,9 @@ public class ViewAccommodationsController {
         if(lat!=null&&lon!=null) {
             SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
-            editor.putString(Constants.CITY, city);
-            editor.putLong(Constants.LATITUDE, Double.doubleToRawLongBits(lat));
-            editor.putLong(Constants.LONGITUDE, Double.doubleToRawLongBits(lon));
+            editor.putString(Constants.PREF_CITY, city);
+            editor.putLong(Constants.PREF_LATITUDE, Double.doubleToRawLongBits(lat));
+            editor.putLong(Constants.PREF_LONGITUDE, Double.doubleToRawLongBits(lon));
             editor.apply();
         }
     }
@@ -110,9 +111,9 @@ public class ViewAccommodationsController {
     public String resetSelectedCity() {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
-        editor.remove(Constants.CITY);
-        editor.remove(Constants.LATITUDE);
-        editor.remove(Constants.LONGITUDE);
+        editor.remove(Constants.PREF_CITY);
+        editor.remove(Constants.PREF_LATITUDE);
+        editor.remove(Constants.PREF_LONGITUDE);
         editor.apply();
         return context.getString(R.string.city_select);
     }

@@ -127,23 +127,25 @@ public class ReviewDaoJSON implements ReviewDao{
 
     }
 
-    private BufferedReader getJSONFromUrl(String urlString) throws MalformedURLException {
+    private BufferedReader getJSONFromUrl(String urlString) throws MalformedURLException, DaoException {
         URL url = new URL(urlString);
-        HttpURLConnection connection = null;
+        HttpURLConnection connection;
+        int responseCode;
+        BufferedReader json = null;
         try {
             connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
             connection.setRequestMethod("GET");
-            connection.connect();
+            responseCode=connection.getResponseCode();
+            if(responseCode==HttpURLConnection.HTTP_OK)
+                json = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            else if(responseCode==HttpURLConnection.HTTP_UNAUTHORIZED)
+                throw new DaoException(DaoException.ERROR,"Unauthorized");
+            else
+                throw new DaoException(DaoException.ERROR,"Server Error");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DaoException(DaoException.ERROR,e.getMessage());
         }
-        BufferedReader json  = null;
-        try {
-            json = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return json;
     }
 
@@ -166,6 +168,7 @@ public class ReviewDaoJSON implements ReviewDao{
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(requestMethod);
         connection.setDoOutput(true);
+        connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
         connection.setRequestProperty("Authorization","Bearer "+token);
         connection.setRequestProperty("Content-Type","application/json");
         Log.i("Query create review",connection.toString());

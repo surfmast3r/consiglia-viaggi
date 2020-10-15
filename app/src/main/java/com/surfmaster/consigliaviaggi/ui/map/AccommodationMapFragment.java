@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 
 import java.util.List;
+import java.util.Random;
 
 public class AccommodationMapFragment extends Fragment implements ClusterManager.OnClusterItemInfoWindowClickListener<MyClusterItem>{
 
@@ -50,6 +52,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
     private GoogleMap gMap;
     private CameraPosition mCameraPosition;
     private ClusterManager<MyClusterItem> mClusterManager;
+    private Button redoSearchButton;
     private static final int DEFAULT_ZOOM = 11;
     /*edit my location*/
     private Location mLastKnownLocation;
@@ -78,6 +81,8 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 ViewModelProviders.of(this).get(AccommodationMapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_map, container, false);
         final TextView textView = root.findViewById(R.id.text_map);
+        redoSearchButton = root.findViewById(R.id.redo_search_button);
+
         accommodationMapViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -89,9 +94,10 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
+
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(GoogleMap mMap) {
+            public void onMapReady(final GoogleMap mMap) {
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
                 mMap.clear(); //clear old markers
@@ -105,8 +111,6 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 gMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
                 gMap.setOnInfoWindowClickListener(mClusterManager);
                 mClusterManager.setOnClusterItemInfoWindowClickListener(AccommodationMapFragment.this);
-
-
 
                 // Prompt the user for permission.
                 getLocationPermission();
@@ -125,7 +129,12 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                     getDeviceLocation();
                 }
                 //getDeviceLocation();
-
+                redoSearchButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        accommodationMapViewModel.setAccommodationList(mMap.getCameraPosition().target);
+                    }
+                });
 
                 setMapListObserver();
 
@@ -201,6 +210,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         updateLocationUI();
     }
 
+
     private void updateLocationUI() {
         if (gMap == null) {
             return;
@@ -221,6 +231,18 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         }
     }
 
+    private void showLocation(LatLng mDefaultLocation) {
+        Random rand = new Random(); //instance of random class
+        float random = rand.nextFloat();
+        CameraPosition defaultPosition = CameraPosition.builder()
+                .target(mDefaultLocation)
+                .zoom(DEFAULT_ZOOM+random)
+                .bearing(0)
+                .tilt(45)
+                .build();
+
+        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(defaultPosition), 3000, null);
+    }
     private void showDefaultLocation(){
 
         accommodationMapViewModel.setAccommodationList(mDefaultLocation);
@@ -255,25 +277,26 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                                 accommodationMapViewModel.setAccommodationList(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()));
 
                                 //move camera
-                                CameraPosition myPosition = CameraPosition.builder()
+                                /* CameraPosition myPosition = CameraPosition.builder()
                                         .target(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()))
                                         .zoom(DEFAULT_ZOOM)
                                         .bearing(0)
                                         .tilt(45)
                                         .build();
 
-                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(myPosition), 3000, null);
+                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(myPosition), 3000, null);*/
                             } else {
                                 Log.d(TAG, "Current location is null. Using defaults.");
                                 Log.e(TAG, "Exception: %s", task.getException());
-                                CameraPosition defaultPosition = CameraPosition.builder()
+                                showDefaultLocation();
+                                /*CameraPosition defaultPosition = CameraPosition.builder()
                                         .target(mDefaultLocation)
                                         .zoom(DEFAULT_ZOOM)
                                         .bearing(0)
                                         .tilt(45)
                                         .build();
 
-                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(defaultPosition), 3000, null);
+                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(defaultPosition), 3000, null);*/
                                 gMap.getUiSettings().setMyLocationButtonEnabled(false);
                             }
                         }
@@ -301,8 +324,9 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 gMap.clear();
                 mClusterManager.clearItems();
 
-                if(accommodationList!=null)
-                    for (int i = 0; i < accommodationList.size(); i++) {
+                if(accommodationList!=null) {
+                    int i;
+                    for (i =0; i < accommodationList.size(); i++) {
                         Accommodation ac = accommodationList.get(i);
                         MyClusterItem myitem = new MyClusterItem(new LatLng(ac.getLatitude(), ac.getLongitude()),
                                 ac.getName(),
@@ -315,6 +339,10 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                         mClusterManager.addItem(myitem);
 
                     }
+                    if(accommodationList.size()>0) {
+                        showLocation(new LatLng(accommodationList.get(i - 1).getLatitude(), accommodationList.get(i - 1).getLongitude()));
+                    }
+                }
             }
         });
     }
@@ -340,9 +368,11 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         dialog.cancel();
+                        showDefaultLocation();
                     }
                 });
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
 }

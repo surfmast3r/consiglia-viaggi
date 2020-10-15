@@ -74,8 +74,6 @@
                 android:layout_marginBottom="12dp"
                 android:background="#5d5d5d" />
 
-
-
         </LinearLayout>
 
     </LinearLayout>
@@ -104,13 +102,13 @@
         android:text="Wed, 10 AM - 9 PM" />
 
     <androidx.appcompat.widget.AppCompatButton
+        style="@style/Widget.AppCompat.Button.Colored"
         android:drawablePadding="5dp"
         android:textAlignment="center"
         android:text="@string/open_detail_button"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/detail_button"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:backgroundTint="@color/colorPrimary"/>
+        />
 
 </LinearLayout>

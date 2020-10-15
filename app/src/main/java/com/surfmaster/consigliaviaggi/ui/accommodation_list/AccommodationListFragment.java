@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
-import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Category;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
@@ -48,7 +47,7 @@ public class AccommodationListFragment extends Fragment{
     //endless scroll end
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.activity_view_accommodations, menu);
@@ -92,7 +91,7 @@ public class AccommodationListFragment extends Fragment{
         categoryTextView = root.findViewById(R.id.category_text_view);
         accommodationFiltersViewModel.getCategory().observe(getViewLifecycleOwner(), new Observer<Category>() {
             @Override
-            public void onChanged(@Nullable Category category) {
+            public void onChanged(Category category) {
 
                 categoryTextView.setText(category.getCategoryLabel());
 
@@ -105,10 +104,11 @@ public class AccommodationListFragment extends Fragment{
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                assert llm != null;
                 visibleItemCount = llm.getChildCount();
                 totalItemCount = llm.getItemCount();
                 firstVisibleItem = llm.findFirstVisibleItemPosition();
@@ -134,17 +134,21 @@ public class AccommodationListFragment extends Fragment{
         accommodationListViewModel.getList().observe(getViewLifecycleOwner(), new Observer<List>() {
 
                     @Override
-                    public void onChanged(@Nullable List s) {
-                        if (adapter==null){
-                            adapter=new AccommodationRecyclerViewAdapter(getContext(),s);
-                            rv.setAdapter(adapter);
-                            stopShimmerAnimation();
-                            previousTotal=0;
+                    public void onChanged(@Nullable List newList) {
+                        if (newList!=null) {
+                            if (adapter == null) {
+                                adapter = new AccommodationRecyclerViewAdapter(getContext(), newList);
+                                rv.setAdapter(adapter);
+                                stopShimmerAnimation();
+                                previousTotal = 0;
+                            } else {
+                                adapter.refreshList(newList);
+                                stopShimmerAnimation();
+                                previousTotal = 0;
+                            }
                         }
-                        else {
-                            adapter.refreshList(s);
+                        else{
                             stopShimmerAnimation();
-                            previousTotal=0;
                         }
 
                     }
@@ -201,6 +205,7 @@ public class AccommodationListFragment extends Fragment{
             case R.id.action_filter:
                 // Create and show the dialog.
 
+                assert getFragmentManager() != null;
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 DialogFragment newFragment = FiltersFragment.newInstance();
 
