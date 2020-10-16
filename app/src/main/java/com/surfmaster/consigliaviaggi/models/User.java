@@ -1,12 +1,15 @@
 package com.surfmaster.consigliaviaggi.models;
 
 public class User {
-
-	private String nickname;
+    private int id;
     private String nome;
     private String cognome;
     private String email;
     private String pwd;
+    private String nickname;
+    private Boolean showNickname;
+    private String userRole;
+
 
     public User(Builder builder) {
 
@@ -89,5 +92,29 @@ public class User {
 
     public void setPwd(String pwd) {
         this.pwd = pwd;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Boolean getShowNickname() {
+        return showNickname;
+    }
+
+    public void setShowNickname(Boolean showNickname) {
+        this.showNickname = showNickname;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

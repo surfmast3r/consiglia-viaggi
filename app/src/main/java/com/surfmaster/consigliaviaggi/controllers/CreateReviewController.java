@@ -21,11 +21,11 @@ public class CreateReviewController {
     }
 
     public Boolean createReview(Review review){
-        AuthenticationController authenticationController=new AuthenticationController(context);
-        review.setIdUser(authenticationController.getUserId());
+        ManageUserController manageUserController=new ManageUserController(context);
+        review.setIdUser(manageUserController.getUserId());
 
         try {
-            return reviewDao.postReview(review,authenticationController.getToken());
+            return reviewDao.postReview(review,manageUserController.getToken());
         } catch (DaoException e) {
             postToastMessage(e.getMessage());
             return false;

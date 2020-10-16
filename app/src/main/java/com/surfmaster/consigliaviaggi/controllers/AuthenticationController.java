@@ -1,17 +1,16 @@
 package com.surfmaster.consigliaviaggi.controllers;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
+import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,8 +24,11 @@ public class AuthenticationController {
 
     private Context context;
 
+    private UserDao userDao;
+
     public AuthenticationController(Context context){
         this.context=context;
+        userDao=new UserDaoSharedPrefs(context);
     }
 
     public Boolean authenticate(String user, String pwd)  {
@@ -47,7 +49,7 @@ public class AuthenticationController {
             System.out.print(token);
             if (token != null) {
 
-                saveUser(id,user,pwd,token);
+                userDao.saveUser(id,user,pwd,token);
                 postToastMessage("Logged in");
                 return true;
 
@@ -93,49 +95,19 @@ public class AuthenticationController {
         return jsonResponse.get("userId").getAsInt();
     }
 
-    public void saveUser(Integer id, String user, String pwd, String token) {
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(Constants.ID,id);
-        editor.putString(Constants.USER,user);
-        editor.putString(Constants.PWD, pwd);
-        editor.putString(Constants.TOKEN, token);
-        editor.apply();
-    }
 
-    public Integer getUserId(){
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        Integer userId=pref.getInt(Constants.ID,-1);
 
-        return userId;
-    }
-    public String getUserName(){
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        String userName=pref.getString(Constants.USER,"");
-
-        return userName;
-    }
-    public String getToken(){
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        String token=pref.getString(Constants.TOKEN,"");
-
-        return token;
-    }
-    public String getUserPwd(){
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        String pwd=pref.getString(Constants.PWD,"");
-
-        return pwd;
-    }
 
     public boolean tryLogin(){
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        String userName=pref.getString(Constants.USER,"");
-        String pwd=pref.getString(Constants.PWD,"");
+        String userName=userDao.getUserName();
+        String pwd=userDao.getUserPwd();
         if(!(userName.isEmpty()||pwd.isEmpty()))
             return authenticate(userName,pwd);
         else
             return false;
+    }
+    public void logout() {
+        userDao.logOutUser();
     }
 
     public void postToastMessage(final String message) {
@@ -150,12 +122,5 @@ public class AuthenticationController {
         });
     }
 
-    public void logout() {
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove(Constants.USER);
-        editor.remove(Constants.PWD );
-        editor.remove(Constants.TOKEN);
-        editor.apply();
-    }
+
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.surfmaster.consigliaviaggi.R;
@@ -26,6 +27,8 @@ public class LoginFragment extends Fragment {
     private EditText pwdEditText;
     private LinearLayout loginForm,accountPage;
     private AppCompatButton loginButton,logoutButton;
+    private TextView usernameTextView,nameTextView,surnameTextView,emailTextView;
+    private Switch showUsernameSwitch;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -49,6 +52,44 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        usernameTextView=root.findViewById(R.id.usernameTextView);
+        nameTextView=root.findViewById(R.id.nameTextView);
+        surnameTextView=root.findViewById(R.id.surnameTextView);
+        emailTextView=root.findViewById(R.id.emailTextView);
+        showUsernameSwitch=root.findViewById(R.id.usernameSwitch);
+
+        loginViewModel.getNickname().observe(getViewLifecycleOwner(),new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                usernameTextView.setText(s);
+            }
+        });
+        loginViewModel.getName().observe(getViewLifecycleOwner(),new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                nameTextView.setText(s);
+            }
+        });
+        loginViewModel.getSurname().observe(getViewLifecycleOwner(),new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                surnameTextView.setText(s);
+            }
+        });
+        loginViewModel.getEmail().observe(getViewLifecycleOwner(),new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                emailTextView.setText(s);
+            }
+        });
+        loginViewModel.getShowUsername().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean newValue) {
+                if(newValue!=null)
+                    showUsernameSwitch.setChecked(newValue);
+            }
+        });
+
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +109,7 @@ public class LoginFragment extends Fragment {
                         accountPage.setVisibility(View.VISIBLE);
 
                         //TODO:chiamata al server per avere i dati dell'utente
+                        loginViewModel.getUserData();
                     }
                     else
                     {
@@ -80,6 +122,7 @@ public class LoginFragment extends Fragment {
                 //init=false;
             }
         });
+
         enableSignupLink(root);
 
         return root;

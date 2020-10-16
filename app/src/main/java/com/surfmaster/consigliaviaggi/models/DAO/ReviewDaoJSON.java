@@ -33,11 +33,6 @@ public class ReviewDaoJSON implements ReviewDao{
     }
 
     @Override
-    public Review getReviewById(int id) {
-        return null;
-    }
-
-    @Override
     public Boolean postReview(Review review, String token) throws  DaoException {
         this.token=token;
         JsonObject jsonReview=encodeReview(review);
