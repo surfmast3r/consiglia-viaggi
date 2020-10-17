@@ -50,6 +50,8 @@
     <string name="review_info_alert">Recensione</string>
     <string name="ok">ok</string>
     <string name="redo_search_button">Search this zone</string>
+    <string name="facebook_app_id">378139930005882</string> <string name="fb_login_protocol_scheme">fb378139930005882</string>
+
 
 
     <string-array name="cities_array">

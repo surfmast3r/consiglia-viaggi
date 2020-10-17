@@ -1,6 +1,9 @@
 package com.surfmaster.consigliaviaggi;
 
 import android.os.Bundle;
+
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.MenuItem;
@@ -22,6 +25,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -32,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Facebook Init
+        FacebookSdk.sdkInitialize(getApplicationContext());
+//        AppEventsLogger.activateApp(this);
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.tryLogin();

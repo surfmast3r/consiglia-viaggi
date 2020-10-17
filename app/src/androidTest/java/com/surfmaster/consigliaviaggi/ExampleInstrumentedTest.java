@@ -25,3 +25,6 @@ public class ExampleInstrumentedTest {
         assertEquals("com.surfmaster.consigliaviaggi", appContext.getPackageName());
     }
 }
+
+
+// ga0RGNYHvNM5d0SLGQfpQWAPGJ8=

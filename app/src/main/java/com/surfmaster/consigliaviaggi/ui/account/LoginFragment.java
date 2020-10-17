@@ -1,6 +1,8 @@
 package com.surfmaster.consigliaviaggi.ui.account;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.surfmaster.consigliaviaggi.MainActivity;
 import com.surfmaster.consigliaviaggi.R;
 
 import androidx.annotation.NonNull;
@@ -18,6 +31,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class LoginFragment extends Fragment {
 
@@ -29,6 +47,8 @@ public class LoginFragment extends Fragment {
     private AppCompatButton loginButton,logoutButton;
     private TextView usernameTextView,nameTextView,surnameTextView,emailTextView;
     private Switch showUsernameSwitch;
+    CallbackManager callbackManager;
+    private LoginButton loginFacebookButton;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,7 +59,6 @@ public class LoginFragment extends Fragment {
 
         loginForm=root.findViewById(R.id.login_form);
         accountPage=root.findViewById(R.id.account_page);
-
         userEditText = root.findViewById(R.id.input_username);
         pwdEditText = root.findViewById(R.id.input_password);
         logoutButton=root.findViewById(R.id.logoutButton);
@@ -57,7 +76,25 @@ public class LoginFragment extends Fragment {
         surnameTextView=root.findViewById(R.id.surnameTextView);
         emailTextView=root.findViewById(R.id.emailTextView);
         showUsernameSwitch=root.findViewById(R.id.usernameSwitch);
+        loginFacebookButton = (LoginButton)root.findViewById(R.id.loginFacebookButton);
+        loginFacebookButton.setFragment(this);
+        loginFacebookButton.setReadPermissions("email");
+        callbackManager = CallbackManager.Factory.create();
+        loginFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                getFbInfo();
+            }
+            @Override
+            public void onCancel() {
+                // App code
+            }
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
 
+        });
         loginViewModel.getNickname().observe(getViewLifecycleOwner(),new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -126,6 +163,46 @@ public class LoginFragment extends Fragment {
         enableSignupLink(root);
 
         return root;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void getFbInfo() {
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        try {
+                            Log.d("LoginActivity", "fb json object: " + object);
+                            Log.d("LoginActivity", "fb graph response: " + response);
+
+                            //String id = object.getString("id");
+                            String first_name = object.getString("first_name");
+                            String last_name = object.getString("last_name");
+                            String email = null;
+                            if (object.has("email")) {
+                                email = object.getString("email");
+                            }
+
+                            System.out.println("LOGIN FB:"+first_name+last_name+email);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,first_name,last_name,email,gender,birthday"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     private void enableSignupLink(View root){

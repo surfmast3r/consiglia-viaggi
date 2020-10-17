@@ -70,6 +70,14 @@
                 android:gravity="center"
                 android:textSize="16sp"/>
 
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/loginFacebookButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp" />
+
         </LinearLayout>
         <LinearLayout
             android:id="@+id/account_page"
