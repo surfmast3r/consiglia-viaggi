@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.models.User;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
@@ -26,7 +25,6 @@ public class RegisterFragment extends Fragment {
     private EditText emailEditText;
     private EditText pwdEditText;
     private EditText reEnterPwdEditText;
-    private Button registerButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,19 +38,18 @@ public class RegisterFragment extends Fragment {
         emailEditText = root.findViewById(R.id.emailEditText);
         pwdEditText = root.findViewById(R.id.pwdEditText);
         reEnterPwdEditText = root.findViewById(R.id.reEnterPwdEditText);
-        registerButton = root.findViewById(R.id.registerButton);
+
+        Button registerButton = root.findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(validateFields()) {
-                    registerViewModel.registerUser(new User.Builder()
-                            .setNickname(usernameEditText.getText().toString())
-                            .setName(nameEditText.getText().toString())
-                            .setSurname(surnameEditText.getText().toString())
-                            .setEmail(emailEditText.getText().toString())
-                            .setPwd(pwdEditText.getText().toString())
-                            .create());
-
+                    registerViewModel.setUsername(usernameEditText.getText().toString());
+                    registerViewModel.setName(nameEditText.getText().toString());
+                    registerViewModel.setSurname(surnameEditText.getText().toString());
+                    registerViewModel.setEmail(emailEditText.getText().toString());
+                    registerViewModel.setPwd(pwdEditText.getText().toString());
+                    registerViewModel.registerUser();
                 }
 
             }
@@ -131,8 +128,8 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-    private boolean isEmpty(EditText etText) {
-        if (etText.getText().toString().trim().length() > 0)
+    private boolean isEmpty(EditText editText) {
+        if (editText.getText().toString().trim().length() > 0)
             return false;
 
         return true;

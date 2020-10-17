@@ -21,7 +21,6 @@ import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.surfmaster.consigliaviaggi.MainActivity;
 import com.surfmaster.consigliaviaggi.R;
 
 import androidx.annotation.NonNull;
@@ -34,8 +33,6 @@ import androidx.navigation.Navigation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class LoginFragment extends Fragment {
 
