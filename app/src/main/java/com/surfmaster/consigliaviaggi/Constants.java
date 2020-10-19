@@ -26,9 +26,11 @@ public final class Constants  {
     public static final String SERVER_URL="http://10.0.2.2:5000/";
     public static final String LOGIN_URL = SERVER_URL+"authenticate";
     public static final String GET_USER_DETAILS_URL = SERVER_URL+"account_details";
+    public static final String SET_SHOW_NICK_URL = SERVER_URL+"set_show_nickname";
     public static final String REGISTER = SERVER_URL+"register";
     public static final String PAGE_PARAM ="page=";
     public static final String ID_PARAM = "id=";
+    public static final String VALUE_PARAM ="value=" ;
     //Accommodation
     public static final String GET_ACCOMMODATION_LIST_URL = SERVER_URL+"accommodation";
     public static final String GET_ACCOMMODATION_LIST_LOCATION_URL = SERVER_URL+"accommodation_location";
@@ -58,6 +60,7 @@ public final class Constants  {
     public static final String USER = "USER" ;
     public static final String PWD = "PWD";
     public static final String TOKEN ="TOKEN" ;
+
 
 
     private Constants(){

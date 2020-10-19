@@ -57,6 +57,21 @@ public class ManageUserController {
                 return null;
             }
     }
+
+    public Boolean setShowNickname(int id,Boolean value){
+        String urlString= Constants.SET_SHOW_NICK_URL +"?"+Constants.ID_PARAM+id+"&"
+                +Constants.VALUE_PARAM+value;
+        BufferedReader bufferedReader;
+        try {
+            bufferedReader = getJSONFromConnection(createAuthenticatedConnection(urlString,"PUT"));
+            JsonElement jsonTree  = JsonParser.parseReader(bufferedReader);
+            JsonObject responseJson = jsonTree.getAsJsonObject();
+            return responseJson.get("response").getAsBoolean();
+        } catch (DaoException | IOException e) {
+            postToastMessage(e.getMessage());
+            return null;
+        }
+    }
     private BufferedReader getJSONFromConnection(HttpURLConnection connection) throws DaoException {
         int responseCode;
         BufferedReader json = null;
@@ -82,7 +97,6 @@ public class ManageUserController {
         connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
         connection.setRequestProperty("Authorization","Bearer "+userDao.getToken());
         connection.setRequestProperty("Content-Type","application/json");
-        Log.i("Query create review",connection.toString());
         return connection;
     }
 

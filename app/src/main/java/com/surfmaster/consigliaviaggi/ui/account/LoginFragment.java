@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -46,6 +48,7 @@ public class LoginFragment extends Fragment {
     private Switch showUsernameSwitch;
     CallbackManager callbackManager;
     private LoginButton loginFacebookButton;
+    private Boolean switchPreviousValue=false;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -119,8 +122,11 @@ public class LoginFragment extends Fragment {
         loginViewModel.getShowUsername().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean newValue) {
-                if(newValue!=null)
+                if(newValue!=null){
+                    switchPreviousValue=newValue;
                     showUsernameSwitch.setChecked(newValue);
+
+                }
             }
         });
 
@@ -132,6 +138,13 @@ public class LoginFragment extends Fragment {
         });
 
 
+        showUsernameSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean value) {
+                if(switchPreviousValue!=value)
+                    loginViewModel.showUsernameChanged(value);
+            }
+        });
 
         loginViewModel.getLoggedIn().observe(getViewLifecycleOwner(),new Observer<Boolean>() {
             boolean init=true;

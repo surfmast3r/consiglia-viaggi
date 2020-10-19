@@ -1,6 +1,8 @@
 package com.surfmaster.consigliaviaggi.ui.account;
 
 import android.app.Application;
+import android.util.Log;
+
 import com.surfmaster.consigliaviaggi.controllers.AuthenticationController;
 import com.surfmaster.consigliaviaggi.controllers.ManageUserController;
 import com.surfmaster.consigliaviaggi.models.User;
@@ -67,6 +69,15 @@ public class LoginViewModel extends AndroidViewModel {
         service.submit(new Runnable() {
             @Override
             public void run() {
+
+                /*Clear user data*/
+                name.postValue("");
+                nickname.postValue("");
+                email.postValue("");
+                surname.postValue("");
+                showUsername.postValue(false);
+
+                /*get new user data*/
                 User user=manageUserController.getUserDetails(manageUserController.getUserId());
                 name.postValue(user.getNome());
                 nickname.postValue(user.getNickname());
@@ -88,6 +99,26 @@ public class LoginViewModel extends AndroidViewModel {
         });
 
     }
+    public void showUsernameChanged(final Boolean value) {
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                Boolean response =manageUserController.setShowNickname(manageUserController.getUserId(),value);
+                if(response){
+                    showUsername.postValue(value);
+                    Log.i("ShowNickname",value.toString());
+
+
+                }else{
+                    showUsername.postValue(!value);
+                    Boolean b=!value;
+                    Log.i("ShowNickname",b.toString());
+                }
+            }
+        });
+    }
+
 
     public MutableLiveData<String> getName() {
         return name;
@@ -108,4 +139,6 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getShowUsername() {
         return showUsername;
     }
+
+
 }
