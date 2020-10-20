@@ -62,7 +62,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
     private FusedLocationProviderClient mFusedLocationProviderClient;
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
-    private final LatLng mDefaultLocation = new LatLng(45.463619, 9.188120);
+    private LatLng mDefaultLocation;
     /*end edit*/
 
     private AccommodationMapViewModel accommodationMapViewModel;
@@ -70,6 +70,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
@@ -83,6 +84,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         final TextView textView = root.findViewById(R.id.text_map);
         redoSearchButton = root.findViewById(R.id.redo_search_button);
 
+
         accommodationMapViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -90,6 +92,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
             }
         });
 
+        mDefaultLocation=accommodationMapViewModel.getDefLocation();
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 

@@ -17,6 +17,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.surfmaster.consigliaviaggi.R;
@@ -128,6 +129,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 loginViewModel.logoutButtonClickAction();
+                LoginManager.getInstance().logOut();
             }
         });
 

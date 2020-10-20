@@ -16,6 +16,8 @@ import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDao;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoJSON;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
+import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
+import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
 import com.surfmaster.consigliaviaggi.models.DTO.JsonPageResponse;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 import com.surfmaster.consigliaviaggi.ui.main.MainFragmentDirections;
@@ -36,11 +38,13 @@ public class ViewAccommodationsController {
     private List<Accommodation> accommodationList;
     private AccommodationDao acDao;
     private Context context;
+    private UserDao userDao;
 
     public ViewAccommodationsController(Context context){
 
         this.context=context;
         acDao= new AccommodationDaoJSON();
+        userDao = new UserDaoSharedPrefs(context);
     }
 
     public List<Accommodation> getAccommodationList(SearchParamsAccommodation params){
@@ -89,32 +93,20 @@ public class ViewAccommodationsController {
 
     public String getSelectedCity() {
 
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        if (pref.contains(Constants.PREF_CITY)) {
-            return pref.getString(Constants.PREF_CITY,"");
-        }
-        else
+        String city = userDao.getSelectedCity();
+        if(city.length()>0)
+            return city;
         return context.getString(R.string.city_select);
     }
 
     public void updateSelectedCity(String city, Double lat, Double lon) {
         if(lat!=null&&lon!=null) {
-            SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString(Constants.PREF_CITY, city);
-            editor.putLong(Constants.PREF_LATITUDE, Double.doubleToRawLongBits(lat));
-            editor.putLong(Constants.PREF_LONGITUDE, Double.doubleToRawLongBits(lon));
-            editor.apply();
+            userDao.updateSelectedCity(city,lat,lon);
         }
     }
 
     public String resetSelectedCity() {
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove(Constants.PREF_CITY);
-        editor.remove(Constants.PREF_LATITUDE);
-        editor.remove(Constants.PREF_LONGITUDE);
-        editor.apply();
+        userDao.resetSelectedCity();
         return context.getString(R.string.city_select);
     }
 
