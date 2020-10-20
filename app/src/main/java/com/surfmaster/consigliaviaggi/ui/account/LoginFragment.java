@@ -2,14 +2,12 @@ package com.surfmaster.consigliaviaggi.ui.account;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -18,12 +16,11 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
+import com.facebook.LoggingBehavior;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.surfmaster.consigliaviaggi.R;
+import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -32,9 +29,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LoginFragment extends Fragment {
 
@@ -83,7 +77,7 @@ public class LoginFragment extends Fragment {
         loginFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                getFbInfo();
+                loginViewModel.loginFb(getFbToken());
             }
             @Override
             public void onCancel() {
@@ -182,37 +176,12 @@ public class LoginFragment extends Fragment {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void getFbInfo() {
-        GraphRequest request = GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
-                        try {
-                            Log.d("LoginActivity", "fb json object: " + object);
-                            Log.d("LoginActivity", "fb graph response: " + response);
-
-                            //String id = object.getString("id");
-                            String first_name = object.getString("first_name");
-                            String last_name = object.getString("last_name");
-                            String email = null;
-                            if (object.has("email")) {
-                                email = object.getString("email");
-                            }
-
-                            System.out.println("LOGIN FB:"+first_name+last_name+email);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,first_name,last_name,email,gender,birthday"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
-        request.setParameters(parameters);
-        request.executeAsync();
+    private String getFbToken() {
+        FacebookSdk.setIsDebugEnabled(true);
+        FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+        AccessToken token = AccessToken.getCurrentAccessToken();
+        //System.out.println("LOGIN FB:"+token.getToken());
+        return token.getToken();
     }
 
     private void enableSignupLink(View root){
@@ -228,3 +197,4 @@ public class LoginFragment extends Fragment {
         });
     }
 }
+

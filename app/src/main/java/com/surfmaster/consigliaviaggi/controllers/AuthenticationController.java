@@ -11,6 +11,7 @@ import com.google.gson.JsonParser;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
+import com.surfmaster.consigliaviaggi.models.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,12 +24,14 @@ import java.nio.charset.StandardCharsets;
 public class AuthenticationController {
 
     private Context context;
+    private ManageUserController manageUserController;
 
     private UserDao userDao;
 
     public AuthenticationController(Context context){
         this.context=context;
         userDao=new UserDaoSharedPrefs(context);
+        manageUserController=new ManageUserController(context);
     }
 
     public Boolean authenticate(String user, String pwd)  {
@@ -123,6 +126,38 @@ public class AuthenticationController {
     }
 
 
+    public Boolean authenticateByFb(String fbToken){
+        String urlString= Constants.FACEBOOK_LOGIN +fbToken;
+        HttpURLConnection connection;
+        int responseCode;
+        BufferedReader json = null;
+        try {
+            URL url = new URL(urlString);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
+            connection.setRequestMethod("GET");
+            responseCode=connection.getResponseCode();
+            if(responseCode==HttpURLConnection.HTTP_OK) {
+                json = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                JsonElement jsonTree = JsonParser.parseReader(json);
+                JsonObject responseJson = jsonTree.getAsJsonObject();
+
+                String jwtToken = responseJson.get("token").getAsString();
+                int userId = responseJson.get("userId").getAsInt();
+                if (jwtToken!=null){
+                    userDao.saveFbUser(userId,jwtToken);
+                    userDao.saveFbUserDetails(manageUserController.getUserDetails(userId).getNome(),manageUserController.getUserDetails(userId).getPwd());
+                    postToastMessage("Logged in");
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            postToastMessage("Logged error");
+            return false;
+        }
+        postToastMessage("Logged error");
+        return false;
+    }
 }
 
 

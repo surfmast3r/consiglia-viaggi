@@ -144,7 +144,7 @@ public class AccommodationDaoJSON implements AccommodationDao{
             responseCode=connection.getResponseCode();
             if(responseCode==HttpURLConnection.HTTP_OK)
                 json = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            else if(responseCode==HttpURLConnection.HTTP_UNAUTHORIZED)
+            else if(responseCode==HttpURLConnection.HTTP_UNAUTHORIZED)   //?????????????????????????????????????????
                 throw new DaoException(DaoException.ERROR,"Unauthorized");
             else
                 throw new DaoException(DaoException.ERROR,"Server Error");

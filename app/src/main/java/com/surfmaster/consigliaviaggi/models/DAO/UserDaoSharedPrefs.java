@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.models.User;
 
 public class UserDaoSharedPrefs implements UserDao{
     private Context context;
@@ -12,6 +13,7 @@ public class UserDaoSharedPrefs implements UserDao{
         this.context=context;
 
     }
+
 
     public void saveUser(Integer id, String user, String pwd, String token) {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
@@ -23,6 +25,20 @@ public class UserDaoSharedPrefs implements UserDao{
         editor.apply();
     }
 
+    public void saveFbUser(Integer id, String token) {
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(Constants.ID,id);
+        editor.putString(Constants.TOKEN, token);
+        editor.apply();
+    }
+    public void saveFbUserDetails(String name, String pwd) {
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Constants.USER,name);
+        editor.putString(Constants.PWD, pwd);
+        editor.apply();
+    }
 
 
     public Integer getUserId(){

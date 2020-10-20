@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.surfmaster.consigliaviaggi.controllers.AuthenticationController;
 import com.surfmaster.consigliaviaggi.controllers.ManageUserController;
+import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 import com.surfmaster.consigliaviaggi.models.User;
 
 import java.util.concurrent.ExecutorService;
@@ -88,6 +89,17 @@ public class LoginViewModel extends AndroidViewModel {
         });
     }
 
+    public void loginFb(final String fbToken){
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                boolean response=authenticationController.authenticateByFb(fbToken);
+                loggedIn.postValue(response);
+            }
+        });
+    }
+
     public void logoutButtonClickAction() {
         ExecutorService service =  Executors.newSingleThreadExecutor();
         service.submit(new Runnable() {
@@ -139,6 +151,7 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getShowUsername() {
         return showUsername;
     }
+
 
 
 }
