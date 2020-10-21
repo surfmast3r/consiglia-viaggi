@@ -40,7 +40,7 @@ public class MainFragment extends Fragment {
                 ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mainViewModel.setCity(viewAccommodationsController.getSelectedCity());
+        //mainViewModel.initSelectedCity();
 
         mapViewButton=root.findViewById(R.id.explore_map_button);
         hotelButton = root.findViewById(R.id.hotel_button);

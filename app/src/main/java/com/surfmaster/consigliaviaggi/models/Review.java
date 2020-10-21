@@ -28,7 +28,6 @@ public class Review implements Comparable<Review>{
 
     }
 
-    // SI PUO AGGIUNGERE L'ORARIO?
     @Override
     public int compareTo(Review o) {
         try {

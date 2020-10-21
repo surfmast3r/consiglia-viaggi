@@ -4,6 +4,7 @@ import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.Category;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +23,12 @@ public class AccommodationFiltersViewModel extends ViewModel {
     private ArrayList<Category> categoryArrayList;
     private MutableLiveData<SearchParamsAccommodation> mCurrentSearchParams;
     private String orderBy;
+    private MutableLiveData<String> mCity;
 
     public AccommodationFiltersViewModel() {
 
         mCurrentSearchParams =new MutableLiveData<>();
+        mCity=new MutableLiveData<>();
         categoryArrayList=new ArrayList<>();
         categoryArrayList.addAll(Category.createCategoryList());
         mMinRating=new MutableLiveData<>();
@@ -90,6 +93,9 @@ public class AccommodationFiltersViewModel extends ViewModel {
         }
 
     }
+    public void setCity(String city) {
+        mCity.setValue(city);
+    }
     private Category findCategoryByName(String categoryName) {
         for(int i=0; i<categoryArrayList.size();i++) {
             if (categoryArrayList.get(i).getCategoryName().equals(categoryName)){
@@ -118,6 +124,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
     public void applySearchParams() {
         SearchParamsAccommodation searchParamsAccommodation = new SearchParamsAccommodation.Builder()
                 .setCurrentCategory(mCategory.getValue().getCategoryName())
+                .setCurrentCity(mCity.getValue())
                 .setCurrentSubCategory(mSubCategory.getValue().getCategoryName())
                 .setDirection(mSortParam.getValue().toString())
                 .setMinRating(mMinRating.getValue())
@@ -140,4 +147,6 @@ public class AccommodationFiltersViewModel extends ViewModel {
         }
         return direction;
     }
+
+
 }

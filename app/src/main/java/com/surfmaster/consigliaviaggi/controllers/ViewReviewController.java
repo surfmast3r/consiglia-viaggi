@@ -16,7 +16,6 @@ public class ViewReviewController {
     public ViewReviewController() {
 
         reviewDao= new ReviewDaoJSON();
-        //reviewDao= new ReviewDaoStub();
     }
 
     public List<Review> getReviewList(int id) {

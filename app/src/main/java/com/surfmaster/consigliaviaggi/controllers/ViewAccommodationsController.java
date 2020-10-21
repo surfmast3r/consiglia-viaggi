@@ -36,13 +36,14 @@ public class ViewAccommodationsController {
     private List<Accommodation> accommodationList;
     private AccommodationDao acDao;
     private Context context;
-    private UserDao userDao;
+    private ManageUserController manageUserController;
 
     public ViewAccommodationsController(Context context){
 
         this.context=context;
         acDao= new AccommodationDaoJSON();
-        userDao = new UserDaoSharedPrefs(context);
+        manageUserController= new ManageUserController(context);
+        //userDao = new UserDaoSharedPrefs(context);
     }
 
     public List<Accommodation> getAccommodationList(SearchParamsAccommodation params){
@@ -89,31 +90,12 @@ public class ViewAccommodationsController {
         return accommodationList;
     }
 
-    public String getSelectedCity() {
-
-        String city = userDao.getSelectedCity();
-        if(city.length()>0)
-            return city;
-        return context.getString(R.string.city_select);
-    }
-
-    public void updateSelectedCity(String city, Double lat, Double lon) {
-        if(lat!=null&&lon!=null) {
-            userDao.updateSelectedCity(city,lat,lon);
-        }
-    }
-
-    public String resetSelectedCity() {
-        userDao.resetSelectedCity();
-        return context.getString(R.string.city_select);
-    }
-
     public void navigateToAccommodationListFragment( String category) {
 
         MainFragmentDirections.ActionNavHomeToNavAccommodationList action;
 
-        if (!getSelectedCity().equals(context.getString(R.string.city_select))) {
-            action = MainFragmentDirections.actionNavHomeToNavAccommodationList(category,getSelectedCity());
+        if (!manageUserController.getSelectedCity().equals(context.getString(R.string.city_select))) {
+            action = MainFragmentDirections.actionNavHomeToNavAccommodationList(category,manageUserController.getSelectedCity());
             Navigation.findNavController((AppCompatActivity) context, R.id.nav_host_fragment).navigate(action);
         }
         else {

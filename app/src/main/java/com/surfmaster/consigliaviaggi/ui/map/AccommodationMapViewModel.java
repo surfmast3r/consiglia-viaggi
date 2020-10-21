@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.surfmaster.consigliaviaggi.controllers.ManageUserController;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
@@ -21,7 +22,8 @@ public class AccommodationMapViewModel extends AndroidViewModel {
     private MutableLiveData<String> mText;
     private MutableLiveData<List<Accommodation>> mAccommodationList;
     private ViewAccommodationsController viewAccommodationsController;
-    private UserDao userDao;
+    //private UserDao userDao;
+    private ManageUserController manageUserController;
 
     public AccommodationMapViewModel(Application application) {
         super(application);
@@ -29,7 +31,8 @@ public class AccommodationMapViewModel extends AndroidViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is map fragment");
         mAccommodationList=new MutableLiveData<>();
-        userDao = new UserDaoSharedPrefs(application);
+        manageUserController= new ManageUserController(application);
+        //userDao = new UserDaoSharedPrefs(application);
     }
 
     public LiveData<String> getText() {
@@ -54,8 +57,8 @@ public class AccommodationMapViewModel extends AndroidViewModel {
     }
 
     public LatLng getDefLocation() {
-        Double lat = userDao.getSelectedCityLatitude();
-        Double lon = userDao.getSelectedCityLongitude();
+        Double lat = manageUserController.getSelectedCityLatitude();
+        Double lon = manageUserController.getSelectedCityLongitude();
         return new LatLng(lat,lon);
     }
 }

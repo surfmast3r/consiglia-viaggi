@@ -10,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
@@ -110,5 +111,34 @@ public class ManageUserController {
             }
         });
     }
+
+    public Double getSelectedCityLatitude() {
+       return userDao.getSelectedCityLatitude();
+    }
+
+    public Double getSelectedCityLongitude() {
+        return userDao.getSelectedCityLongitude();
+    }
+
+    public String getSelectedCity() {
+
+        String city = userDao.getSelectedCity();
+        if(city.length()>0)
+            return city;
+        return context.getString(R.string.city_select);
+    }
+
+    public void updateSelectedCity(String city, Double lat, Double lon) {
+        if(lat!=null&&lon!=null) {
+            userDao.updateSelectedCity(city,lat,lon);
+        }
+    }
+
+    public String resetSelectedCity() {
+        userDao.resetSelectedCity();
+        return context.getString(R.string.city_select);
+    }
+
+
 
 }

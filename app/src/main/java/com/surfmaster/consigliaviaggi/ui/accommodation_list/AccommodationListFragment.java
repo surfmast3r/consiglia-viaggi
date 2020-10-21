@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
+import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.Category;
@@ -44,7 +45,7 @@ public class AccommodationListFragment extends Fragment{
     private boolean loading = true;
     private int visibleThreshold = 2;
     int firstVisibleItem, visibleItemCount, totalItemCount;
-    //endless scroll end
+    private String city;
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -68,11 +69,12 @@ public class AccommodationListFragment extends Fragment{
 
         if(getArguments()!=null) {
             category = AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
-            String city = AccommodationListFragmentArgs.fromBundle(getArguments()).getCity();
+            city = AccommodationListFragmentArgs.fromBundle(getArguments()).getCity();
             currentSearchParams= new SearchParamsAccommodation.Builder()
                     .setCurrentCategory(category)
                     .setCurrentCity(city)
                     .create();
+
         }
 
         View root = inflater.inflate(R.layout.fragment_accommodation_list, container, false);
@@ -81,7 +83,7 @@ public class AccommodationListFragment extends Fragment{
 
         initFilters();
 
-        updateAccommodationList(currentSearchParams);
+        //updateAccommodationList(currentSearchParams);
         return root;
     }
 
@@ -156,7 +158,7 @@ public class AccommodationListFragment extends Fragment{
         accommodationFiltersViewModel.getCurrentSearchParams().observe(getViewLifecycleOwner(), new Observer<SearchParamsAccommodation>() {
             @Override
             public void onChanged(SearchParamsAccommodation searchParamsAccommodation) {
-                updateAccommodationList( searchParamsAccommodation);
+                updateAccommodationList(searchParamsAccommodation);
             }
         });
 
@@ -167,22 +169,18 @@ public class AccommodationListFragment extends Fragment{
     private void updateAccommodationList(SearchParamsAccommodation searchParams) {
         if (adapter!=null)
             adapter.clearList();
-
         startShimmerAnimation();
         accommodationListViewModel.setAccommodationList(searchParams);
     }
 
 
     private void initFilters() {
-        //sortOrder=Constants.DEFAULT_ORDER;
-        //minRating=Constants.DEFAULT_MIN_RATING;
-        //maxRating=Constants.DEFAULT_MAX_RATING;
         accommodationFiltersViewModel.setCategory(category);
-
-        //accommodationFiltersViewModel.setMinRating(minRating);
-        //accommodationFiltersViewModel.setMaxRating(maxRating);
-
-        //accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
+        accommodationFiltersViewModel.setCity(city);
+        accommodationFiltersViewModel.setMinRating(Constants.DEFAULT_MIN_RATING);
+        accommodationFiltersViewModel.setMaxRating(Constants.DEFAULT_MAX_RATING);
+        accommodationFiltersViewModel.setSortParam(Constants.DEFAULT_ORDER);
+        accommodationFiltersViewModel.applySearchParams();
 
     }
 

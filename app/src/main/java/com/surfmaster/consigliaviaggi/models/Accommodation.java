@@ -173,11 +173,4 @@ public class Accommodation implements Comparable<Accommodation>{
         }
     }
 
-    /*public static class ReviewRatingComparator implements Comparator<Accommodation> {
-        @Override
-        public int compare(Accommodation ac1, Accommodation ac2) {
-            return Float.compare(ac1.getRating(), ac2.getRating());
-        }
-    }*/
-
 }

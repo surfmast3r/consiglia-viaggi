@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 
 import java.util.Objects;
 
@@ -30,7 +29,6 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
 
     private MainViewModel mainViewModel;
     private EditText cityAutoCompleteTextView;
-    private ViewAccommodationsController viewAccommodationsController;
     private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
     private RecyclerView recyclerView;
     private Double latitude,longitude;
@@ -54,7 +52,6 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        viewAccommodationsController=new ViewAccommodationsController(requireContext());
 
         mainViewModel =
                 ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
@@ -129,16 +126,15 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
     }
 
     private void resetCityField() {
-        //viewAccommodationsController.resetSelectedCity(requireContext());
-        mainViewModel.setCity(viewAccommodationsController.resetSelectedCity());
+        mainViewModel.resetCity();
         cityAutoCompleteTextView.setHint(mainViewModel.getCity().getValue());
     }
 
 
     private void updateCityField(){
         if(latitude!=null&&longitude!=null) {
-            mainViewModel.setCity(cityAutoCompleteTextView.getText().toString());
-            viewAccommodationsController.updateSelectedCity(cityAutoCompleteTextView.getText().toString(), latitude, longitude);
+            mainViewModel.setCity(cityAutoCompleteTextView.getText().toString(),latitude,longitude);
+
         }
 
     }
