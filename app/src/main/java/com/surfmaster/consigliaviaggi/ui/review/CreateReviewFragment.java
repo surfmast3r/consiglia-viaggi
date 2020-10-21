@@ -7,11 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.models.Review;
-import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +20,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.surfmaster.consigliaviaggi.R;
 
 public class CreateReviewFragment extends Fragment {
 

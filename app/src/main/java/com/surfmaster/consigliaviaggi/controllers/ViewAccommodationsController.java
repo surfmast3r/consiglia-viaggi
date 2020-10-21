@@ -1,16 +1,18 @@
 package com.surfmaster.consigliaviaggi.controllers;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
+
 import com.google.android.gms.maps.model.LatLng;
-import com.surfmaster.consigliaviaggi.Constants;
+
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDao;
@@ -25,15 +27,11 @@ import com.surfmaster.consigliaviaggi.ui.main.SelectCityFragment;
 
 import java.util.List;
 
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
-
 public class ViewAccommodationsController {
 
     private int pageNumber;
     private int totalPageNumber;
-    private int totalElementNumber;
+    //private int totalElementNumber;
     private SearchParamsAccommodation currentSearchParams;
     private List<Accommodation> accommodationList;
     private AccommodationDao acDao;
@@ -54,7 +52,7 @@ public class ViewAccommodationsController {
             accommodationList=jsonPageResponse.getContent();
             pageNumber=jsonPageResponse.getPage();
             totalPageNumber=jsonPageResponse.getTotalPages();
-            totalElementNumber=jsonPageResponse.getTotalElements();
+            //totalElementNumber=jsonPageResponse.getTotalElements();
         } catch (DaoException e) {
             postToastMessage(e.getMessage());
             return null;
@@ -71,7 +69,7 @@ public class ViewAccommodationsController {
         else return null;
     }
     public Accommodation getAccommodationById(int id){
-        Accommodation accommodation = null;
+        Accommodation accommodation;
         try {
             accommodation=acDao.getAccommodationById(id);
         } catch (DaoException e) {

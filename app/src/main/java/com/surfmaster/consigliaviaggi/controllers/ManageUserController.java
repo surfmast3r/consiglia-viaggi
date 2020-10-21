@@ -3,7 +3,6 @@ package com.surfmaster.consigliaviaggi.controllers;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -74,7 +73,7 @@ public class ManageUserController {
     }
     private BufferedReader getJSONFromConnection(HttpURLConnection connection) throws DaoException {
         int responseCode;
-        BufferedReader json = null;
+        BufferedReader json;
         try {
             responseCode=connection.getResponseCode();
             if(responseCode==HttpURLConnection.HTTP_OK)

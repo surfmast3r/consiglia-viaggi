@@ -80,27 +80,23 @@ public class UserDaoSharedPrefs implements UserDao{
 
     public Integer getUserId(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        Integer userId=pref.getInt(Constants.ID,-1);
 
-        return userId;
+        return pref.getInt(Constants.ID,-1);
     }
     public String getUserName(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        String userName=pref.getString(Constants.USER,"");
 
-        return userName;
+        return pref.getString(Constants.USER,"");
     }
     public String getToken(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        String token=pref.getString(Constants.TOKEN,"");
 
-        return token;
+        return pref.getString(Constants.TOKEN,"");
     }
     public String getUserPwd(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
-        String pwd=pref.getString(Constants.PWD,"");
 
-        return pwd;
+        return pref.getString(Constants.PWD,"");
     }
     public void logOutUser() {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode

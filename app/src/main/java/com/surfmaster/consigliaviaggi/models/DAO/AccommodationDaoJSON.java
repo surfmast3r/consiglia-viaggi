@@ -30,33 +30,26 @@ import java.util.List;
 public class AccommodationDaoJSON implements AccommodationDao{
 
     @Override
-    public ArrayList<Accommodation> getAccommodationList(String city) {
-        return null;
-    }
-
-    @Override
     public List<Accommodation> getAccommodationList(LatLng latLng) throws DaoException {
         return getAccommodationListLocationJSONParsing(latLng);
     }
-
 
     @Override
     public Accommodation getAccommodationById(int id) throws DaoException{
         return getAccommodationJSON(id);
     }
 
-    // GET
     @Override
     public JsonPageResponse<Accommodation> getAccommodationList(SearchParamsAccommodation params) throws DaoException {
-
-        JsonPageResponse<Accommodation> accommodationList=  getAccommodationListJSONParsing(params);
-        return accommodationList;
+        return  getAccommodationListJSONParsing(params);
     }
+
+
     private JsonPageResponse<Accommodation> getAccommodationListJSONParsing(SearchParamsAccommodation params) throws DaoException {
-        String urlString= null;
+        String urlString;
         try {
             urlString = Constants.GET_ACCOMMODATION_LIST_URL+"?"+
-                    Constants.QUERY_PARAM+
+                    Constants.CITY_PARAM +
                     URLEncoder.encode(params.getCurrentCity(), StandardCharsets.UTF_8.name())+"&"+
                     Constants.CATEGORY_PARAM+
                     params.getCurrentCategory()+"&"+
@@ -90,7 +83,7 @@ public class AccommodationDaoJSON implements AccommodationDao{
     }
 
     private List<Accommodation> getAccommodationListLocationJSONParsing(LatLng latLng) throws DaoException {
-        String urlString= null;
+        String urlString;
         urlString = Constants.GET_ACCOMMODATION_LIST_LOCATION_URL+"?"+
                 Constants.LATITUDE_PARAM+latLng.latitude+"&"+
                 Constants.LONGITUDE_PARAM+latLng.longitude;
@@ -136,7 +129,7 @@ public class AccommodationDaoJSON implements AccommodationDao{
         URL url = new URL(urlString);
         HttpURLConnection connection;
         int responseCode;
-        BufferedReader json = null;
+        BufferedReader json;
         try {
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
@@ -144,8 +137,6 @@ public class AccommodationDaoJSON implements AccommodationDao{
             responseCode=connection.getResponseCode();
             if(responseCode==HttpURLConnection.HTTP_OK)
                 json = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            else if(responseCode==HttpURLConnection.HTTP_UNAUTHORIZED)   //?????????????????????????????????????????
-                throw new DaoException(DaoException.ERROR,"Unauthorized");
             else
                 throw new DaoException(DaoException.ERROR,"Server Error");
         } catch (IOException e) {

@@ -3,15 +3,15 @@ package com.surfmaster.consigliaviaggi.ui.account;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+
 import com.surfmaster.consigliaviaggi.controllers.AuthenticationController;
 import com.surfmaster.consigliaviaggi.controllers.ManageUserController;
-import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 import com.surfmaster.consigliaviaggi.models.User;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
 
 public class LoginViewModel extends AndroidViewModel {
 

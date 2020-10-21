@@ -11,7 +11,6 @@ import com.google.gson.JsonParser;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
-import com.surfmaster.consigliaviaggi.models.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class AuthenticationController {
 
     public Boolean authenticate(String user, String pwd)  {
         System.out.println("User: "+user+" pwd: "+pwd);
-        BufferedReader jsonResponse = null;
+        BufferedReader jsonResponse;
         try {
             jsonResponse = getJsonResponseFromLoginUrl(user,pwd);
         } catch (IOException e) {
@@ -63,9 +62,10 @@ public class AuthenticationController {
     }
 
     private BufferedReader getJsonResponseFromLoginUrl(String user, String pwd) throws IOException {
+
         URL url = new URL(Constants.LOGIN_URL);
-        HttpURLConnection connection = null;
-        int responseCode = 0;
+        HttpURLConnection connection;
+        int responseCode;
 
         String jsonInputString = "{\"username\":\"" + user + "\", \"password\": \"" + pwd + "\"}";
         System.out.print(jsonInputString);
@@ -76,8 +76,7 @@ public class AuthenticationController {
         try (OutputStream os = connection.getOutputStream()) {
             byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
-
-        }
+        } // ?
         responseCode=connection.getResponseCode();
 
         BufferedReader jsonResponse = null;
@@ -130,7 +129,7 @@ public class AuthenticationController {
         String urlString= Constants.FACEBOOK_LOGIN +fbToken;
         HttpURLConnection connection;
         int responseCode;
-        BufferedReader json = null;
+        BufferedReader json;
         try {
             URL url = new URL(urlString);
             connection = (HttpURLConnection) url.openConnection();

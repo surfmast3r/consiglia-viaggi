@@ -28,9 +28,8 @@ public class RegistrationController {
     }
 
     public boolean registerUser(User user)  {
-       JsonObject userJson = null;
         try {
-            userJson=createUserJSON(user);
+            createUserJSON(user);
         } catch (DaoException e) {
             postToastMessage(e.getMessage());
             return false;
@@ -39,22 +38,14 @@ public class RegistrationController {
         return true;
     }
 
-    private User parseUser(JsonObject userJSON) {
-        Gson gson = new Gson();
-        return gson.fromJson(userJSON,User.class);
-    }
-
     private JsonObject createUserJSON(User user) throws  DaoException {
         int responseCode;
         BufferedReader jsonResponse;
         Gson gson = new Gson();
         JsonObject userJson = JsonParser.parseString(gson.toJson(user)).getAsJsonObject();
-
-        System.out.println(userJson);
-
         byte[] input = userJson.toString().getBytes(StandardCharsets.UTF_8);
         try {
-            HttpURLConnection connection = createConnection(Constants.REGISTER, "POST");
+            HttpURLConnection connection = createConnection();
             OutputStream os = connection.getOutputStream();
             os.write(input, 0, input.length);
             responseCode=connection.getResponseCode();
@@ -67,21 +58,19 @@ public class RegistrationController {
             else{
                 throw  new DaoException(DaoException.ERROR,"Errore di rete");
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw  new DaoException(DaoException.ERROR,"Errore di rete");
         }
-
-
-
         return JsonParser.parseReader(jsonResponse).getAsJsonObject();
 
     }
 
-    private HttpURLConnection createConnection(String urlString,String requestMethod) throws IOException {
-        URL url = new URL(urlString);
+    private HttpURLConnection createConnection() throws IOException {
+        URL url = new URL(Constants.REGISTER);
         HttpURLConnection connection;
         connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(requestMethod);
+        connection.setRequestMethod("POST");
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type","application/json");
         return connection;

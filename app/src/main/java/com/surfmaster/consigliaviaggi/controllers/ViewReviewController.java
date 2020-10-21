@@ -30,7 +30,7 @@ public class ViewReviewController {
     }
 
     public List<Review>  orderReviewListByDate(List<Review>  reviewList){
-            Collections.sort(reviewList, Collections.reverseOrder());
+            Collections.sort(reviewList);
         return reviewList;
     }
     public List<Review>  orderReviewListByRating(List<Review>  reviewList, int order){
@@ -53,8 +53,7 @@ public class ViewReviewController {
 
     public List<Review>  copyList(List<Review>  acList) {
 
-        List<Review>  copyList= new ArrayList<>();
-        copyList.addAll((ArrayList<Review>) acList);
+        List<Review> copyList = new ArrayList<>((ArrayList<Review>) acList);
 
         return copyList;
     }

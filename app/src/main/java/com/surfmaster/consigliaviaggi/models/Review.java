@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 
-public class Review implements Comparable{
+public class Review implements Comparable<Review>{
 
     private Integer idUser;
     private String author;
@@ -28,12 +28,12 @@ public class Review implements Comparable{
 
     }
 
+    // SI PUO AGGIUNGERE L'ORARIO?
     @Override
-    public int compareTo(Object o) {
-        Review review = (Review) o ;
+    public int compareTo(Review o) {
         try {
             Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(data);
-            Date date2=new SimpleDateFormat("dd/MM/yyyy").parse(review.getData());
+            Date date2=new SimpleDateFormat("dd/MM/yyyy").parse(o.getData());
             return date1.compareTo(date2);
         } catch (ParseException e) {
             e.printStackTrace();

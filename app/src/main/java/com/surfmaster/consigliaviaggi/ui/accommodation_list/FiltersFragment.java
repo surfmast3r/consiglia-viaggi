@@ -7,19 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.surfmaster.consigliaviaggi.Constants;
-import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.models.Category;
-import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,9 +18,16 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.R;
+import com.surfmaster.consigliaviaggi.models.Category;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class FiltersFragment extends DialogFragment{
 
-    private DialogInterface.OnDismissListener onDismissListener;
+   // private DialogInterface.OnDismissListener onDismissListener;
 
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private RadioGroup orderRadioGroup;

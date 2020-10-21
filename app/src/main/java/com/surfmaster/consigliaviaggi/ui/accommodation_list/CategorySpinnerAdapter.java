@@ -14,14 +14,14 @@ import java.util.List;
 public class CategorySpinnerAdapter extends ArrayAdapter<Category> {
 
     // Your sent context
-    private Context context;
+    //private Context context;
     // Your custom values for the spinner (User)
     private List<Category> values;
 
     public CategorySpinnerAdapter(Context context, int textViewResourceId,
                        List<Category> values) {
         super(context, textViewResourceId, values);
-        this.context = context;
+       // this.context = context;
         this.values = values;
     }
 

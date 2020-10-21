@@ -129,7 +129,7 @@ public class AccommodationFiltersViewModel extends ViewModel {
     }
 
     private String getDirection(int order) {
-        String direction= Constants.DESC;;
+        String direction= Constants.DESC;
         switch (order) {
             case Constants.BEST_RATING_ORDER:
                 direction= Constants.DESC;

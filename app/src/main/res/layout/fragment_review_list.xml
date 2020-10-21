@@ -83,7 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/worst_rating"/>
-                <RadioButton android:id="@+id/radio_default"
+                <RadioButton android:id="@+id/radio_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/date"

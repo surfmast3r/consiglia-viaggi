@@ -37,7 +37,7 @@ public class ReviewViewModel extends AndroidViewModel {
         mText = new MutableLiveData<>();
         mReviewList=new ArrayList<>();
         mFilteredReviewList=new MutableLiveData<>();
-        mReviewSublist=new MutableLiveData();
+        mReviewSublist=new MutableLiveData<>();
         currentOrder=Constants.DEFAULT_ORDER;
         postReviewResponse=new MutableLiveData<>(false);
         mText.setValue("This is review list fragment");

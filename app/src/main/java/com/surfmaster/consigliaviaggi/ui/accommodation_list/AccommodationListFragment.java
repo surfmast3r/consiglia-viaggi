@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
 import com.surfmaster.consigliaviaggi.R;
+import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.Category;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 
@@ -35,7 +36,6 @@ public class AccommodationListFragment extends Fragment{
     private RecyclerView rv;
     private TextView categoryTextView;
     private String category;
-    private String city;
     private SearchParamsAccommodation currentSearchParams;
     private ShimmerFrameLayout mShimmerViewContainer;
     private AccommodationRecyclerViewAdapter adapter;
@@ -68,7 +68,7 @@ public class AccommodationListFragment extends Fragment{
 
         if(getArguments()!=null) {
             category = AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
-            city = AccommodationListFragmentArgs.fromBundle(getArguments()).getCity();
+            String city = AccommodationListFragmentArgs.fromBundle(getArguments()).getCity();
             currentSearchParams= new SearchParamsAccommodation.Builder()
                     .setCurrentCategory(category)
                     .setCurrentCity(city)
@@ -131,21 +131,19 @@ public class AccommodationListFragment extends Fragment{
                 }
             }
         });
-        accommodationListViewModel.getList().observe(getViewLifecycleOwner(), new Observer<List>() {
+        accommodationListViewModel.getList().observe(getViewLifecycleOwner(), new Observer<List<Accommodation>>() {
 
                     @Override
-                    public void onChanged(@Nullable List newList) {
+                    public void onChanged(@Nullable List<Accommodation> newList) {
                         if (newList!=null) {
                             if (adapter == null) {
                                 adapter = new AccommodationRecyclerViewAdapter(getContext(), newList);
                                 rv.setAdapter(adapter);
-                                stopShimmerAnimation();
-                                previousTotal = 0;
                             } else {
                                 adapter.refreshList(newList);
-                                stopShimmerAnimation();
-                                previousTotal = 0;
                             }
+                            stopShimmerAnimation();
+                            previousTotal = 0;
                         }
                         else{
                             stopShimmerAnimation();
@@ -200,24 +198,17 @@ public class AccommodationListFragment extends Fragment{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        if (item.getItemId() == R.id.action_filter) {
 
-            case R.id.action_filter:
-                // Create and show the dialog.
+            assert getFragmentManager() != null;
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            DialogFragment newFragment = FiltersFragment.newInstance();
 
-                assert getFragmentManager() != null;
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                DialogFragment newFragment = FiltersFragment.newInstance();
-
-                newFragment.show(ft, "dialog");
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
+            newFragment.show(ft, "dialog");
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

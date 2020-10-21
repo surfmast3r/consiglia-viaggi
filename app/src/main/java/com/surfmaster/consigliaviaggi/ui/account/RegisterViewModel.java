@@ -1,17 +1,16 @@
 package com.surfmaster.consigliaviaggi.ui.account;
 
 import android.app.Application;
-import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.surfmaster.consigliaviaggi.controllers.RegistrationController;
 import com.surfmaster.consigliaviaggi.models.User;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
 
 public class RegisterViewModel extends AndroidViewModel {
 
@@ -46,7 +45,7 @@ public class RegisterViewModel extends AndroidViewModel {
                         .setSurname(mSurname.getValue())
                         .setEmail(mEmail.getValue())
                         .setPwd(mPwd.getValue())
-                        .create());;
+                        .create());
                 mResponse.postValue(response);
             }
         });

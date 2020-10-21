@@ -35,7 +35,7 @@ public final class Constants  {
     public static final String GET_ACCOMMODATION_LIST_URL = SERVER_URL+"accommodation";
     public static final String GET_ACCOMMODATION_LIST_LOCATION_URL = SERVER_URL+"accommodation_location";
     public static final String LATITUDE_PARAM ="latitude=", LONGITUDE_PARAM ="longitude=";
-    public static final String QUERY_PARAM ="query=";
+    public static final String CITY_PARAM ="city=";
     public static final String CATEGORY_PARAM ="category=";
     public static final String SUBCATEGORY_PARAM ="subCategory=";
     //Review

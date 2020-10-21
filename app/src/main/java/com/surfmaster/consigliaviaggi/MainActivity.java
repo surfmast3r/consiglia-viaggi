@@ -1,15 +1,16 @@
 package com.surfmaster.consigliaviaggi;
 
 import android.os.Bundle;
-
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -17,15 +18,11 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.facebook.FacebookSdk;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.surfmaster.consigliaviaggi.ui.account.LoginViewModel;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.view.Menu;
-import android.widget.TextView;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
 
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             @Override
             public void onChanged(Boolean logged) {
                 if(logged){
-                    userTextView.setText("Benvenuto "+loginViewModel.getUserName());
+                    userTextView.setText(String.format("Benvenuto %s", loginViewModel.getUserName()));
                     loginMenuItem.setTitle("My Account");
                 }else{
                     userTextView.setText(R.string.no_access);

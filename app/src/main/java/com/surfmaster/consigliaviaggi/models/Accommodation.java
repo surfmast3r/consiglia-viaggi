@@ -3,10 +3,9 @@ package com.surfmaster.consigliaviaggi.models;
 import com.surfmaster.consigliaviaggi.CategoryEnum;
 import com.surfmaster.consigliaviaggi.Subcategory;
 
-import java.util.Comparator;
 import java.util.List;
 
-public class Accommodation implements Comparable{
+public class Accommodation implements Comparable<Accommodation>{
 
     private Integer id;
     private String name;
@@ -82,13 +81,8 @@ public class Accommodation implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        if((o.getClass()!= Accommodation.class) ) {//check se funziona
-            return -10;
-        }
-            Accommodation accommodation = (Accommodation) o;
-            return Float.compare(rating, accommodation.getRating());
-
+    public int compareTo(Accommodation o) {
+        return Float.compare(rating, o.getRating());
     }
 
 
@@ -179,11 +173,11 @@ public class Accommodation implements Comparable{
         }
     }
 
-    public static class ReviewRatingComparator implements Comparator<Accommodation> {
+    /*public static class ReviewRatingComparator implements Comparator<Accommodation> {
         @Override
         public int compare(Accommodation ac1, Accommodation ac2) {
             return Float.compare(ac1.getRating(), ac2.getRating());
         }
-    }
+    }*/
 
 }

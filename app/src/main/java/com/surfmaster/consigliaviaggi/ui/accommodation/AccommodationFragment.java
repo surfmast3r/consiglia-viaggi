@@ -2,7 +2,6 @@ package com.surfmaster.consigliaviaggi.ui.accommodation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,8 +9,8 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -50,7 +49,6 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
     private SupportMapFragment mapFragment;
     private RecyclerView reviewsRecyclerView;
     private AppCompatButton readAllButton;
-    private GoogleMap googleMap;
     private ShimmerFrameLayout mShimmerViewContainer;
     private RelativeLayout accommodationDetailLayout;
 
@@ -83,7 +81,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
     }
 
     @Override
-    public void onViewCreated(View v, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         mapFragment.getMapAsync(this);
     }
@@ -215,7 +213,6 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
         GoogleMapOptions googleMapOptions = new GoogleMapOptions().liteMode(true);
 
         MapsInitializer.initialize(requireContext());
-        this.googleMap=googleMap;
         accommodationViewModel.getAccommodationLatLng().observe(this, new Observer<LatLng>() {
             @Override
             public void onChanged(LatLng accommodationPosition) {

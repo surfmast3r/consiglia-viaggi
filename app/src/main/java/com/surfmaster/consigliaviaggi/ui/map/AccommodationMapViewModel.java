@@ -2,23 +2,19 @@ package com.surfmaster.consigliaviaggi.ui.map;
 
 import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
 import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
-import com.surfmaster.consigliaviaggi.models.User;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 public class AccommodationMapViewModel extends AndroidViewModel {
 

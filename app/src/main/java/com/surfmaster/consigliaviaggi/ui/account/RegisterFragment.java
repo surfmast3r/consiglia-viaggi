@@ -129,9 +129,6 @@ public class RegisterFragment extends Fragment {
     }
 
     private boolean isEmpty(EditText editText) {
-        if (editText.getText().toString().trim().length() > 0)
-            return false;
-
-        return true;
+        return editText.getText().toString().trim().length() <= 0;
     }
 }

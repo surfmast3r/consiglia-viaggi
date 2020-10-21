@@ -8,14 +8,6 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.surfmaster.consigliaviaggi.Constants;
-import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
-import com.surfmaster.consigliaviaggi.ViewAccommodationActivityArgs;
-import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +21,14 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.R;
+import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
+import com.surfmaster.consigliaviaggi.ViewAccommodationActivityArgs;
+import com.surfmaster.consigliaviaggi.models.Review;
+
+import java.util.List;
 
 public class ReviewListFragment extends Fragment {
 
@@ -61,7 +61,7 @@ public class ReviewListFragment extends Fragment {
     private void bindViews(View root){
 
         final TextView textView = root.findViewById(R.id.review_list_fragment_text);
-        reviewViewModel.getText().observe(this, new Observer<String>() {
+        reviewViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
@@ -84,11 +84,11 @@ public class ReviewListFragment extends Fragment {
                 new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         reviewsRecyclerView.setLayoutManager(layoutManager);
 
-        reviewViewModel.getFilteredReviewList().observe(this, new Observer<List>() {
+        reviewViewModel.getFilteredReviewList().observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
 
                     ReviewsRecyclerViewAdapter adapter;
                     @Override
-                    public void onChanged(@Nullable List s) {
+                    public void onChanged(@Nullable List<Review> s) {
 
                         if (adapter==null){
                             adapter=new ReviewsRecyclerViewAdapter(getContext(),s);
@@ -137,7 +137,7 @@ public class ReviewListFragment extends Fragment {
                     case R.id.radio_worst_rating:
                         reviewViewModel.orderReviewList(Constants.WORST_RATING_ORDER);
                         break;
-                    case R.id.radio_default:
+                    case R.id.radio_date:
                         reviewViewModel.orderReviewList(Constants.DEFAULT_ORDER);
                         break;
                 }

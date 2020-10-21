@@ -1,7 +1,10 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation;
 
 import android.app.Application;
-import android.content.Context;
+
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
@@ -11,13 +14,9 @@ import com.surfmaster.consigliaviaggi.models.Accommodation;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 public class AccommodationViewModel extends AndroidViewModel {
 
-    private Context context;
+    //private Context context;
 
 
     private MutableLiveData<String> mText;
@@ -30,12 +29,12 @@ public class AccommodationViewModel extends AndroidViewModel {
     private MutableLiveData<Integer> mAccommodationId;
     private MutableLiveData<Float> mAccommodationRating;
     private ViewAccommodationsController viewAccommodationsController;
-    private ViewReviewController viewReviewController;
+    //private ViewReviewController viewReviewController;
 
     public AccommodationViewModel(Application application) {
         super(application);
 
-        context=application;
+        //context=application;
         mAccommodationId= new MutableLiveData<>();
         mAccommodationRating= new MutableLiveData<>();
         mAccommodationLatLng= new MutableLiveData<>();
@@ -48,7 +47,7 @@ public class AccommodationViewModel extends AndroidViewModel {
         mText.setValue("This is Accommodation fragment");
 
         viewAccommodationsController = new ViewAccommodationsController(application);
-        viewReviewController = new ViewReviewController();
+        //viewReviewController = new ViewReviewController();
     }
 
     public LiveData<String> getText() {
@@ -84,13 +83,12 @@ public class AccommodationViewModel extends AndroidViewModel {
     }
 
     public void setAccommodation(final int accommodationId) {
-        final int id=accommodationId;
         ExecutorService service =  Executors.newSingleThreadExecutor();
         service.submit(new Runnable() {
             @Override
             public void run() {
 
-                Accommodation ac = viewAccommodationsController.getAccommodationById(id);
+                Accommodation ac = viewAccommodationsController.getAccommodationById(accommodationId);
                 mAccommodationId.postValue(ac.getId());
                 mAccommodationRating.postValue(ac.getRating());
                 mAccommodation.postValue(ac);

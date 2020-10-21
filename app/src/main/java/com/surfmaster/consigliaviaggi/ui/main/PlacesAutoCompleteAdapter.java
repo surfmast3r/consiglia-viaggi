@@ -91,9 +91,6 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
                 if (results != null && results.count > 0) {
                     // The API returned at least one result, update the data.
                     notifyDataSetChanged();
-                } else {
-                    // The API did not return any results, invalidate the data set.
-                    //notifyDataSetInvalidated();
                 }
             }
         };

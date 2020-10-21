@@ -45,7 +45,7 @@ public class ReviewDaoJSON implements ReviewDao{
 
     private Boolean createReviewJSON(JsonObject reviewJson) throws IOException,DaoException {
         int responseCode;
-        HttpURLConnection connection = createAuthenticatedConnection(Constants.CREATE_REVIEW_URL, "POST");
+        HttpURLConnection connection = createAuthenticatedConnection();
         writeOutputStream(connection, reviewJson.toString());
         responseCode = connection.getResponseCode();
 
@@ -88,7 +88,7 @@ public class ReviewDaoJSON implements ReviewDao{
             JsonObject reviewJson = (JsonObject)jo ;
             reviewCollection.add(parseReview(reviewJson));
         }
-        System.out.println("COLLECTION" + reviewCollection);
+        //System.out.println("COLLECTION" + reviewCollection);
         JsonPageResponse<Review> response = new JsonPageResponse<>();
         response.setContent(reviewCollection);
         response.setPage(jsonPage.get("page").getAsInt());
@@ -126,7 +126,7 @@ public class ReviewDaoJSON implements ReviewDao{
         URL url = new URL(urlString);
         HttpURLConnection connection;
         int responseCode;
-        BufferedReader json = null;
+        BufferedReader json;
         try {
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
@@ -145,7 +145,7 @@ public class ReviewDaoJSON implements ReviewDao{
     }
 
     private String formatDate(String creationDate) throws DaoException {
-        Date date = null;
+        Date date;
         try {
             date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(creationDate);
         } catch (ParseException e) {
@@ -155,13 +155,11 @@ public class ReviewDaoJSON implements ReviewDao{
 
     }
 
-    // Authenticate for Create/Delete/Edit methods
-    private HttpURLConnection createAuthenticatedConnection(String urlString,String requestMethod) throws IOException {
-        //TO DO: Autenticazione
-        URL url = new URL(urlString);
+    private HttpURLConnection createAuthenticatedConnection() throws IOException {
+        URL url = new URL(Constants.CREATE_REVIEW_URL);
         HttpURLConnection connection;
         connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(requestMethod);
+        connection.setRequestMethod("POST");
         connection.setDoOutput(true);
         connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
         connection.setRequestProperty("Authorization","Bearer "+token);

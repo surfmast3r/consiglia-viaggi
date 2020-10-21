@@ -64,8 +64,7 @@ public class  AccommodationRecyclerViewAdapter extends RecyclerView.Adapter<Acco
     @Override
     public AccommodationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.accommodation_list_item, parent, false);
-        AccommodationViewHolder avh = new AccommodationViewHolder(v);
-        return avh;
+        return new AccommodationViewHolder(v);
     }
 
     @Override

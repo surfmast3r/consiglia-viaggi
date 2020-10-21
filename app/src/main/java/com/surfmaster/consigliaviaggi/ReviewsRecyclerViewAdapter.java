@@ -18,12 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecyclerViewAdapter.ReviewViewHolder> {
 
     private List<Review> reviews;
-    private Context context;
+   // private Context context;
 
     public ReviewsRecyclerViewAdapter(Context context, List<Review> reviews){
 
         this.reviews = reviews;
-        this.context=context;
+       // this.context=context;
     }
 
     public void refreshList(List<Review> list){
@@ -55,8 +55,7 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
     @Override
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_list_item, parent, false);
-        ReviewViewHolder avh = new ReviewViewHolder(v);
-        return avh;
+        return new ReviewViewHolder(v);
     }
 
     @Override

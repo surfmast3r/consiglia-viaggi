@@ -21,7 +21,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -143,15 +142,11 @@ public class LoginFragment extends Fragment {
         });
 
         loginViewModel.getLoggedIn().observe(getViewLifecycleOwner(),new Observer<Boolean>() {
-            boolean init=true;
             @Override
             public void onChanged(Boolean result) {
-                //if(!init) {
                     if (result) {
                         loginForm.setVisibility(View.GONE);
                         accountPage.setVisibility(View.VISIBLE);
-
-                        //TODO:chiamata al server per avere i dati dell'utente
                         loginViewModel.getUserData();
                     }
                     else
@@ -160,9 +155,6 @@ public class LoginFragment extends Fragment {
                         accountPage.setVisibility(View.GONE);
 
                     }
-
-                //}
-                //init=false;
             }
         });
 

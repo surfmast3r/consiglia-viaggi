@@ -118,9 +118,10 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 // Prompt the user for permission.
                 getLocationPermission();
 
-
                 // Turn on the My Location layer and the related control on the map.
                 updateLocationUI();
+
+                showDefaultLocation();
 
                 //if(mLastKnownLocation==null)
                 // Get the current location of the device and set the position of the map.
@@ -202,11 +203,9 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                         getDeviceLocation();
                     }
 
-                } else {
-                    // no granted
-                    showDefaultLocation();
-                    //new Utils(activity).buildPermissionAlert(activity,"La mappa non può localizzarti i permessi per la localizzazione non sono attivi, attivali dal menu 'Autorizzazioni' di Android");
                 }
+                //else { // no granted //new Utils(activity).buildPermissionAlert(activity,"La mappa non può localizzarti i permessi per la localizzazione non sono attivi, attivali dal menu 'Autorizzazioni' di Android");}
+                showDefaultLocation();
             }
 
         }

@@ -1,27 +1,14 @@
 package com.surfmaster.consigliaviaggi;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
 import com.surfmaster.consigliaviaggi.ui.review.ReviewViewModel;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 public class ViewAccommodationActivity extends AppCompatActivity {
 
