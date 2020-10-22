@@ -29,7 +29,7 @@ public class ViewReviewController {
     }
 
     public List<Review>  orderReviewListByDate(List<Review>  reviewList){
-            Collections.sort(reviewList);
+            Collections.sort(reviewList, Collections.<Review>reverseOrder());
         return reviewList;
     }
     public List<Review>  orderReviewListByRating(List<Review>  reviewList, int order){

@@ -31,8 +31,8 @@ public class Review implements Comparable<Review>{
     @Override
     public int compareTo(Review o) {
         try {
-            Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(data);
-            Date date2=new SimpleDateFormat("dd/MM/yyyy").parse(o.getData());
+            Date date1=new SimpleDateFormat("dd/MM/yyyy, HH:mm").parse(data);
+            Date date2=new SimpleDateFormat("dd/MM/yyyy, HH:mm").parse(o.getData());
             return date1.compareTo(date2);
         } catch (ParseException e) {
             e.printStackTrace();

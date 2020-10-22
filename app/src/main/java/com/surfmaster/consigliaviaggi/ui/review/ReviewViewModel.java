@@ -64,18 +64,11 @@ public class ReviewViewModel extends AndroidViewModel {
             @Override
             public void run() {
 
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
 
-                        List<Review>  reviewList= viewReviewController.getReviewList(accommodationId);
-                        reviewList=viewReviewController.orderReviewListByDate(reviewList);
-                        mReviewList=viewReviewController.copyList(reviewList);
-                        mFilteredReviewList.postValue(reviewList);
-                    }
-                },3000);
-
+                List<Review> reviewList = viewReviewController.getReviewList(accommodationId);
+                reviewList = viewReviewController.orderReviewListByDate(reviewList);
+                mReviewList = viewReviewController.copyList(reviewList);
+                mFilteredReviewList.postValue(reviewList);
             }
         });
 

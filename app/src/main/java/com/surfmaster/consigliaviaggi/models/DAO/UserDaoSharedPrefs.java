@@ -14,28 +14,14 @@ public class UserDaoSharedPrefs implements UserDao{
     }
 
 
-    public void saveUser(Integer id, String user, String pwd, String token) {
+    public void saveUser(Integer id, String user, String pwd, String token, Integer type) {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt(Constants.ID,id);
         editor.putString(Constants.USER,user);
         editor.putString(Constants.PWD, pwd);
         editor.putString(Constants.TOKEN, token);
-        editor.apply();
-    }
-
-    public void saveFbUser(Integer id, String token) {
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(Constants.ID,id);
-        editor.putString(Constants.TOKEN, token);
-        editor.apply();
-    }
-    public void saveFbUserDetails(String name, String pwd) {
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(Constants.USER,name);
-        editor.putString(Constants.PWD, pwd);
+        editor.putInt(Constants.TYPE, type);
         editor.apply();
     }
 
@@ -82,6 +68,11 @@ public class UserDaoSharedPrefs implements UserDao{
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
 
         return pref.getInt(Constants.ID,-1);
+    }
+    public Integer getType(){
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, -1);
+
+        return pref.getInt(Constants.TYPE,0);
     }
     public String getUserName(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);

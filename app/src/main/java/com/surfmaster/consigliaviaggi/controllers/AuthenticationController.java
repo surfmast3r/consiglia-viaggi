@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.LoggingBehavior;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -51,7 +54,7 @@ public class AuthenticationController {
             System.out.print(token);
             if (token != null) {
 
-                userDao.saveUser(id,user,pwd,token);
+                userDao.saveUser(id,user,pwd,token,0);
                 postToastMessage("Logged in");
                 return true;
 
@@ -100,13 +103,21 @@ public class AuthenticationController {
 
 
 
-    public boolean tryLogin(){
-        String userName=userDao.getUserName();
-        String pwd=userDao.getUserPwd();
-        if(!(userName.isEmpty()||pwd.isEmpty()))
-            return authenticate(userName,pwd);
-        else
-            return false;
+    public boolean tryLogin() {
+        String userName = userDao.getUserName();
+        String pwd = userDao.getUserPwd();
+
+        if (userDao.getType() == Constants.NORMAL){
+            if (!(userName.isEmpty() || pwd.isEmpty()))
+                return authenticate(userName, pwd);
+        }
+        if (userDao.getType() == Constants.BYFACEBOOK){
+            FacebookSdk.setIsDebugEnabled(true);
+            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+            AccessToken token = AccessToken.getCurrentAccessToken();
+            return authenticateByFb(token.getToken());
+        }
+        return false;
     }
     public void logout() {
         userDao.logOutUser();
@@ -143,9 +154,9 @@ public class AuthenticationController {
 
                 String jwtToken = responseJson.get("token").getAsString();
                 int userId = responseJson.get("userId").getAsInt();
+                String username = responseJson.get("username").getAsString();
                 if (jwtToken!=null){
-                    userDao.saveFbUser(userId,jwtToken);
-                    userDao.saveFbUserDetails(manageUserController.getUserDetails(userId).getNome(),manageUserController.getUserDetails(userId).getPwd());
+                    userDao.saveUser(userId,username,fbToken,jwtToken,1);
                     postToastMessage("Logged in");
                     return true;
                 }

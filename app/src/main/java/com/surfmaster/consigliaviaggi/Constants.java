@@ -60,7 +60,11 @@ public final class Constants  {
     public static final String USER = "USER" ;
     public static final String PWD = "PWD";
     public static final String TOKEN ="TOKEN" ;
+    public static final String TYPE ="TYPE" ;
     public static final String FACEBOOK_LOGIN = SERVER_URL+"facebook_login?tokenFb=";
+    public static final String PWD_PARAM = "pwd=";
+    public static final Integer BYFACEBOOK = 1 ;
+    public static final Integer NORMAL = 0 ;
 
 
     private Constants(){

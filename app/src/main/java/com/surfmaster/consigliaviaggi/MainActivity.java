@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
         // Facebook Init
         FacebookSdk.sdkInitialize(getApplicationContext());
-//        AppEventsLogger.activateApp(this);
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.tryLogin();

@@ -44,7 +44,6 @@ public class ReviewListFragment extends Fragment {
         reviewViewModel =
                 ViewModelProviders.of(this).get(ReviewViewModel.class);
 
-        //reviewViewModel.setReviewList(accommodationViewModel.getReviewList().getValue());
         if(getArguments()!=null) {
             int accommodationId = ViewAccommodationActivityArgs.fromBundle(getArguments()).getAccommodationId();
             reviewViewModel.setReviewList(accommodationId);
