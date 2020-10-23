@@ -102,7 +102,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 usernameTextView.setText(s);
-                loadingBar.dismiss();
+
             }
         });
         loginViewModel.getName().observe(getViewLifecycleOwner(),new Observer<String>() {
@@ -154,6 +154,7 @@ public class LoginFragment extends Fragment {
         loginViewModel.getLoggedIn().observe(getViewLifecycleOwner(),new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean result) {
+                loadingBar.dismiss();
                     if (result) {
                         loginForm.setVisibility(View.GONE);
                         accountPage.setVisibility(View.VISIBLE);

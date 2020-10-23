@@ -16,9 +16,11 @@ public final class Constants  {
     public static final int DEFAULT_ORDER = 0;
     public static final int BEST_RATING_ORDER = 1;
     public static final int WORST_RATING_ORDER = 2;
+    public static final int Z_A_ORDER = 4;
     public static final String ASC = "ASC";
     public static final String DESC = "DESC";
     public static final String ID = "id";
+    public static final String NAME = "name";
     public static final String RATING = "rating";
     public static final int CONNECTION_TIMEOUT=10000;
 
@@ -65,6 +67,7 @@ public final class Constants  {
     public static final String PWD_PARAM = "pwd=";
     public static final Integer FACEBOOK_USER = 1 ;
     public static final Integer NORMAL_USER = 0 ;
+
 
 
     private Constants(){

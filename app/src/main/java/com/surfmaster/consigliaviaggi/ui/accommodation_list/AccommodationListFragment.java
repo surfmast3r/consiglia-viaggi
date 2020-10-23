@@ -36,7 +36,6 @@ public class AccommodationListFragment extends Fragment{
     private RecyclerView rv;
     private TextView categoryTextView;
     private String category;
-    private SearchParamsAccommodation currentSearchParams;
     private ShimmerFrameLayout mShimmerViewContainer;
     private AccommodationRecyclerViewAdapter adapter;
     //endless scroll
@@ -67,10 +66,6 @@ public class AccommodationListFragment extends Fragment{
         if(getArguments()!=null) {
             category = AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
             city = AccommodationListFragmentArgs.fromBundle(getArguments()).getCity();
-            currentSearchParams= new SearchParamsAccommodation.Builder()
-                    .setCurrentCategory(category)
-                    .setCurrentCity(city)
-                    .create();
 
         }
 
@@ -80,7 +75,6 @@ public class AccommodationListFragment extends Fragment{
 
         initFilters();
 
-        //updateAccommodationList(currentSearchParams);
         return root;
     }
 

@@ -45,7 +45,7 @@ public class AccommodationMapViewModel extends AndroidViewModel {
             @Override
             public void run() {
 
-                List acList = viewAccommodationsController.getAccommodationList(latLng);
+                List<Accommodation> acList = viewAccommodationsController.getAccommodationList(latLng);
                 mAccommodationList.postValue(acList);
 
             }

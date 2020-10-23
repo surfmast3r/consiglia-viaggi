@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDao;
-import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoJSON;
+import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoFactory;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 import com.surfmaster.consigliaviaggi.models.DTO.JsonPageResponse;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
@@ -29,7 +29,6 @@ public class ViewAccommodationsController {
 
     private int pageNumber;
     private int totalPageNumber;
-    //private int totalElementNumber;
     private SearchParamsAccommodation currentSearchParams;
     private List<Accommodation> accommodationList;
     private AccommodationDao acDao;
@@ -39,9 +38,8 @@ public class ViewAccommodationsController {
     public ViewAccommodationsController(Context context){
 
         this.context=context;
-        acDao= new AccommodationDaoJSON();
+        acDao= AccommodationDaoFactory.getAccommodationDao();
         manageUserController= new ManageUserController(context);
-        //userDao = new UserDaoSharedPrefs(context);
     }
 
     public List<Accommodation> getAccommodationList(SearchParamsAccommodation params){
@@ -51,7 +49,6 @@ public class ViewAccommodationsController {
             accommodationList=jsonPageResponse.getContent();
             pageNumber=jsonPageResponse.getPage();
             totalPageNumber=jsonPageResponse.getTotalPages();
-            //totalElementNumber=jsonPageResponse.getTotalElements();
         } catch (DaoException e) {
             postToastMessage(e.getMessage());
             return null;

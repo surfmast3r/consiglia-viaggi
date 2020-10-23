@@ -1,5 +1,4 @@
 package com.surfmaster.consigliaviaggi.models.DAO;
-
 import com.surfmaster.consigliaviaggi.models.Review;
 
 import java.util.List;

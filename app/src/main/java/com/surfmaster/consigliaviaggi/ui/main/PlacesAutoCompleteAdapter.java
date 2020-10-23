@@ -77,11 +77,9 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
                 if (constraint != null) {
                     // Query the autocomplete API for the (constraint) search string.
                     mResultList = getPredictions(constraint);
-                    if (mResultList != null) {
-                        // The API successfully returned results.
-                        results.values = mResultList;
-                        results.count = mResultList.size();
-                    }
+                    // The API successfully returned results.
+                    results.values = mResultList;
+                    results.count = mResultList.size();
                 }
                 return results;
             }
@@ -180,7 +178,6 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
         @Override
         public void onClick(View v) {
             PlaceAutocomplete item = mResultList.get(getAdapterPosition());
-            //if (v.getId() == R.id.place_item_view) {
             placeName=String.valueOf(item.area);
             String placeId = String.valueOf(item.placeId);
             List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
@@ -200,7 +197,7 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
                     }
                 }
             });
-           // }
+
         }
     }
 

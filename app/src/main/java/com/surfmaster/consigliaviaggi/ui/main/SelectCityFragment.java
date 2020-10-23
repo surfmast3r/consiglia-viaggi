@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,8 +53,7 @@ public class SelectCityFragment extends DialogFragment implements PlacesAutoComp
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        mainViewModel =
-                ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_select_city, container, false);
 
         View cancelButton= root.findViewById(R.id.fullscreen_dialog_close);

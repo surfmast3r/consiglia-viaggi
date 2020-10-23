@@ -11,8 +11,6 @@ import com.surfmaster.consigliaviaggi.models.Review;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -47,7 +45,7 @@ public class ReviewViewModel extends AndroidViewModel {
         mReviewSublist=new MutableLiveData<>();
         currentOrder=Constants.DEFAULT_ORDER;
         postReviewResponse=new MutableLiveData<>(false);
-        mText.setValue("This is review list fragment");
+        mText.setValue("Lista Recensioni");
 
         checkIfLoggedIn();
 
@@ -77,10 +75,9 @@ public class ReviewViewModel extends AndroidViewModel {
             @Override
             public void run() {
 
-
                 List<Review> reviewList = viewReviewController.getReviewList(accommodationId);
                 reviewList = viewReviewController.orderReviewListByDate(reviewList);
-                mReviewList = viewReviewController.copyList(reviewList);
+                mReviewList.addAll(reviewList);
                 mFilteredReviewList.postValue(reviewList);
             }
         });
@@ -103,7 +100,6 @@ public class ReviewViewModel extends AndroidViewModel {
                     reviewSubList.addAll(reviewList);
                 }
                 mReviewSublist.postValue(reviewSubList);
-                //mReviewList.postValue(reviewList);
             }
         });
 
@@ -182,5 +178,9 @@ public class ReviewViewModel extends AndroidViewModel {
                     mUserStatus.postValue(false);
             }
         });
+    }
+
+    public void setPostReviewResponse(boolean response) {
+        postReviewResponse.setValue(response);
     }
 }

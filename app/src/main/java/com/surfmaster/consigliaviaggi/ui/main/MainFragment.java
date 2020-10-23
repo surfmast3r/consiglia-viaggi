@@ -1,7 +1,5 @@
 package com.surfmaster.consigliaviaggi.ui.main;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,6 @@ import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 
 public class MainFragment extends Fragment {
 
-    private Activity activity;
     private MainViewModel mainViewModel;
     private ViewAccommodationsController viewAccommodationsController;
     private Button citySelectButton;
@@ -37,8 +34,6 @@ public class MainFragment extends Fragment {
 
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-
-        //mainViewModel.initSelectedCity();
 
         mapViewButton=root.findViewById(R.id.explore_map_button);
         hotelButton = root.findViewById(R.id.hotel_button);
@@ -121,14 +116,4 @@ public class MainFragment extends Fragment {
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity){
-            activity=(Activity) context;
-
-        }
-
-    }
 }

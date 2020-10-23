@@ -79,9 +79,9 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             logoImageView.setImageResource(R.drawable.placeholder);
         } else{
             Picasso.get().load(logo)
-                    .placeholder(requireContext().getResources().getDrawable(R.drawable.placeholder))
+                    .placeholder(requireContext().getResources().getDrawable(R.drawable.placeholder,null))
                     .error(requireContext().getResources()
-                            .getDrawable(R.drawable.placeholder)).
+                            .getDrawable(R.drawable.placeholder,null)).
                     into(logoImageView);
         }
 

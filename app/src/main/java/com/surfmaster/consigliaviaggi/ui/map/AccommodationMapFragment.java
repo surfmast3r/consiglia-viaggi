@@ -121,7 +121,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 // Turn on the My Location layer and the related control on the map.
                 updateLocationUI();
 
-                showDefaultLocation();
+                //showDefaultLocation();
 
                 //if(mLastKnownLocation==null)
                 // Get the current location of the device and set the position of the map.
@@ -137,6 +137,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                     @Override
                     public void onClick(View view) {
                         accommodationMapViewModel.setAccommodationList(mMap.getCameraPosition().target);
+                        showLocation(mMap.getCameraPosition().target);
                     }
                 });
 
@@ -193,7 +194,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    final LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
+                    final LocationManager manager = (LocationManager) requireActivity().getSystemService( Context.LOCATION_SERVICE );
 
                     if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
                         buildAlertMessageNoGps();
@@ -204,8 +205,9 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                     }
 
                 }
-                //else { // no granted //new Utils(activity).buildPermissionAlert(activity,"La mappa non può localizzarti i permessi per la localizzazione non sono attivi, attivali dal menu 'Autorizzazioni' di Android");}
-                showDefaultLocation();
+                else {
+                    showDefaultLocation();
+                }
             }
 
         }
@@ -275,30 +277,17 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                                 // Set the map's camera position to the current location of the device.
                                 mLastKnownLocation = (Location) task.getResult();
 
+                                LatLng newLatLon=new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude());
                                 //Set accommodation list
-                                accommodationMapViewModel.setAccommodationList(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()));
+                                accommodationMapViewModel.setAccommodationList(newLatLon);
 
                                 //move camera
-                                /* CameraPosition myPosition = CameraPosition.builder()
-                                        .target(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()))
-                                        .zoom(DEFAULT_ZOOM)
-                                        .bearing(0)
-                                        .tilt(45)
-                                        .build();
-
-                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(myPosition), 3000, null);*/
+                                showLocation(newLatLon);
                             } else {
                                 Log.d(TAG, "Current location is null. Using defaults.");
                                 Log.e(TAG, "Exception: %s", task.getException());
                                 showDefaultLocation();
-                                /*CameraPosition defaultPosition = CameraPosition.builder()
-                                        .target(mDefaultLocation)
-                                        .zoom(DEFAULT_ZOOM)
-                                        .bearing(0)
-                                        .tilt(45)
-                                        .build();
 
-                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(defaultPosition), 3000, null);*/
                                 gMap.getUiSettings().setMyLocationButtonEnabled(false);
                             }
                         }
@@ -341,9 +330,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                         mClusterManager.addItem(myitem);
 
                     }
-                    if(accommodationList.size()>0) {
-                        showLocation(new LatLng(accommodationList.get(i - 1).getLatitude(), accommodationList.get(i - 1).getLongitude()));
-                    }
+
                 }
             }
         });

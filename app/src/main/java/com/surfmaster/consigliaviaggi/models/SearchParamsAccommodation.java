@@ -30,7 +30,7 @@ public class SearchParamsAccommodation {
     public static class Builder {
         private String currentName ="",currentCategory="",currentSubCategory="",currentDescription="";
         private String currentCity="";
-        private String orderBy="id";
+        private String orderBy="name";
         private String direction="DESC";
         private Double latitude=  -200.0,longitude =  -200.0;
         private Float minRating=  0.0f, maxRating= 5.0f;

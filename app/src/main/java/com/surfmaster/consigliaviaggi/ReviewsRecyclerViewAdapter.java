@@ -1,6 +1,5 @@
 package com.surfmaster.consigliaviaggi;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecyclerViewAdapter.ReviewViewHolder> {
 
     private List<Review> reviews;
-   // private Context context;
 
     public ReviewsRecyclerViewAdapter(List<Review> reviews){
 

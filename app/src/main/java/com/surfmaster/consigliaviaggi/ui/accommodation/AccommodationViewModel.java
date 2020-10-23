@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
-import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 
 import java.util.concurrent.ExecutorService;

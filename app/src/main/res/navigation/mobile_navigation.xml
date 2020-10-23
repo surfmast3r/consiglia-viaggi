@@ -37,12 +37,6 @@
             app:destination="@id/nav_view_accommodation_activity" />
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.surfmaster.consigliaviaggi.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
-
     <activity
         android:id="@+id/nav_view_accommodation_activity"
         android:name="com.surfmaster.consigliaviaggi.ViewAccommodationActivity"

@@ -15,7 +15,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -34,8 +34,7 @@ public class CreateReviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        reviewViewModel =
-                ViewModelProviders.of(requireActivity()).get(ReviewViewModel.class);
+        reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
 
 
         View root = inflater.inflate(R.layout.fragment_create_review, container, false);
@@ -62,6 +61,7 @@ public class CreateReviewFragment extends Fragment {
                     buildAlert("la recensione sarà pubblicata in seguito all'approvazione").show();
                     Snackbar.make(requireView(), "Recensione creata con successo", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    reviewViewModel.setPostReviewResponse(false);
                 }
             }
         });
@@ -72,8 +72,11 @@ public class CreateReviewFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reviewViewModel.postReview(ratingBar.getRating(),reviewEditText.getText().toString());
-
+                if(reviewEditText.getText().toString().length()>4)
+                    reviewViewModel.postReview(ratingBar.getRating(),reviewEditText.getText().toString());
+                else
+                    Snackbar.make(requireView(), "Il testo della recensione deve essere minimo 5 caratteri", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
 
             }
         };
@@ -81,14 +84,14 @@ public class CreateReviewFragment extends Fragment {
 
     private void initToolbar(View root) {
         Toolbar toolbar = root.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)requireActivity()).setSupportActionBar(toolbar);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
-        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(((AppCompatActivity)getActivity()), navController,appBarConfiguration);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(((AppCompatActivity)requireActivity()), navController,appBarConfiguration);
     }
 
     private AlertDialog buildAlert(String s) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
         builder.setMessage(s)
                 .setTitle(R.string.review_info_alert);

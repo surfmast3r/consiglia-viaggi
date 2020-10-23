@@ -140,7 +140,7 @@ public class FiltersFragment extends DialogFragment{
     }
 
     private int getCurrentSortParam() {
-        int currentSelection= R.id.radio_default;
+        int currentSelection= R.id.radio_a_z;
         if(accommodationFiltersViewModel.getSortParam().getValue()!=null){
             currentSortOrder=accommodationFiltersViewModel.getSortParam().getValue();
 
@@ -152,7 +152,10 @@ public class FiltersFragment extends DialogFragment{
                     currentSelection= R.id.radio_worst_rating;
                     break;
                 case Constants.DEFAULT_ORDER:
-                    currentSelection= R.id.radio_default;
+                    currentSelection= R.id.radio_a_z;
+                    break;
+                case Constants.Z_A_ORDER:
+                    currentSelection= R.id.radio_z_a;
                     break;
             }
         }
@@ -176,8 +179,11 @@ public class FiltersFragment extends DialogFragment{
                     case R.id.radio_worst_rating:
                         currentSortOrder=Constants.WORST_RATING_ORDER;
                         break;
-                    case R.id.radio_default:
+                    case R.id.radio_a_z:
                         currentSortOrder=Constants.DEFAULT_ORDER;
+                        break;
+                    case R.id.radio_z_a:
+                        currentSortOrder=Constants.Z_A_ORDER;
                         break;
                 }
             }

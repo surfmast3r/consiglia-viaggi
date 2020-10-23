@@ -102,6 +102,7 @@
                                 android:layout_height="80dip"
                                 android:duplicateParentState="true"
                                 android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder"
                                 />
 
                         </FrameLayout>
@@ -131,16 +132,26 @@
                                 android:numStars="5"
                                 android:rating="4"
                                 android:stepSize="0.5"/>
-
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:textStyle="bold"
+                                android:text="Categoria:" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/category"
+                                android:layout_marginTop="8dp"
                                 android:layout_marginLeft="6dp"
                                 android:text="categoria"
-                                android:textStyle="bold"
                                 />
-
+                        </LinearLayout>
+                            <!--
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -158,6 +169,7 @@
                                 android:layout_marginStart="6dp"
                                 android:textStyle="bold"
                                 />
+                                -->
                         </LinearLayout>
 
 

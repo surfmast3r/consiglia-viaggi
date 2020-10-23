@@ -13,7 +13,7 @@ import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDao;
-import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDaoSharedPrefs;
+import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDaoFactory;
 import com.surfmaster.consigliaviaggi.models.User;
 
 import java.io.BufferedReader;
@@ -28,7 +28,7 @@ public class ManageUserController {
 
     public ManageUserController(Context context){
         this.context=context;
-        localUserDao =new LocalUserDaoSharedPrefs(context);
+        localUserDao = LocalUserDaoFactory.getLocalUserDao(context);
     }
     public Integer getUserId(){
         return localUserDao.getUserId();

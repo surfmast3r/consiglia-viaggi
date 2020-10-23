@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -41,8 +40,7 @@ public class ReviewListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        reviewViewModel =
-                ViewModelProviders.of(this).get(ReviewViewModel.class);
+        reviewViewModel =new ViewModelProvider(this).get(ReviewViewModel.class);
 
         if(getArguments()!=null) {
             int accommodationId = ViewAccommodationActivityArgs.fromBundle(getArguments()).getAccommodationId();
@@ -58,15 +56,6 @@ public class ReviewListFragment extends Fragment {
     }
 
     private void bindViews(View root){
-
-        final TextView textView = root.findViewById(R.id.review_list_fragment_text);
-        reviewViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
 
         minRatingBar = root.findViewById(R.id.min_rating_filter);
         minRatingBar.setOnRatingBarChangeListener(setRatingFilter());
@@ -106,10 +95,10 @@ public class ReviewListFragment extends Fragment {
 
     private void initToolbar(View root) {
         Toolbar toolbar = root.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)requireActivity()).setSupportActionBar(toolbar);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
-        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(((AppCompatActivity)getActivity()), navController,appBarConfiguration);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(((AppCompatActivity)requireActivity()), navController,appBarConfiguration);
     }
 
     private RatingBar.OnRatingBarChangeListener setRatingFilter(){

@@ -96,7 +96,6 @@ public class AccommodationDaoJSON implements AccommodationDao{
             throw new DaoException(DaoException.ERROR,e.getMessage());
 
         }
-        //JsonObject jsonObject= JsonParser.parseReader(bufferedReader).getAsJsonObject();
         JsonElement jsonTree  = JsonParser.parseReader(bufferedReader);
         JsonArray accommodationJsonArray = jsonTree.getAsJsonArray();
 

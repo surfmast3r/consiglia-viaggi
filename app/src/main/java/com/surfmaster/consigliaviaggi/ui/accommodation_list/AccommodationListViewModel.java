@@ -47,7 +47,6 @@ public class AccommodationListViewModel extends AndroidViewModel {
 
         if (mAccommodationList!=null)
             mAccommodationList.clear();
-        // do async operation to fetch data
         currentSearchParams= searchParams;
 
         ExecutorService service =  Executors.newSingleThreadExecutor();
@@ -71,17 +70,11 @@ public class AccommodationListViewModel extends AndroidViewModel {
             @Override
             public void run() {
 
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        List<Accommodation> acList = viewAccommodationsController.nextPage();
-                        if (acList!= null) {
-                            mAccommodationList.addAll(acList);
-                            mFilteredAccommodationList.postValue(mAccommodationList);
-                        }
+                    List<Accommodation> acList = viewAccommodationsController.nextPage();
+                    if (acList!= null) {
+                        mAccommodationList.addAll(acList);
+                        mFilteredAccommodationList.postValue(mAccommodationList);
                     }
-                },3000);
 
             }
         });

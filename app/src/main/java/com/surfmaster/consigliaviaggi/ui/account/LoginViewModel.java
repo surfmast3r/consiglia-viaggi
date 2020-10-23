@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.AuthenticationController;
 import com.surfmaster.consigliaviaggi.controllers.ManageUserController;
 import com.surfmaster.consigliaviaggi.models.User;
@@ -38,7 +39,8 @@ public class LoginViewModel extends AndroidViewModel {
         service.submit(new Runnable() {
             @Override
             public void run() {
-                boolean response=authenticationController.authenticate(user,pwd);
+                //boolean response=authenticationController.authenticate(user,pwd);
+                boolean response=authenticationController.serverLogin(user,pwd);
                 loggedIn.postValue(response);
             }
         });
@@ -94,7 +96,9 @@ public class LoginViewModel extends AndroidViewModel {
         service.submit(new Runnable() {
             @Override
             public void run() {
-                boolean response=authenticationController.authenticateByFb(fbToken);
+                //boolean response=authenticationController.authenticateByFb(fbToken);
+                boolean response=authenticationController.socialLogin(fbToken, Constants.FACEBOOK_USER);
+
                 loggedIn.postValue(response);
             }
         });
@@ -119,13 +123,9 @@ public class LoginViewModel extends AndroidViewModel {
                 Boolean response =manageUserController.setShowNickname(manageUserController.getUserId(),value);
                 if(response){
                     showUsername.postValue(value);
-                    Log.i("ShowNickname",value.toString());
-
 
                 }else{
                     showUsername.postValue(!value);
-                    Boolean b=!value;
-                    Log.i("ShowNickname",b.toString());
                 }
             }
         });

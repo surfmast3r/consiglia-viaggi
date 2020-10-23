@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
@@ -21,8 +22,8 @@ public class ViewAccommodationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
-        accommodationViewModel = ViewModelProviders.of(this).get(AccommodationViewModel.class);
+        reviewViewModel = new ViewModelProvider(this).get(ReviewViewModel.class);
+        accommodationViewModel = new ViewModelProvider(this).get(AccommodationViewModel.class);
 
         setContentView(R.layout.activity_view_accommodation);
 
@@ -49,10 +50,7 @@ public class ViewAccommodationActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.action_filter:
-                // Create and show the dialog.
-                /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                DialogFragment newFragment = FiltersFragment.newInstance();
-                newFragment.show(ft, "dialog");*/
+
                 return true;
 
             default:

@@ -3,16 +3,16 @@ package com.surfmaster.consigliaviaggi.models.DAO;
 
 public interface LocalUserDao {
 
-    public void saveUser(Integer id, String user, String pwd, String token, Integer type);
-    public Integer getUserId();
-    public String getUserName();
-    public String getToken();
-    public String getUserPwd();
-    public void logOutUser();
-    public Double getSelectedCityLatitude();
-    public Double getSelectedCityLongitude();
-    public void updateSelectedCity(String city, Double lat, Double lon);
-    public void resetSelectedCity();
-    public String getSelectedCity();
-    public Integer getType();
+     void saveUser(Integer id, String user, String pwd, String token, Integer type);
+     Integer getUserId();
+     String getUserName();
+     String getToken();
+     String getUserPwd();
+     void logOutUser();
+     Double getSelectedCityLatitude();
+     Double getSelectedCityLongitude();
+     void updateSelectedCity(String city, Double lat, Double lon);
+     void resetSelectedCity();
+     String getSelectedCity();
+     Integer getType();
 }

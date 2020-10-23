@@ -68,8 +68,8 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     public void setSortParam(Integer sortParam) {
         mSortParam.setValue(sortParam);
-        if (sortParam==Constants.DEFAULT_ORDER)
-            orderBy=Constants.ID;
+        if (sortParam==Constants.DEFAULT_ORDER||sortParam==Constants.Z_A_ORDER)
+            orderBy=Constants.NAME;
         else
             orderBy=Constants.RATING;
     }
@@ -82,7 +82,6 @@ public class AccommodationFiltersViewModel extends ViewModel {
 
     }
 
-    /*pensare a qualcosa di meglio*/
     public void setCategory(String categoryName) {
         Category cat = findCategoryByName(categoryName);
         if (cat!=null) {
@@ -126,7 +125,6 @@ public class AccommodationFiltersViewModel extends ViewModel {
                 .setCurrentCategory(mCategory.getValue().getCategoryName())
                 .setCurrentCity(mCity.getValue())
                 .setCurrentSubCategory(mSubCategory.getValue().getCategoryName())
-                .setDirection(mSortParam.getValue().toString())
                 .setMinRating(mMinRating.getValue())
                 .setMaxRating(mMaxRating.getValue())
                 .setOrderBy(orderBy)
@@ -142,6 +140,9 @@ public class AccommodationFiltersViewModel extends ViewModel {
                 direction= Constants.DESC;
                 break;
             case Constants.WORST_RATING_ORDER:
+                direction= Constants.ASC;
+                break;
+            case Constants.DEFAULT_ORDER:
                 direction= Constants.ASC;
                 break;
         }

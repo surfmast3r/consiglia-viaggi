@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 import com.surfmaster.consigliaviaggi.models.DAO.ReviewDao;
-import com.surfmaster.consigliaviaggi.models.DAO.ReviewDaoJSON;
+import com.surfmaster.consigliaviaggi.models.DAO.ReviewDaoFactory;
 import com.surfmaster.consigliaviaggi.models.Review;
 
 public class CreateReviewController {
@@ -17,7 +17,7 @@ public class CreateReviewController {
 
     public CreateReviewController(Context context){
         this.context= context;
-        reviewDao=new ReviewDaoJSON();
+        reviewDao= ReviewDaoFactory.getReviewDao();
     }
 
     public Boolean createReview(Review review){
