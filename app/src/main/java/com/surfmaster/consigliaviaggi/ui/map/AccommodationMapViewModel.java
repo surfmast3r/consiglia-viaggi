@@ -10,8 +10,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.controllers.ManageUserController;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
-import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
-import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -22,7 +20,6 @@ public class AccommodationMapViewModel extends AndroidViewModel {
     private MutableLiveData<String> mText;
     private MutableLiveData<List<Accommodation>> mAccommodationList;
     private ViewAccommodationsController viewAccommodationsController;
-    //private UserDao userDao;
     private ManageUserController manageUserController;
 
     public AccommodationMapViewModel(Application application) {
@@ -32,7 +29,6 @@ public class AccommodationMapViewModel extends AndroidViewModel {
         mText.setValue("This is map fragment");
         mAccommodationList=new MutableLiveData<>();
         manageUserController= new ManageUserController(application);
-        //userDao = new UserDaoSharedPrefs(application);
     }
 
     public LiveData<String> getText() {

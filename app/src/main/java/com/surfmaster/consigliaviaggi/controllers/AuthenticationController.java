@@ -12,8 +12,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.surfmaster.consigliaviaggi.Constants;
-import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
-import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
+import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDao;
+import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDaoSharedPrefs;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,14 +26,11 @@ import java.nio.charset.StandardCharsets;
 public class AuthenticationController {
 
     private Context context;
-    private ManageUserController manageUserController;
-
-    private UserDao userDao;
+    private LocalUserDao localUserDao;
 
     public AuthenticationController(Context context){
         this.context=context;
-        userDao=new UserDaoSharedPrefs(context);
-        manageUserController=new ManageUserController(context);
+        localUserDao =new LocalUserDaoSharedPrefs(context);
     }
 
     public Boolean authenticate(String user, String pwd)  {
@@ -54,7 +51,7 @@ public class AuthenticationController {
             System.out.print(token);
             if (token != null) {
 
-                userDao.saveUser(id,user,pwd,token,0);
+                localUserDao.saveUser(id,user,pwd,token,0);
                 postToastMessage("Logged in");
                 return true;
 
@@ -86,41 +83,30 @@ public class AuthenticationController {
         if (responseCode== HttpURLConnection.HTTP_OK) {
             jsonResponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         }
-        return jsonResponse; //potrebbe essere null
+        return jsonResponse;
     }
-
-    private String getTokenFromJsonResponse(BufferedReader reader){
-        JsonElement jsonTree  = JsonParser.parseReader(reader);
-        JsonObject jsonResponse = jsonTree.getAsJsonObject();
-        return jsonResponse.get("token").getAsString();
-    }
-    private Integer getIdFromJsonResponse(BufferedReader reader){
-        JsonElement jsonTree  = JsonParser.parseReader(reader);
-        JsonObject jsonResponse = jsonTree.getAsJsonObject();
-        return jsonResponse.get("userId").getAsInt();
-    }
-
-
 
 
     public boolean tryLogin() {
-        String userName = userDao.getUserName();
-        String pwd = userDao.getUserPwd();
+        String userName = localUserDao.getUserName();
+        String pwd = localUserDao.getUserPwd();
+        Integer userType=localUserDao.getType();
 
-        if (userDao.getType() == Constants.NORMAL){
+        if (userType.equals(Constants.NORMAL_USER)){
             if (!(userName.isEmpty() || pwd.isEmpty()))
                 return authenticate(userName, pwd);
         }
-        if (userDao.getType() == Constants.BYFACEBOOK){
+        if (userType.equals(Constants.FACEBOOK_USER)){
             FacebookSdk.setIsDebugEnabled(true);
             FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
             AccessToken token = AccessToken.getCurrentAccessToken();
             return authenticateByFb(token.getToken());
         }
+
         return false;
     }
     public void logout() {
-        userDao.logOutUser();
+        localUserDao.logOutUser();
     }
 
     public void postToastMessage(final String message) {
@@ -156,16 +142,16 @@ public class AuthenticationController {
                 int userId = responseJson.get("userId").getAsInt();
                 String username = responseJson.get("username").getAsString();
                 if (jwtToken!=null){
-                    userDao.saveUser(userId,username,fbToken,jwtToken,1);
+                    localUserDao.saveUser(userId,username,fbToken,jwtToken,Constants.FACEBOOK_USER);
                     postToastMessage("Logged in");
                     return true;
                 }
             }
         } catch (IOException e) {
-            postToastMessage("Logged error");
+            postToastMessage("Login error");
             return false;
         }
-        postToastMessage("Logged error");
+        postToastMessage("Login error");
         return false;
     }
 }

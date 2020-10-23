@@ -16,12 +16,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.surfmaster.consigliaviaggi.AccommodationRecyclerViewAdapter;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
@@ -61,11 +60,9 @@ public class AccommodationListFragment extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        accommodationListViewModel =
-                ViewModelProviders.of(this).get(AccommodationListViewModel.class);
+        accommodationListViewModel = new ViewModelProvider(this).get(AccommodationListViewModel.class);
 
-        accommodationFiltersViewModel =
-                ViewModelProviders.of(requireActivity()).get(AccommodationFiltersViewModel.class);
+        accommodationFiltersViewModel = new ViewModelProvider(requireActivity()).get(AccommodationFiltersViewModel.class);
 
         if(getArguments()!=null) {
             category = AccommodationListFragmentArgs.fromBundle(getArguments()).getAccommodationCategory();
@@ -198,8 +195,7 @@ public class AccommodationListFragment extends Fragment{
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_filter) {
 
-            assert getFragmentManager() != null;
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
             DialogFragment newFragment = FiltersFragment.newInstance();
 
             newFragment.show(ft, "dialog");

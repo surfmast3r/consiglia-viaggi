@@ -1,7 +1,7 @@
 package com.surfmaster.consigliaviaggi.models.DAO;
 
 
-public interface UserDao {
+public interface LocalUserDao {
 
     public void saveUser(Integer id, String user, String pwd, String token, Integer type);
     public Integer getUserId();

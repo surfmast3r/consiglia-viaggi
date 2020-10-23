@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -20,13 +21,14 @@ import com.facebook.LoggingBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.surfmaster.consigliaviaggi.R;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -40,16 +42,22 @@ public class LoginFragment extends Fragment {
     private AppCompatButton loginButton,logoutButton;
     private TextView usernameTextView,nameTextView,surnameTextView,emailTextView;
     private Switch showUsernameSwitch;
-    CallbackManager callbackManager;
+    private CallbackManager callbackManager;
     private LoginButton loginFacebookButton;
     private Boolean switchPreviousValue=false;
+    private Snackbar loadingBar;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        loginViewModel =
-                ViewModelProviders.of(requireActivity()).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         View root = inflater.inflate(R.layout.fragment_login, container, false);
+
+        /*create loading bar*/
+        loadingBar = Snackbar.make(root, R.string.data_updating, Snackbar.LENGTH_INDEFINITE);
+        ViewGroup contentLay = (ViewGroup) loadingBar.getView().findViewById(com.google.android.material.R.id.snackbar_text).getParent();
+        ProgressBar item = new ProgressBar(requireContext());
+        contentLay.addView(item,0);
 
         loginForm=root.findViewById(R.id.login_form);
         accountPage=root.findViewById(R.id.account_page);
@@ -62,6 +70,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 loginViewModel.loginButtonClickAction(userEditText.getText().toString(),pwdEditText.getText().toString());
 
+                loadingBar.show();
             }
         });
 
@@ -70,7 +79,7 @@ public class LoginFragment extends Fragment {
         surnameTextView=root.findViewById(R.id.surnameTextView);
         emailTextView=root.findViewById(R.id.emailTextView);
         showUsernameSwitch=root.findViewById(R.id.usernameSwitch);
-        loginFacebookButton = (LoginButton)root.findViewById(R.id.loginFacebookButton);
+        loginFacebookButton = root.findViewById(R.id.loginFacebookButton);
         loginFacebookButton.setFragment(this);
         loginFacebookButton.setReadPermissions("email");
         callbackManager = CallbackManager.Factory.create();
@@ -93,6 +102,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 usernameTextView.setText(s);
+                loadingBar.dismiss();
             }
         });
         loginViewModel.getName().observe(getViewLifecycleOwner(),new Observer<String>() {
@@ -162,7 +172,6 @@ public class LoginFragment extends Fragment {
 
         return root;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

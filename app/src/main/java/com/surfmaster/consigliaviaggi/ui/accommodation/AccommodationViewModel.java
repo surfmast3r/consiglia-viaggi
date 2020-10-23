@@ -16,9 +16,6 @@ import java.util.concurrent.Executors;
 
 public class AccommodationViewModel extends AndroidViewModel {
 
-    //private Context context;
-
-
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mAccommodationName;
     private MutableLiveData<String> mAccommodationDescription;
@@ -29,12 +26,10 @@ public class AccommodationViewModel extends AndroidViewModel {
     private MutableLiveData<Integer> mAccommodationId;
     private MutableLiveData<Float> mAccommodationRating;
     private ViewAccommodationsController viewAccommodationsController;
-    //private ViewReviewController viewReviewController;
 
     public AccommodationViewModel(Application application) {
         super(application);
 
-        //context=application;
         mAccommodationId= new MutableLiveData<>();
         mAccommodationRating= new MutableLiveData<>();
         mAccommodationLatLng= new MutableLiveData<>();
@@ -47,7 +42,6 @@ public class AccommodationViewModel extends AndroidViewModel {
         mText.setValue("This is Accommodation fragment");
 
         viewAccommodationsController = new ViewAccommodationsController(application);
-        //viewReviewController = new ViewReviewController();
     }
 
     public LiveData<String> getText() {

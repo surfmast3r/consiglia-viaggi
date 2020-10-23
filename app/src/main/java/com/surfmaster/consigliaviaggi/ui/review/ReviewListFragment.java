@@ -90,7 +90,7 @@ public class ReviewListFragment extends Fragment {
                     public void onChanged(@Nullable List<Review> s) {
 
                         if (adapter==null){
-                            adapter=new ReviewsRecyclerViewAdapter(getContext(),s);
+                            adapter=new ReviewsRecyclerViewAdapter(s);
                             reviewsRecyclerView.setAdapter(adapter);
                         }
                         else {

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.CreateReviewController;
+import com.surfmaster.consigliaviaggi.controllers.ManageUserController;
 import com.surfmaster.consigliaviaggi.controllers.ViewReviewController;
 import com.surfmaster.consigliaviaggi.models.Review;
 
@@ -21,6 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 
 public class ReviewViewModel extends AndroidViewModel {
 
+    private ManageUserController manageUserController;
     private Integer accommodationId;
     private MutableLiveData<String> mText;
     private List<Review> mReviewList;
@@ -30,10 +32,15 @@ public class ReviewViewModel extends AndroidViewModel {
     private ViewReviewController viewReviewController;
     private int currentOrder;
     private CreateReviewController createReviewController;
+    private MutableLiveData<Boolean> mUserStatus;
 
     public ReviewViewModel(Application application) {
         super(application);
         viewReviewController = new ViewReviewController();
+        manageUserController = new ManageUserController(application);
+        createReviewController=new CreateReviewController(application);
+
+        mUserStatus=new MutableLiveData<>(false);
         mText = new MutableLiveData<>();
         mReviewList=new ArrayList<>();
         mFilteredReviewList=new MutableLiveData<>();
@@ -42,7 +49,13 @@ public class ReviewViewModel extends AndroidViewModel {
         postReviewResponse=new MutableLiveData<>(false);
         mText.setValue("This is review list fragment");
 
-        createReviewController=new CreateReviewController(application);
+        checkIfLoggedIn();
+
+
+    }
+
+    public Boolean getUserStatus() {
+        return mUserStatus.getValue();
     }
 
     public LiveData<String> getText() {
@@ -147,7 +160,6 @@ public class ReviewViewModel extends AndroidViewModel {
                 }else{
                     Log.i("ReviewResponse","false");
                 }
-
             }
         });
 
@@ -155,5 +167,20 @@ public class ReviewViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getPostReviewResponse() {
         return postReviewResponse;
+    }
+
+    private void checkIfLoggedIn() {
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                int userId=manageUserController.getUserId();
+                if(userId > 0) {
+                    mUserStatus.postValue(true);
+                }
+                else
+                    mUserStatus.postValue(false);
+            }
+        });
     }
 }

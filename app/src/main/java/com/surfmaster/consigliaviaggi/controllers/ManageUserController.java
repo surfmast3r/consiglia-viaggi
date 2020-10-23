@@ -12,8 +12,8 @@ import com.google.gson.JsonParser;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
-import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
-import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
+import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDao;
+import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDaoSharedPrefs;
 import com.surfmaster.consigliaviaggi.models.User;
 
 import java.io.BufferedReader;
@@ -24,23 +24,23 @@ import java.net.URL;
 
 public class ManageUserController {
     private Context context;
-    private UserDao userDao;
+    private LocalUserDao localUserDao;
 
     public ManageUserController(Context context){
         this.context=context;
-        userDao=new UserDaoSharedPrefs(context);
+        localUserDao =new LocalUserDaoSharedPrefs(context);
     }
     public Integer getUserId(){
-        return userDao.getUserId();
+        return localUserDao.getUserId();
     }
     public String getUserName(){
-        return userDao.getUserName();
+        return localUserDao.getUserName();
     }
     public String getToken(){
-        return userDao.getToken();
+        return localUserDao.getToken();
     }
     public String getUserPwd(){
-        return userDao.getUserPwd();
+        return localUserDao.getUserPwd();
     }
 
     public User getUserDetails(int id) {
@@ -95,7 +95,7 @@ public class ManageUserController {
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(requestMethod);
         connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
-        connection.setRequestProperty("Authorization","Bearer "+userDao.getToken());
+        connection.setRequestProperty("Authorization","Bearer "+ localUserDao.getToken());
         connection.setRequestProperty("Content-Type","application/json");
         return connection;
     }
@@ -113,16 +113,16 @@ public class ManageUserController {
     }
 
     public Double getSelectedCityLatitude() {
-       return userDao.getSelectedCityLatitude();
+       return localUserDao.getSelectedCityLatitude();
     }
 
     public Double getSelectedCityLongitude() {
-        return userDao.getSelectedCityLongitude();
+        return localUserDao.getSelectedCityLongitude();
     }
 
     public String getSelectedCity() {
 
-        String city = userDao.getSelectedCity();
+        String city = localUserDao.getSelectedCity();
         if(city.length()>0)
             return city;
         return context.getString(R.string.city_select);
@@ -130,12 +130,12 @@ public class ManageUserController {
 
     public void updateSelectedCity(String city, Double lat, Double lon) {
         if(lat!=null&&lon!=null) {
-            userDao.updateSelectedCity(city,lat,lon);
+            localUserDao.updateSelectedCity(city,lat,lon);
         }
     }
 
     public String resetSelectedCity() {
-        userDao.resetSelectedCity();
+        localUserDao.resetSelectedCity();
         return context.getString(R.string.city_select);
     }
 

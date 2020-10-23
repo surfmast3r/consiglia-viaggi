@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -79,7 +79,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
         }
 
         accommodationMapViewModel =
-                ViewModelProviders.of(this).get(AccommodationMapViewModel.class);
+                new ViewModelProvider(this).get(AccommodationMapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_map, container, false);
         final TextView textView = root.findViewById(R.id.text_map);
         redoSearchButton = root.findViewById(R.id.redo_search_button);
@@ -106,7 +106,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                 mMap.clear(); //clear old markers
 
                 gMap = mMap;
-                mClusterManager = new ClusterManager<MyClusterItem>(requireActivity(), gMap);
+                mClusterManager = new ClusterManager<>(requireActivity(), gMap);
                 mClusterManager.setRenderer(new MyClusterRenderer(requireActivity(), gMap, mClusterManager));
                 gMap.setOnCameraIdleListener(mClusterManager);
                 gMap.setOnMarkerClickListener(mClusterManager);
@@ -333,7 +333,7 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                         MyClusterItem myitem = new MyClusterItem(new LatLng(ac.getLatitude(), ac.getLongitude()),
                                 ac.getName(),
                                 ac.getSubcategory(),
-                                ac.getLogoUrl(),
+                                ac.getImages().get(0),
                                 ac.getAddress(),
                                 ac.getRating(),
                                 ac.getId()

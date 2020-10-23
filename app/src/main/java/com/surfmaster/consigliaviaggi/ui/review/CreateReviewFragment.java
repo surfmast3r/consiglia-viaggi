@@ -59,7 +59,9 @@ public class CreateReviewFragment extends Fragment {
             @Override
             public void onChanged(Boolean response) {
                 if(response){
-                    buildAlert("la recensione saraà pubblicata in seguito all'approvazione").show();
+                    buildAlert("la recensione sarà pubblicata in seguito all'approvazione").show();
+                    Snackbar.make(requireView(), "Recensione creata con successo", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });
@@ -70,9 +72,8 @@ public class CreateReviewFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with publish review action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 reviewViewModel.postReview(ratingBar.getRating(),reviewEditText.getText().toString());
+
 
             }
         };

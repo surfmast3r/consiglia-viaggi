@@ -18,8 +18,6 @@ import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDao;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoJSON;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
-import com.surfmaster.consigliaviaggi.models.DAO.UserDao;
-import com.surfmaster.consigliaviaggi.models.DAO.UserDaoSharedPrefs;
 import com.surfmaster.consigliaviaggi.models.DTO.JsonPageResponse;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
 import com.surfmaster.consigliaviaggi.ui.main.MainFragmentDirections;

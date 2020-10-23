@@ -20,10 +20,9 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
     private List<Review> reviews;
    // private Context context;
 
-    public ReviewsRecyclerViewAdapter(Context context, List<Review> reviews){
+    public ReviewsRecyclerViewAdapter(List<Review> reviews){
 
         this.reviews = reviews;
-       // this.context=context;
     }
 
     public void refreshList(List<Review> list){
@@ -74,7 +73,7 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
         }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
 }

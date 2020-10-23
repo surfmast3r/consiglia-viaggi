@@ -24,6 +24,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     private TextView titleTextView;
     private TextView addressTextView;
     private TextView categoryTextView;
+    private TextView ratingTextView;
     private AppCompatButton detailButton;
     private String logo;
     private String title;
@@ -62,6 +63,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         addressTextView = view.findViewById(R.id.bottom_sheet_address);
         categoryTextView = view.findViewById(R.id.bottom_sheet_category);
         ratingBar= view.findViewById(R.id.bottom_sheet_rating);
+        ratingTextView = view.findViewById(R.id.bottom_sheet_rating_text);
         detailButton = view.findViewById(R.id.detail_button);
         setBottomSheetData();
         return view;
@@ -72,6 +74,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         addressTextView.setText(address);
         categoryTextView.setText(category);
         ratingBar.setRating(rating);
+        ratingTextView.setText(String.valueOf(rating));
         if (logo.isEmpty()) {
             logoImageView.setImageResource(R.drawable.placeholder);
         } else{

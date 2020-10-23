@@ -1,7 +1,7 @@
 package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class FiltersFragment extends DialogFragment{
-
-   // private DialogInterface.OnDismissListener onDismissListener;
 
     private AccommodationFiltersViewModel accommodationFiltersViewModel;
     private RadioGroup orderRadioGroup;
@@ -61,8 +59,7 @@ public class FiltersFragment extends DialogFragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        accommodationFiltersViewModel =
-                ViewModelProviders.of(requireActivity()).get(AccommodationFiltersViewModel.class);
+        accommodationFiltersViewModel = new ViewModelProvider(requireActivity()).get(AccommodationFiltersViewModel.class);
         View root = inflater.inflate(R.layout.fragment_filters, container, false);
 
         View cancelButton= root.findViewById(R.id.fullscreen_dialog_close);

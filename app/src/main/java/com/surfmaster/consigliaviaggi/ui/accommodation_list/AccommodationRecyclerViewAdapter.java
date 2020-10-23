@@ -1,4 +1,4 @@
-package com.surfmaster.consigliaviaggi;
+package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
-import com.surfmaster.consigliaviaggi.ui.accommodation_list.AccommodationListFragmentDirections;
 
 import java.util.List;
 import java.util.Objects;

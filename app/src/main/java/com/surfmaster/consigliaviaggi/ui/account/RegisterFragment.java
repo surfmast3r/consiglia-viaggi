@@ -13,7 +13,7 @@ import com.surfmaster.consigliaviaggi.R;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 public class RegisterFragment extends Fragment {
@@ -28,7 +28,7 @@ public class RegisterFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        registerViewModel = ViewModelProviders.of(requireActivity()).get(RegisterViewModel.class);
+        registerViewModel = new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_signup, container, false);
 

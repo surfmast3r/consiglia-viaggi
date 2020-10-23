@@ -13,8 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
+import androidx.lifecycle.ViewModelProvider;
 import com.surfmaster.consigliaviaggi.CategoryEnum;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
@@ -36,8 +35,7 @@ public class MainFragment extends Fragment {
         viewAccommodationsController=new ViewAccommodationsController(requireContext());
 
 
-        mainViewModel =
-                ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
         //mainViewModel.initSelectedCity();

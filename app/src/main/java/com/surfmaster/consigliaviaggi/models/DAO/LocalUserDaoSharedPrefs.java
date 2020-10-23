@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 
 import com.surfmaster.consigliaviaggi.Constants;
 
-public class UserDaoSharedPrefs implements UserDao{
+public class LocalUserDaoSharedPrefs implements LocalUserDao {
     private Context context;
 
-    public UserDaoSharedPrefs(Context context){
+    public LocalUserDaoSharedPrefs(Context context){
         this.context=context;
 
     }
@@ -70,9 +70,8 @@ public class UserDaoSharedPrefs implements UserDao{
         return pref.getInt(Constants.ID,-1);
     }
     public Integer getType(){
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, -1);
-
-        return pref.getInt(Constants.TYPE,0);
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
+        return pref.getInt(Constants.TYPE,-1);
     }
     public String getUserName(){
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0);
@@ -95,6 +94,8 @@ public class UserDaoSharedPrefs implements UserDao{
         editor.remove(Constants.USER);
         editor.remove(Constants.PWD );
         editor.remove(Constants.TOKEN);
+        editor.remove(Constants.ID);
+        editor.remove(Constants.TYPE);
         editor.apply();
     }
 }

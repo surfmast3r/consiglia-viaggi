@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
@@ -60,9 +61,9 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        reviewViewModel = ViewModelProviders.of(requireActivity()).get(ReviewViewModel.class);
+        reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
         accommodationViewModel =
-                ViewModelProviders.of(requireActivity()).get(AccommodationViewModel.class);
+                new ViewModelProvider(requireActivity()).get(AccommodationViewModel.class);
         View root = inflater.inflate(R.layout.fragment_accommodation_detail, container, false);
 
         /*bind shimmer container*/
@@ -88,10 +89,10 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
 
     private void initToolbar(View root) {
         Toolbar toolbar = root.findViewById(R.id.collapsing_toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)requireActivity()).setSupportActionBar(toolbar);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
-        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(((AppCompatActivity)getActivity()), navController,appBarConfiguration);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(((AppCompatActivity)requireActivity()), navController,appBarConfiguration);
     }
 
     private void bindViews(View root){
@@ -110,13 +111,14 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
 
             @Override
             public void onChanged(@Nullable String s) {
+                assert s != null;
                 if (s.isEmpty()) {
                     accommodationImage.setImageResource(R.drawable.placeholder);
                 } else{
                     Picasso.get().load(s)
-                            .placeholder(getContext().getResources().getDrawable(R.drawable.placeholder))
-                            .error(getContext().getResources()
-                                    .getDrawable(R.drawable.placeholder))
+                            .placeholder(requireContext().getResources().getDrawable(R.drawable.placeholder,null))
+                            .error(requireContext().getResources()
+                                    .getDrawable(R.drawable.placeholder,null))
                             .into(accommodationImage);
                 }
 
@@ -158,7 +160,7 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
                     @Override
                     public void onChanged(@Nullable List s) {
                         if (adapter==null){
-                            adapter=new ReviewsRecyclerViewAdapter(getContext(),s);
+                            adapter=new ReviewsRecyclerViewAdapter(s);
                             reviewsRecyclerView.setAdapter(adapter);
                         }
                         else
@@ -191,9 +193,12 @@ public class AccommodationFragment extends Fragment implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
 
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(
-                        AccommodationFragmentDirections.actionNavAccommodationDetailToNavCreateReview()
-                );
+                if(reviewViewModel.getUserStatus())
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(
+                            AccommodationFragmentDirections.actionNavAccommodationDetailToNavCreateReview());
+                else
+                Snackbar.make(view, "Devi autenticarti per pubblicare una recensione", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
 
             }
         });
