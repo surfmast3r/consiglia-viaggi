@@ -6,9 +6,6 @@ public final class Constants  {
     public static final String DEFAULT = "default";
     public static final String BEST_RATING = "best";
     public static final String WORST_RATING = "worst";
-    public static final String CATEGORY_HOTEL = "Hotel";
-    public static final String CATEGORY_RESTAURANT = "Ristoranti";
-    public static final String CATEGORY_ATTRACTION = "Attrazioni";
     public static final int ASCENDING=1;
     public static final int DESCENDING=2;
     public static final float DEFAULT_MIN_RATING=0;
@@ -68,6 +65,19 @@ public final class Constants  {
     public static final Integer FACEBOOK_USER = 1 ;
     public static final Integer NORMAL_USER = 0 ;
 
+
+    //Categories
+    public static final String CATEGORY_HOTEL = "Hotel";
+    public static final String CATEGORY_RESTAURANT = "Ristoranti";
+    public static final String CATEGORY_ATTRACTION = "Attrazioni";
+    //Subcategories
+    public static final String BNB ="Bnb" ;
+    public static final String BAR ="Bar" ;
+    public static final String HOSTEL ="Ostello" ;
+    public static final String PIZZERIA="Pizzeria" ;
+    public static final String TRATTORIA ="Trattoria" ;
+    public static final String PARK ="Parco";
+    public static final String MUSEUM="Museo" ;
 
 
     private Constants(){
