@@ -4,7 +4,6 @@ import com.surfmaster.consigliaviaggi.models.AuthenticatedUser;
 public interface LocalUserDao {
 
      void saveUser(AuthenticatedUser authenticatedUser);
-     void saveUser(Integer id, String user, String pwd, String token, Integer type);
      Integer getUserId();
      String getUserName();
      String getToken();

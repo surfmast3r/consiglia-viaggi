@@ -28,18 +28,6 @@ public class LocalUserDaoSharedPrefs implements LocalUserDao {
     }
 
     @Override
-    public void saveUser(Integer id, String user, String pwd, String token, Integer type) {
-        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(Constants.ID,id);
-        editor.putString(Constants.USER,user);
-        editor.putString(Constants.PWD, pwd);
-        editor.putString(Constants.TOKEN, token);
-        editor.putInt(Constants.TYPE, type);
-        editor.apply();
-    }
-
-    @Override
     public Double getSelectedCityLatitude() {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         return Double.longBitsToDouble(pref.getLong(Constants.PREF_LATITUDE, Double.doubleToRawLongBits(40.851799)));
