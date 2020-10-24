@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.models.AuthenticatedUser;
+import com.surfmaster.consigliaviaggi.models.User;
 
 public class LocalUserDaoSharedPrefs implements LocalUserDao {
     private Context context;
@@ -13,7 +15,19 @@ public class LocalUserDaoSharedPrefs implements LocalUserDao {
 
     }
 
+    @Override
+    public void saveUser(AuthenticatedUser authenticatedUser) {
+        SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(Constants.ID,authenticatedUser.getId());
+        editor.putString(Constants.USER,authenticatedUser.getNickname());
+        editor.putString(Constants.PWD, authenticatedUser.getPwd());
+        editor.putString(Constants.TOKEN, authenticatedUser.getToken());
+        editor.putInt(Constants.TYPE, authenticatedUser.getType());
+        editor.apply();
+    }
 
+    @Override
     public void saveUser(Integer id, String user, String pwd, String token, Integer type) {
         SharedPreferences pref = context.getSharedPreferences(Constants.PREFERENCES, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();

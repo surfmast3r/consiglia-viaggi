@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.models.AuthenticatedUser;
+import com.surfmaster.consigliaviaggi.models.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +18,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class LoginDaoSpring implements LoginDao{
+
+    private AuthenticatedUser authenticatedUser;
+
     @Override
     public Boolean authenticate(String user, String pwd, Context context) throws IOException {
         System.out.println("User: "+user+" pwd: "+pwd);
@@ -29,7 +34,11 @@ public class LoginDaoSpring implements LoginDao{
             Integer id = jsonResponseObject.get("userId").getAsInt();
             System.out.print(token);
             if (token != null) {
-                LocalUserDaoFactory.getLocalUserDao(context).saveUser(id,user,pwd,token,0);
+                authenticatedUser= new AuthenticatedUser( new AuthenticatedUser.Builder().setId(id)
+                        .setNickname(user)
+                        .setPwd(pwd));
+                authenticatedUser.setToken(token);
+                authenticatedUser.setType(Constants.NORMAL_USER);
                 return true;
 
             }
@@ -38,8 +47,8 @@ public class LoginDaoSpring implements LoginDao{
     }
 
     @Override
-    public Boolean authenticate(String token, Context context) {
-        return null;
+    public AuthenticatedUser getAuthenticatedUser() {
+        return authenticatedUser;
     }
 
     private BufferedReader getJsonResponseFromLoginUrl(String user, String pwd) throws IOException {
@@ -53,6 +62,7 @@ public class LoginDaoSpring implements LoginDao{
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
+        connection.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
         connection.setRequestProperty("Content-Type", "application/json; utf-8");
         try (OutputStream os = connection.getOutputStream()) {
             byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
@@ -65,5 +75,10 @@ public class LoginDaoSpring implements LoginDao{
             jsonResponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         }
         return jsonResponse;
+    }
+
+    @Override
+    public Boolean authenticate(String token, Context context) {
+        return false;
     }
 }

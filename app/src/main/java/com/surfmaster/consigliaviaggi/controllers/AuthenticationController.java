@@ -54,11 +54,14 @@ public class AuthenticationController {
         });
     }
 
+    //need type param because socialLogin could be used
+    // by different type of social auth (Facebook,Google,..)
     public Boolean socialLogin(String token,Integer type)  {
         loginDao= LoginDaoFactory.getLoginDao(type);
         try {
             if(loginDao.authenticate(token,context))
             {
+                localUserDao.saveUser(loginDao.getAuthenticatedUser());
                 postToastMessage("Logged in");
                 return true;
             }
@@ -69,11 +72,13 @@ public class AuthenticationController {
         postToastMessage("Login error");
         return false;
     }
+
     public Boolean serverLogin(String user, String pwd)  {
         loginDao= LoginDaoFactory.getLoginDao(Constants.NORMAL_USER);
         try {
             if(loginDao.authenticate(user,pwd,context))
             {
+                localUserDao.saveUser(loginDao.getAuthenticatedUser());
                 postToastMessage("Logged in");
                 return true;
             }

@@ -13,6 +13,7 @@ public class User {
 
     public User(Builder builder) {
 
+        this.id=builder.id;
         this.nickname=builder.nickname;
         this.nome=builder.nome;
         this.cognome=builder.cognome;
@@ -21,7 +22,7 @@ public class User {
     }
 
     public static class Builder {
-
+        private int id;
         private String nickname;
         private String nome;
         private String cognome;
@@ -48,11 +49,17 @@ public class User {
             this.pwd = pwd;
             return this;
         }
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
 
         public User create() {
             return new User(this);
         }
     }
+
+
 
     public String getNickname() {
         return nickname;
