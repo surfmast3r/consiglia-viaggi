@@ -44,7 +44,7 @@ public class ViewReviewController {
 
         List<Review>  filteredList = new ArrayList<>();
         for(Review review : reviewList){
-            if(review.getRating()>minRating&&review.getRating()<maxRating)
+            if(review.getRating()>=minRating&&review.getRating()<=maxRating)
                 filteredList.add(review);
         }
         return filteredList;
