@@ -32,33 +32,40 @@ class MyClusterRenderer extends DefaultClusterRenderer<MyClusterItem> {
     @Override
     protected void onClusterItemRendered(MyClusterItem clusterItem, Marker marker) {
         super.onClusterItemRendered(clusterItem, marker);
-
         //here you have access to the marker itself
     }
     @Override
     protected boolean shouldRenderAsCluster(Cluster cluster) {
-        return cluster.getSize() > 1; // if markers <=5 then not clustering
+        return cluster.getSize() > 1;
     }
 
     public BitmapDescriptor getMarker(String cat){
 
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.default_marker);
-        if(cat.equals(Constants.TRATTORIA))
-            icon= BitmapDescriptorFactory.fromResource(R.drawable.restaurant_marker);
-        else if(cat.equals( Constants.PIZZERIA))
-            icon= BitmapDescriptorFactory.fromResource(R.drawable.restaurant_marker);
-        else if(cat.equals( Constants.BAR))
-            icon= BitmapDescriptorFactory.fromResource(R.drawable.restaurant_marker);
-        else if(cat.equals( Constants.MUSEUM))
-            icon= BitmapDescriptorFactory.fromResource(R.drawable.attraction_marker);
-        else if(cat.equals( Constants.PARK))
-            icon= BitmapDescriptorFactory.fromResource(R.drawable.attraction_marker);
-        else if(cat.equals( Constants.BNB))
-            icon= BitmapDescriptorFactory.fromResource(R.drawable.hotel_marker);
-        else if(cat.equals( Constants.HOSTEL))
-            icon= BitmapDescriptorFactory.fromResource(R.drawable.hotel_marker);
-        else if(cat.equals( Constants.CATEGORY_HOTEL))
-            icon= BitmapDescriptorFactory.fromResource(R.drawable.hotel_marker);
+        switch (cat) {
+            case Constants.TRATTORIA:
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.restaurant_marker);
+                break;
+            case Constants.PIZZERIA:
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.pizza_marker);
+                break;
+            case Constants.BAR:
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.bar_marker);
+                break;
+            case Constants.MUSEUM:
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.attraction_marker);
+                break;
+            case Constants.PARK:
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.park_marker);
+                break;
+            case Constants.BNB:
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.beb_marker);
+                break;
+            case Constants.HOSTEL:
+            case Constants.CATEGORY_HOTEL:
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.hotel_marker);
+                break;
+        }
         return icon;
     }
 
