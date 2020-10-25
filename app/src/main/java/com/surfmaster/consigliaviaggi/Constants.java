@@ -71,7 +71,7 @@ public final class Constants  {
     public static final String CATEGORY_RESTAURANT = "Ristoranti";
     public static final String CATEGORY_ATTRACTION = "Attrazioni";
     //Subcategories
-    public static final String BNB ="Bnb" ;
+    public static final String BNB ="BnB" ;
     public static final String BAR ="Bar" ;
     public static final String HOSTEL ="Ostello" ;
     public static final String PIZZERIA="Pizzeria" ;

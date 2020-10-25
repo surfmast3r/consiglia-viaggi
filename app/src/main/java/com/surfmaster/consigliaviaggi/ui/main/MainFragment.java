@@ -55,6 +55,7 @@ public class MainFragment extends Fragment {
             }
         });
 
+
         setButtonListener(citySelectButton);
         setButtonListener(hotelButton);
         setButtonListener(restaurantButton);

@@ -36,7 +36,7 @@ class MyClusterRenderer extends DefaultClusterRenderer<MyClusterItem> {
     }
     @Override
     protected boolean shouldRenderAsCluster(Cluster cluster) {
-        return cluster.getSize() > 1;
+        return cluster.getSize() > 2;
     }
 
     public BitmapDescriptor getMarker(String cat){

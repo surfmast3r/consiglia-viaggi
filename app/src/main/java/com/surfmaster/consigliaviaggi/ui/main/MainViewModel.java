@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.surfmaster.consigliaviaggi.controllers.ManageUserController;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -19,6 +21,7 @@ public class MainViewModel extends AndroidViewModel {
         super(application);
         mCity= new MutableLiveData<>();
         mText = new MutableLiveData<>();
+
         mText.setValue("Dove vuoi andare?");
 
         manageUserController= new ManageUserController(application);
@@ -33,12 +36,28 @@ public class MainViewModel extends AndroidViewModel {
         return mCity;
     }
 
-    public void setCity(String city,Double latitude,Double longitude) {
+    public void setCity(final String city, final Double latitude, final Double longitude) {
         mCity.setValue(city);
-        manageUserController.updateSelectedCity(city, latitude, longitude);
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                manageUserController.updateSelectedCity(city, latitude, longitude);
+            }
+        });
+
     }
 
     public void resetCity() {
-        mCity.setValue(manageUserController.resetSelectedCity());
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                mCity.postValue(manageUserController.resetSelectedCity());
+            }
+        });
+
     }
+
+
 }
