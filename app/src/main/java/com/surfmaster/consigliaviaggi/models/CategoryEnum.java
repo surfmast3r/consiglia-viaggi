@@ -1,4 +1,4 @@
-package com.surfmaster.consigliaviaggi;
+package com.surfmaster.consigliaviaggi.models;
 
 public enum CategoryEnum {
     RESTAURANT("Restaurant"),

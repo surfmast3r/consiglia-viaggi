@@ -1,4 +1,4 @@
-package com.surfmaster.consigliaviaggi;
+package com.surfmaster.consigliaviaggi.ui.review;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Review;
 
 import java.util.List;

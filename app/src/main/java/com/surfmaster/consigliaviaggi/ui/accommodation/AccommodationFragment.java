@@ -38,7 +38,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
+import com.surfmaster.consigliaviaggi.ui.review.ReviewsRecyclerViewAdapter;
 import com.surfmaster.consigliaviaggi.ui.review.ReviewViewModel;
 
 import java.util.List;

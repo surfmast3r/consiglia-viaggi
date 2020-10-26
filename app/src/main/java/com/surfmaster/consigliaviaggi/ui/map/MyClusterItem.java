@@ -2,7 +2,7 @@ package com.surfmaster.consigliaviaggi.ui.map;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
-import com.surfmaster.consigliaviaggi.Subcategory;
+import com.surfmaster.consigliaviaggi.models.Subcategory;
 
 
 public class MyClusterItem implements ClusterItem {

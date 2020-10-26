@@ -23,9 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
-import com.surfmaster.consigliaviaggi.ReviewsRecyclerViewAdapter;
-import com.surfmaster.consigliaviaggi.ViewAccommodationActivityArgs;
 import com.surfmaster.consigliaviaggi.models.Review;
+import com.surfmaster.consigliaviaggi.ui.accommodation.ViewAccommodationActivityArgs;
 
 import java.util.List;
 

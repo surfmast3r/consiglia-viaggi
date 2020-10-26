@@ -28,7 +28,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
         <activity
-            android:name=".ViewAccommodationActivity"
+            android:name=".ui.accommodation.ViewAccommodationActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

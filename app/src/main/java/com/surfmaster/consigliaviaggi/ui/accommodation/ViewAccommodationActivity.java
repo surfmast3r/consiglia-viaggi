@@ -1,4 +1,4 @@
-package com.surfmaster.consigliaviaggi;
+package com.surfmaster.consigliaviaggi.ui.accommodation;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -6,9 +6,7 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
-import com.surfmaster.consigliaviaggi.ui.accommodation.AccommodationViewModel;
+import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.ui.review.ReviewViewModel;
 
 public class ViewAccommodationActivity extends AppCompatActivity {

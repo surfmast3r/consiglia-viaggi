@@ -1,4 +1,4 @@
-package com.surfmaster.consigliaviaggi;
+package com.surfmaster.consigliaviaggi.models;
 
 import java.util.EnumSet;
 import java.util.Set;

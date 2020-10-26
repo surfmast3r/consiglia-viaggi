@@ -39,7 +39,7 @@
 
     <activity
         android:id="@+id/nav_view_accommodation_activity"
-        android:name="com.surfmaster.consigliaviaggi.ViewAccommodationActivity"
+        android:name="com.surfmaster.consigliaviaggi.ui.accommodation.ViewAccommodationActivity"
         android:label="@string/menu_ac_view"
         tools:layout="@layout/activity_view_accommodation">
         <argument

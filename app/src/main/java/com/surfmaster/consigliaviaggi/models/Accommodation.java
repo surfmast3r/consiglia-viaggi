@@ -1,8 +1,5 @@
 package com.surfmaster.consigliaviaggi.models;
 
-import com.surfmaster.consigliaviaggi.CategoryEnum;
-import com.surfmaster.consigliaviaggi.Subcategory;
-
 import java.util.List;
 
 public class Accommodation implements Comparable<Accommodation>{

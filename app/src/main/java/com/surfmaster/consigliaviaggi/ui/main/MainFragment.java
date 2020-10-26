@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import com.surfmaster.consigliaviaggi.CategoryEnum;
+import com.surfmaster.consigliaviaggi.models.CategoryEnum;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 
