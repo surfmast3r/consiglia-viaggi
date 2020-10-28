@@ -154,7 +154,7 @@ public class ReviewViewModel extends AndroidViewModel {
                         .build())){
                         postReviewResponse.postValue(true);
                 }else{
-                    Log.i("ReviewResponse","false");
+                    postReviewResponse.postValue(false);
                 }
             }
         });

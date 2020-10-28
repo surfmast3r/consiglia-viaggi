@@ -3,8 +3,6 @@ package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.Category;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
-
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 

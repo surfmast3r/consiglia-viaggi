@@ -2,13 +2,13 @@ package com.surfmaster.consigliaviaggi.ui.accommodation_list;
 
 import android.app.Application;
 import android.util.Log;
+
 import com.surfmaster.consigliaviaggi.controllers.ViewAccommodationsController;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

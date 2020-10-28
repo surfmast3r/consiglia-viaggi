@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.AuthenticatedUser;
-import com.surfmaster.consigliaviaggi.models.User;
 
 public class LocalUserDaoSharedPrefs implements LocalUserDao {
     private Context context;

@@ -1,7 +1,6 @@
 package com.surfmaster.consigliaviaggi.ui.account;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
@@ -39,7 +38,6 @@ public class LoginViewModel extends AndroidViewModel {
         service.submit(new Runnable() {
             @Override
             public void run() {
-                //boolean response=authenticationController.authenticate(user,pwd);
                 boolean response=authenticationController.serverLogin(user,pwd);
                 loggedIn.postValue(response);
             }

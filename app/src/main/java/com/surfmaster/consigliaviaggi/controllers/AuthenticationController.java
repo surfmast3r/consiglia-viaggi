@@ -4,11 +4,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
+
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDao;
 import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDaoFactory;
 import com.surfmaster.consigliaviaggi.models.DAO.LoginDao;
 import com.surfmaster.consigliaviaggi.models.DAO.LoginDaoFactory;
+
 import java.io.IOException;
 
 public class AuthenticationController {
