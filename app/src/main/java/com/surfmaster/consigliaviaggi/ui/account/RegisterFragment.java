@@ -2,6 +2,7 @@ package com.surfmaster.consigliaviaggi.ui.account;
 
 import androidx.fragment.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,7 @@ public class RegisterFragment extends Fragment {
 
     private boolean validateFields() {
        boolean valid=true;
+        valid=validateUsername(usernameEditText.getText().toString());
         if(isEmpty(usernameEditText))
         {
             usernameEditText.setError("Empty");
@@ -114,6 +116,14 @@ public class RegisterFragment extends Fragment {
 
         }
         return valid;
+    }
+
+    private boolean validateUsername(String text) {
+        if(text.length()>5&&text.length()<20){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     private void enableLoginLink(View root){
