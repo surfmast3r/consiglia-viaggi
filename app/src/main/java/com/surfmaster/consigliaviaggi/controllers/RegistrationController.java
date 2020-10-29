@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -53,8 +54,15 @@ public class RegistrationController {
             if (responseCode== HttpURLConnection.HTTP_OK) {
                 jsonResponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             }
-            else if(responseCode== HttpURLConnection.HTTP_INTERNAL_ERROR){
-                throw  new DaoException(DaoException.FAIL_TO_INSERT,"Username già in uso");
+            else if(responseCode== 422){ //UNPROCESSABLE ENTITY
+                throw  new DaoException(DaoException.FAIL_TO_INSERT,"Invalid Username");
+            }
+            else if(responseCode== HttpURLConnection.HTTP_CONFLICT){ //UNPROCESSABLE ENTITY
+                throw  new DaoException(DaoException.FAIL_TO_INSERT,"Username already exists");
+            }
+            else if(responseCode== HttpURLConnection.HTTP_INTERNAL_ERROR){ //UNPROCESSABLE ENTITY
+                String errorMessage=connection.getResponseMessage();
+                throw  new DaoException(DaoException.FAIL_TO_INSERT,errorMessage);
             }
             else{
                 throw  new DaoException(DaoException.ERROR,"Errore di rete");

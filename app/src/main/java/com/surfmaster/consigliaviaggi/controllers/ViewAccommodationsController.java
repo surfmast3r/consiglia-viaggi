@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
 import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDao;
-import com.surfmaster.consigliaviaggi.models.DAO.AccommodationDaoFactory;
+import com.surfmaster.consigliaviaggi.models.DAO.DaoFactory;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
 import com.surfmaster.consigliaviaggi.models.DTO.JsonPageResponse;
 import com.surfmaster.consigliaviaggi.models.SearchParamsAccommodation;
@@ -38,7 +38,7 @@ public class ViewAccommodationsController {
     public ViewAccommodationsController(Context context){
 
         this.context=context;
-        acDao= AccommodationDaoFactory.getAccommodationDao();
+        acDao= DaoFactory.getAccommodationDao();
         manageUserController= new ManageUserController(context);
     }
 

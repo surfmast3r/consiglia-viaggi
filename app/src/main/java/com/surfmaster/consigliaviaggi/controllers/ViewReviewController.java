@@ -2,7 +2,7 @@ package com.surfmaster.consigliaviaggi.controllers;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.models.DAO.DaoException;
-import com.surfmaster.consigliaviaggi.models.DAO.ReviewDaoFactory;
+import com.surfmaster.consigliaviaggi.models.DAO.DaoFactory;
 import com.surfmaster.consigliaviaggi.models.Review;
 import com.surfmaster.consigliaviaggi.models.DAO.ReviewDao;
 
@@ -15,7 +15,7 @@ public class ViewReviewController {
     private ReviewDao reviewDao;
     public ViewReviewController() {
 
-        reviewDao= ReviewDaoFactory.getReviewDao();
+        reviewDao= DaoFactory.getReviewDao();
     }
 
     public List<Review> getReviewList(int id) {

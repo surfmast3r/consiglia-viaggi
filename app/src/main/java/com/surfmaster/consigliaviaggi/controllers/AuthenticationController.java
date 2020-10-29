@@ -6,10 +6,9 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.surfmaster.consigliaviaggi.Constants;
+import com.surfmaster.consigliaviaggi.models.DAO.DaoFactory;
 import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDao;
-import com.surfmaster.consigliaviaggi.models.DAO.LocalUserDaoFactory;
 import com.surfmaster.consigliaviaggi.models.DAO.LoginDao;
-import com.surfmaster.consigliaviaggi.models.DAO.LoginDaoFactory;
 
 import java.io.IOException;
 
@@ -21,7 +20,7 @@ public class AuthenticationController {
 
     public AuthenticationController(Context context){
         this.context=context;
-        localUserDao = LocalUserDaoFactory.getLocalUserDao(context);
+        localUserDao = DaoFactory.getLocalUserDao(context);
     }
 
     public boolean tryLogin() {
@@ -59,7 +58,7 @@ public class AuthenticationController {
     //need type param because socialLogin could be used
     // by different type of social auth (Facebook,Google,..)
     public Boolean socialLogin(String token,Integer type)  {
-        loginDao= LoginDaoFactory.getLoginDao(type);
+        loginDao= DaoFactory.getLoginDao(type);
         try {
             if(loginDao.authenticate(token,context))
             {
@@ -76,7 +75,7 @@ public class AuthenticationController {
     }
 
     public Boolean serverLogin(String user, String pwd)  {
-        loginDao= LoginDaoFactory.getLoginDao(Constants.NORMAL_USER);
+        loginDao= DaoFactory.getLoginDao(Constants.NORMAL_USER);
         try {
             if(loginDao.authenticate(user,pwd,context))
             {
