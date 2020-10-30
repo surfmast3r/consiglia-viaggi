@@ -135,6 +135,8 @@ public class ReviewDaoJSON implements ReviewDao{
             responseCode=connection.getResponseCode();
             if(responseCode==HttpURLConnection.HTTP_OK)
                 json = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            else if(responseCode==HttpURLConnection.HTTP_NOT_FOUND)
+                throw new DaoException(DaoException.NOT_FOUND,"Not Found");
             else if(responseCode==HttpURLConnection.HTTP_UNAUTHORIZED)
                 throw new DaoException(DaoException.ERROR,"Unauthorized");
             else

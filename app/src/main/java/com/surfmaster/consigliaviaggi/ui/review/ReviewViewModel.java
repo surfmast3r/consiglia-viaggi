@@ -1,7 +1,6 @@
 package com.surfmaster.consigliaviaggi.ui.review;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.controllers.CreateReviewController;
