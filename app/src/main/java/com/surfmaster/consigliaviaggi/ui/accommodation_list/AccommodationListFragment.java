@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.surfmaster.consigliaviaggi.Constants;
 import com.surfmaster.consigliaviaggi.R;
 import com.surfmaster.consigliaviaggi.models.Accommodation;
@@ -128,18 +129,23 @@ public class AccommodationListFragment extends Fragment{
 
                     @Override
                     public void onChanged(@Nullable List<Accommodation> newList) {
-                        if (newList!=null) {
-                            if (adapter == null) {
-                                adapter = new AccommodationRecyclerViewAdapter(getContext(), newList);
-                                rv.setAdapter(adapter);
-                            } else {
-                                adapter.refreshList(newList);
-                            }
-                            stopShimmerAnimation();
-                            previousTotal = 0;
+                        if (newList!=null&&newList.size()>0) {
+
+                                if (adapter == null) {
+                                    adapter = new AccommodationRecyclerViewAdapter(getContext(), newList);
+                                    rv.setAdapter(adapter);
+                                } else {
+                                    adapter.refreshList(newList);
+                                }
+                                stopShimmerAnimation();
+                                previousTotal = 0;
+
                         }
                         else{
                             stopShimmerAnimation();
+                            Snackbar.make(requireView(), "Nessuna struttura trovata", Snackbar.LENGTH_LONG)
+                                    .show();
+
                         }
 
                     }

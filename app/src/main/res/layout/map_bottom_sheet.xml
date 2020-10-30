@@ -115,6 +115,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         style="@style/Widget.AppCompat.Button.Colored"
+        android:backgroundTint="@color/colorAccent"
         android:drawablePadding="5dp"
         android:textAlignment="center"
         android:text="@string/open_detail_button"

@@ -42,14 +42,14 @@
     <string name="no_access">Accesso non effettuato</string>Benvenuto
     <string name="welcome">Benvenuto</string>
     <string name="google_maps_key">AIzaSyBCZ4ICGLugfgohjc90PeDdZ2Zs9RUte2k</string>
-    <string name="register_account">No account yet? Create one</string>
+    <string name="register_account">Non hai un account? Creane uno</string>
     <string name="login">Login</string>
     <string name="account">Account</string>
     <string name="username">Username</string>
     <string name="name">Nome</string>
     <string name="review_info_alert">Recensione</string>
     <string name="ok">ok</string>
-    <string name="redo_search_button">Search this zone</string>
+    <string name="redo_search_button">Cerca in questa zona</string>
     <string name="facebook_app_id">378139930005882</string> <string name="fb_login_protocol_scheme">fb378139930005882</string>
     <string name="text_placeholder">TEXT</string>
     <string name="data_updating">Caricamento</string>

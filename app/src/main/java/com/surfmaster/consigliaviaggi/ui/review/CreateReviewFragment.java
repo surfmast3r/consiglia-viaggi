@@ -72,10 +72,10 @@ public class CreateReviewFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(reviewEditText.getText().toString().length()>4)
+                if(reviewEditText.getText().toString().length()>4&&reviewEditText.getText().toString().length()<500)
                     reviewViewModel.postReview(ratingBar.getRating(),reviewEditText.getText().toString());
                 else
-                    Snackbar.make(requireView(), "Il testo della recensione deve essere minimo 5 caratteri", Snackbar.LENGTH_LONG)
+                    Snackbar.make(requireView(), "Il testo della recensione deve essere compreso tra 5 e 500 caratteri", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
             }
