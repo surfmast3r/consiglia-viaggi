@@ -14,7 +14,6 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_ac_detail">Dettagli Struttura</string>
     <string name="menu_ac_list">Lista Strutture</string>
-
     <string name="menu_ac_view">Accommodation View</string>
     <string name="description_label">Descrizione</string>
     <string name="map_description_title">Esplora luoghi nelle vicinanze</string>
@@ -41,7 +40,7 @@
     <string name="publish">Pubblica</string>
     <string name="no_access">Accesso non effettuato</string>Benvenuto
     <string name="welcome">Benvenuto</string>
-    <string name="google_maps_key">AIzaSyBCZ4ICGLugfgohjc90PeDdZ2Zs9RUte2k</string>
+
     <string name="register_account">Non hai un account? Creane uno</string>
     <string name="login">Login</string>
     <string name="account">Account</string>

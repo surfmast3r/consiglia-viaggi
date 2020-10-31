@@ -277,12 +277,20 @@ public class AccommodationMapFragment extends Fragment implements ClusterManager
                                 // Set the map's camera position to the current location of the device.
                                 mLastKnownLocation = (Location) task.getResult();
 
-                                LatLng newLatLon=new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude());
-                                //Set accommodation list
-                                accommodationMapViewModel.setAccommodationList(newLatLon);
+                                if(mLastKnownLocation!=null) {
+                                    LatLng newLatLon = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+                                    //Set accommodation list
+                                    accommodationMapViewModel.setAccommodationList(newLatLon);
+                                    showLocation(newLatLon);
+                                    //move camera
+                                }else{
+                                    Log.d(TAG, "mLastKnownLocation is null. Using defaults.");
+                                    Log.e(TAG, "Exception: %s", task.getException());
+                                    showDefaultLocation();
+                                }
 
-                                //move camera
-                                showLocation(newLatLon);
+
+
                             } else {
                                 Log.d(TAG, "Current location is null. Using defaults.");
                                 Log.e(TAG, "Exception: %s", task.getException());
